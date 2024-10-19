@@ -5,6 +5,20 @@
     <title>Spotify Wrapped</title>
 </head>
 <body>
-
+<div id="main"></div>
+<script>
+    function getArtistInfo(arist_name) {
+        fetch(`api/${arist_name}/`, {
+            method: 'GET',
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("main").innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error fetching artist info ", error);
+            });
+    }
+</script>
 </body>
 </html>

@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 
-@login_required
+#@login_required
 def home(request):
 	return render(request, 'index.html', {})
 

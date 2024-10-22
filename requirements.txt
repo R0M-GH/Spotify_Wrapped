@@ -1,0 +1,6 @@
+Django~=5.1.1
+requests~=2.32.3
+python-dotenv~=1.0.1
+openai~=1.51.0
+pylint
+coverage

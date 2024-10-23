@@ -5,15 +5,36 @@ import os
 import requests
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 from openai import OpenAI
+from forms import LoginForm
+from backends import AuthModelBackend
 
 
-#@login_required
+@login_required
 def home(request):
-	return render(request, 'index.html', {})
+	return render(request, 'main/index.html', {})
+
+def login(request):
+	request.session.flush()
+	if request.method == 'POST':
+		username = request.POST['username']
+		password = request.POST['password']
+		# user = users_collection.find_one({'username': username})
+
+		user = AuthModelBackend.authenticate(username, password)
+		if user is not None:
+			request.session['username'] = username
+			# login(request, user)
+			return redirect("home_page")
+		else:
+			form = LoginForm()
+			return render(request, 'registration/login.html', {'form': form, 'error': True})
+	else:
+		form = LoginForm()
+	return render(request, 'registration/login.html', {'form': form})
 
 
 @csrf_exempt

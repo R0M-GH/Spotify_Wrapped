@@ -40,6 +40,15 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
 ]
 
+AUTH_USER_MODEL = 'main.User'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
+    'main.backends.AuthModelBackend',
+)
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -55,7 +64,7 @@ ROOT_URLCONF = 'Spotify_Wrapped.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [BASE_DIR / 'main/templates']
 		,
         'APP_DIRS': True,
         'OPTIONS': {

@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <form method = "post" id="login-form" class="form">
+        {% csrf_token %}
+        {{ form.username }}
+        {{ form.password }}
+        <p>Don't have an account! Create one <a href = '/sign-up'>here</a>!</p>
+        <button type = "submit" class = "btn btn-success">Submit</button>
+    </form>
+
+{% endblock %}

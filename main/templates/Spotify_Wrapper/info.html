@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+    <form method="post" action="{% url 'wrapper_page' %}">
+    {% csrf_token %}
+    <!-- Info fields here -->
+    <button type="submit">Submit Info</button>
+</form>
+</body>
+</html>

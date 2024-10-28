@@ -9,11 +9,28 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 from openai import OpenAI
+from django.shortcuts import render, redirect
 
 
 #@login_required
 def home(request):
-	return render(request, 'index.html', {})
+    return render(request, 'Spotify_Wrapper/index.html')
+def game_page(request):
+    return render(request, 'Spotify_Wrapper/game.html')
+
+def library_page(request):
+    # Add library display logic here
+    return render(request, 'Spotify_Wrapper/library.html')
+
+def info_page(request):
+    if request.method == 'POST':
+        # Process info form submission
+        return redirect('wrapper_page')
+    return render(request, 'Spotify_Wrapper/info.html')
+
+def wrapper_page(request):
+    # Load user's most recent wrapper info here
+    return render(request, 'Spotify_Wrapper/wrapper.html')
 
 
 @csrf_exempt

@@ -4,25 +4,43 @@ import os
 
 import requests
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 from openai import OpenAI
-from forms import LoginForm
-from backends import AuthModelBackend
+from .forms import LoginForm, RegistrationForm
+from .backends import AuthModelBackend
+from .models import CustomUserManager, User
 
 
 @login_required
 def home(request):
 	return render(request, 'main/index.html', {})
 
+def register(request):
+	if request.method == 'POST':
+		form = RegistrationForm(request.POST)
+		if form.is_valid():
+			username = form.cleaned_data['username']
+			password1 = form.cleaned_data['password1']
+
+			# Check if username already exists in User model
+			if User.objects.filter(username=username).exists():
+				return render(request, 'registration/registration.html', {"form": form, 'error': True})
+
+			# Creates users
+			user = CustomUserManager.create_user(username=username, password=password1)
+			return redirect("login")
+	else:
+		form = RegistrationForm()
+	return render(request, 'registration/registration.html', {"form": form})
 def login(request):
 	request.session.flush()
 	if request.method == 'POST':
 		username = request.POST['username']
 		password = request.POST['password']
-		# user = users_collection.find_one({'username': username})
 
 		user = AuthModelBackend.authenticate(username, password)
 		if user is not None:
@@ -35,7 +53,6 @@ def login(request):
 	else:
 		form = LoginForm()
 	return render(request, 'registration/login.html', {'form': form})
-
 
 @csrf_exempt
 @login_required

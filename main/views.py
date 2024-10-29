@@ -4,34 +4,143 @@ import os
 
 import requests
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 from openai import OpenAI
-from django.shortcuts import render, redirect
+from .forms import LoginForm, RegistrationForm
+from .backends import AuthModelBackend
+from .models import CustomUserManager, User
+from Spotify_Wrapped import settings
+import random
+import string
+import urllib.parse
 
 
 #@login_required
 def home(request):
-    return render(request, 'Spotify_Wrapper/index.html')
+	return render(request, 'mainTemplates/index.html', {})
+
 def game_page(request):
-    return render(request, 'Spotify_Wrapper/game.html')
+	return render(request, 'Spotify_Wrapper/game.html')
 
 def library_page(request):
-    # Add library display logic here
-    return render(request, 'Spotify_Wrapper/library.html')
+	#add library display logic here
+	return render(request, 'Spotify_Wrapper/library.html')
 
 def info_page(request):
-    if request.method == 'POST':
-        # Process info form submission
-        return redirect('wrapper_page')
-    return render(request, 'Spotify_Wrapper/info.html')
+	if request.method == 'POST':
+		#Process info form submission
+		return redirect('wrapper_page')
+	return render(request, 'Spotify_Wrapper/info.html')
 
 def wrapper_page(request):
-    # Load user's most recent wrapper info here
-    return render(request, 'Spotify_Wrapper/wrapper.html')
+	#Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/wrapper.html')
 
+def register(request):
+	if request.method == 'POST':
+		form = RegistrationForm(request.POST)
+		if form.is_valid():
+			username = form.cleaned_data['username']
+			password1 = form.cleaned_data['password1']
+
+			# Check if username already exists in User model
+			if User.objects.filter(username=username).exists():
+				return render(request, 'registration/registration.html', {"form": form, 'error': True})
+
+			# Creates users
+			user = CustomUserManager.create_user(username=username, password=password1)
+			return redirect("login")
+	else:
+		form = RegistrationForm()
+	return render(request, 'registration/registration.html', {"form": form})
+def login(request):
+	request.session.flush()
+	if request.method == 'POST':
+		username = request.POST['username']
+		password = request.POST['password']
+
+		user = AuthModelBackend.authenticate(username, password)
+		if user is not None:
+			request.session['username'] = username
+			# login(request, user)
+			return redirect("home_page")
+		else:
+			form = LoginForm()
+			return render(request, 'registration/login.html', {'form': form, 'error': True})
+	else:
+		form = LoginForm()
+	return render(request, 'registration/login.html', {'form': form})
+
+def generate_random_state(length):
+	return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+def spotify_login(request):
+	state = generate_random_state(16)
+	scope = 'user-read-private user-read-email'
+	auth_url = 'https://accounts.spotify.com/authorize?'
+
+	query_params = {
+		'response_type': 'code',
+		'client_id': settings.SPOTIFY_CLIENT_ID,
+		'scope': scope,
+		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+		'state': state,
+	}
+
+	url = auth_url + urllib.parse.urlencode(query_params)
+
+	return redirect(url)
+
+def spotify_callback(request):
+	code = request.GET.get('code')
+	state = request.GET.get('state')
+	error = request.GET.get('error')
+
+	auth_string = settings.SPOTIFY_CLIENT_ID + ":" + settings.SPOTIFY_CLIENT_SECRET
+	auth_bytes = auth_string.encode("utf-8")
+	auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
+
+	if error:
+		return error
+	if not code:
+		return JsonResponse({'error': 'Invalid code'}, status=400)
+
+	# Exchange code for an access token
+	token_url = 'https://accounts.spotify.com/api/token'
+	body = {
+		'grant_type': 'authorization_code',
+		'code': code,
+		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+		'client_id': settings.SPOTIFY_CLIENT_ID,
+		'client_secret': settings.SPOTIFY_CLIENT_SECRET,
+	}
+	header = {
+		'Authorization': 'Basic ' + auth_base64,
+		'Content-Type': 'application/x-www-form-urlencoded',
+	}
+
+	response = requests.post(token_url, data=body, headers=header)
+	response_data = response.json()
+
+	if 'access_token' in response_data:
+		access_token = response_data['access_token']
+		refresh_token = response_data['refresh_token']
+
+		# Store tokens in session (or database)
+		request.session['access_token'] = access_token
+		request.session['refresh_token'] = refresh_token
+
+		return JsonResponse({
+			'message': 'Authorization successful',
+			'access_token': access_token,
+			'refresh_token': refresh_token
+		})
+	else:
+		return JsonResponse({'error': 'Failed to obtain token'}, status=400)
 
 @csrf_exempt
 @login_required

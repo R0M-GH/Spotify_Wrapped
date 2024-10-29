@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'mainTemplates/base.html' %}
 {% block title %}Login{% endblock %}
 
 {% block content %}
@@ -6,6 +6,7 @@
         {% csrf_token %}
         {{ form.username }}
         {{ form.password }}
+        <p>Link your spotify account here:<a href = '/spotify/login/'>BUTTON</a></p>
         <p>Don't have an account! Create one <a href = '/signup'>here</a>!</p>
         <button type = "submit" class = "btn btn-success">Submit</button>
     </form>

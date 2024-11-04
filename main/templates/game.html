@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Space Destroyers</title>
+    <link rel="stylesheet" href="{% static 'game.css' %}">
+</head>
+<body>
+    <div id="all">
+        <div class="main">
+            <div class="header">
+                <h2 id="title">Space Destroyers</h2>
+                <input type="button" value="Play" id="t-play" class="button-styles" aria-label="Play game">
+                <input type="checkbox" id="christmas-switch" aria-label="Christmas mode">
+                <h2 class="h-score">High Score: 0</h2>
+            </div>
+            <div class="spacer"><p> </p></div>
+        </div>
+        <div id="play" style="display:none;">
+            <ul class="container" id="button-array"></ul>
+            <div class="scores">
+                <h2 class="accuracy">0%</h2>
+                <h2 class="hit">0 Hits</h2>
+                <h2 class="score">0 Points</h2>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'game.js' %}"></script>
+</body>
+</html>

@@ -19,26 +19,35 @@ import string
 import urllib.parse
 
 
-#@login_required
+def index(request):
+	return render(request, 'index.html')
+
+
+# @login_required
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
+
 
 def game_page(request):
 	return render(request, 'Spotify_Wrapper/game.html')
 
+
 def library_page(request):
-	#add library display logic here
+	# add library display logic here
 	return render(request, 'Spotify_Wrapper/library.html')
+
 
 def info_page(request):
 	if request.method == 'POST':
-		#Process info form submission
+		# Process info form submission
 		return redirect('wrapper_page')
 	return render(request, 'Spotify_Wrapper/info.html')
 
+
 def wrapper_page(request):
-	#Load users most recent wrapper info here
+	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
+
 
 def register(request):
 	if request.method == 'POST':
@@ -57,6 +66,8 @@ def register(request):
 	else:
 		form = RegistrationForm()
 	return render(request, 'registration/registration.html', {"form": form})
+
+
 def login(request):
 	request.session.flush()
 	if request.method == 'POST':
@@ -75,8 +86,10 @@ def login(request):
 		form = LoginForm()
 	return render(request, 'registration/login.html', {'form': form})
 
+
 def generate_random_state(length):
 	return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
 
 def spotify_login(request):
 	state = generate_random_state(16)
@@ -94,6 +107,7 @@ def spotify_login(request):
 	url = auth_url + urllib.parse.urlencode(query_params)
 
 	return redirect(url)
+
 
 def spotify_callback(request):
 	code = request.GET.get('code')
@@ -142,6 +156,7 @@ def spotify_callback(request):
 	else:
 		return JsonResponse({'error': 'Failed to obtain token'}, status=400)
 
+
 @csrf_exempt
 @login_required
 def get_token():
@@ -159,14 +174,28 @@ def get_token():
 
 @csrf_exempt
 @login_required
-def search_artist(token, artist_name):
-	url = "https://api.spotify.com/v1/search"
-	headers = {"Authorization": "Bearer " + token}
-	query = f"?q={artist_name}&type=artist&limit=1"
-	query_url = url + query
-	result = requests.get(query_url, headers=headers)
-	print(result.content)
-	return json.loads(result.content)
+def spotify_data(request, time_range="medium_term"):
+	access_token = User.objects.get(user=request.user).spotify_access_token
+
+	headers = {"Authorization": f"Bearer {access_token}"}
+
+	# Define URLs for Spotify API with time range
+	user_top_tracks_url = f"https://api.spotify.com/v1/me/top/tracks?limit=10&time_range={time_range}"
+	user_top_artists_url = f"https://api.spotify.com/v1/me/top/artists?limit=10&time_range={time_range}"
+
+	# Make requests to Spotify API
+	top_tracks_response = requests.get(user_top_tracks_url, headers=headers)
+	top_artists_response = requests.get(user_top_artists_url, headers=headers)
+
+	if top_tracks_response.status_code == 200 and top_artists_response.status_code == 200:
+		data = {
+			"top_tracks": top_tracks_response.json(),
+			"top_artists": top_artists_response.json(),
+			"time_range": time_range
+		}
+		return JsonResponse(data)
+	else:
+		return JsonResponse({"error": "Failed to retrieve data from Spotify"}, status=400)
 
 
 @csrf_exempt
@@ -174,8 +203,8 @@ def search_artist(token, artist_name):
 def llama_request(token, request):
 	client = OpenAI(base_url="https://integrate.api.nvidia.com/v1", api_key=os.getenv('OPENAI_API_KEY'))
 	completion = client.chat.completions.create(model="meta/llama-3.1-405b-instruct",
-												messages=[{"role": "user", "content": f"{request}"}], temperature=0.2,
-												top_p=0.7, max_tokens=1024, stream=True)
+	                                            messages=[{"role": "user", "content": f"{request}"}], temperature=0.2,
+	                                            top_p=0.7, max_tokens=1024, stream=True)
 	info = ''
 	for chunk in completion:
 		if chunk.choices[0].delta.content:

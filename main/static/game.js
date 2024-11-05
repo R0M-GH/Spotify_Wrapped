@@ -3,6 +3,8 @@ let highScore = 0;
 let isOver = false;    // Game status
 let points = 0;        // Tracks successful clicks
 let missed = 0;        // Tracks missed clicks
+let hits = 0;
+let totalCircles = 0;
 const size = 100;      // Initial size of each circle in pixels
 const duration = 15000; // Duration in milliseconds (15 seconds)
 const frequency = 500; // Frequency of circle appearance (every 1 second)
@@ -35,10 +37,12 @@ function updateScoreDisplay() {
     const hitElement = document.querySelector('.hit');
     const scoreElement = document.querySelector('.score');
 
-    accuracyElement.textContent = `${((points / (points + missed)) * 100 || 0).toFixed(2)}%`; // Accuracy calculation
-    hitElement.textContent = `${points} Hits`; // Updated to show actual hits
+    const accuracy = (hits / (hits + missed) * 100 || 0).toFixed(2);
+    accuracyElement.textContent = `${accuracy}% Accuracy`; // Display accuracy as percentage
+    hitElement.textContent = `${hits} Hits`; // Display updated hits count
     scoreElement.textContent = `${points} Points`; // Display points
 }
+
 
 function killButtons(isReal) {
     if (isReal) {
@@ -47,9 +51,11 @@ function killButtons(isReal) {
         points -= 1;
     }
     this.style.display = 'none'; // Hide the clicked circle
+    hits += 1; // Increment hits count on successful click
     new Audio('path/to/sound.mp3').play(); // Play sound effect
     updateScoreDisplay(); // Update the score display
 }
+
 
 function getRandomItem() {
     const realFake = Math.random();
@@ -76,6 +82,10 @@ function getRandomItem() {
 }
 
 function makeCircles() {
+    points = 0;        // Tracks successful clicks
+    missed = 0;        // Tracks missed clicks
+    hits = 0;
+    totalCircles = 0;
     header.style.display = 'none';
     fullplay.style.display = 'flex';
     isOver = false;
@@ -120,13 +130,14 @@ function makeCircles() {
             const isReal = itemName.isFake === false; // Check if the item is real or fake
             killButtons.call(this, isReal);
             shrinkCircle(this); // Call the shrink function on click
+            updateScoreDisplay()
         });
 
 
         circles.push(circle); // Store reference to the circle
         container.appendChild(circle);
         console.log("circle added");
-
+        totalCircles = totalCircles + 1;
         shrinkCircles();
 
     }, frequency); // Set interval time based on frequency
@@ -163,15 +174,18 @@ function shrinkCircles() {
 
         if (currentSize - shrinkAmount <= 0) {
             circle.style.display = 'none'; // Hide the circle if it shrinks to 0
+            missed += 1; // Increment missed count when circle shrinks to zero
+            updateScoreDisplay(); // Update score after each missed shrink
         }
-        console.log("shrunk");
     });
 }
+
 
 function startPlay() {
     console.log("start play!");
     points = 0;
     missed = 0;
+    hits = 0;
 
     const accuracyElement = document.querySelector('.accuracy');
     const hitElement = document.querySelector('.hit');

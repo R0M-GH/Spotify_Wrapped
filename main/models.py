@@ -32,6 +32,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     date_joined = models.DateTimeField(default=timezone.now)
 
+    # Spotify-related fields
+    spotify_access_token = models.CharField(max_length=255, blank=True, null=True)
+    spotify_refresh_token = models.CharField(max_length=255, blank=True, null=True)
+
     objects = CustomUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []

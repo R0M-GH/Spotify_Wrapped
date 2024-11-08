@@ -19,6 +19,7 @@ body {
     border-radius: 8px;
     box-shadow: 0px 0px 10px 2px #3d3d5c, 0px 0px 20px #000; /* Faint outer glow */
     transition: box-shadow 0.3s ease;
+    align-items: center;
 }
 
 /* Title styling */
@@ -56,6 +57,7 @@ body {
 
 /* Score display styling */
 .scores {
+    justify-content:left;
     position: absolute;
     top: 20px;
     left: 20px;
@@ -112,4 +114,56 @@ body {
 /* Play area styling */
 #play {
     display: flex;
+}
+
+/* Instructions styling */
+.instructions {
+    margin-top: 20px;
+    background-color: #1b1c3c; /* Slightly darker than header */
+    padding: 15px;
+    border-radius: 8px;
+    color: #ffffff;
+    box-shadow: 0px 0px 10px 2px #3d3d5c;
+}
+
+.instructions h3 {
+    font-size: 24px;
+    color: #8a2be2;
+    text-shadow: 0px 0px 5px #8a2be2;
+    margin-bottom: 10px;
+}
+
+.instructions p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #d1d1e0;
+}
+
+/* Game mode options styling */
+.game-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.game-mode-option {
+    margin-right: 10px;
+    accent-color: #4a00e0; /* Matches main button color */
+    cursor: pointer;
+}
+
+.game-options label {
+    font-size: 16px;
+    color: #5de5e7; /* Light cyan */
+    display: flex;
+    align-items: center;
+}
+
+.game-options label:hover {
+    color: #8a2be2; /* Change color on hover */
+}
+
+#chirst-switch{
+    align-items: center;
+
 }

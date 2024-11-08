@@ -15,6 +15,8 @@ const header = document.querySelector('.header'); // Header element to be hidden
 const container = document.getElementById('button-array'); // Container for the circles
 const christmasSwitch = document.getElementById('christmas-switch'); // Christmas mode switch
 const sco = document.getElementById('scores');
+const options = document.getElementById('options');
+let selectedMode = 'classic';
 
 let circles = []; // Array to store references to circles
 const shrinkAmount = 15; // Define how much each circle shrinks per interval
@@ -87,6 +89,7 @@ function makeCircles() {
     hits = 0;
     totalCircles = 0;
     header.style.display = 'none';
+    options.style.display = 'none';
     fullplay.style.display = 'flex';
     isOver = false;
 
@@ -104,6 +107,7 @@ function makeCircles() {
             clearInterval(interval);
             header.style.display = 'flex';
             fullplay.style.display = 'none';
+            options.style.display = 'flex';
 
             circles = []; // Reset the circles array
             container.innerHTML = ""; // Clear previous circles from the container
@@ -218,6 +222,33 @@ christmasSwitch.addEventListener('change', function() {
         real_song_titles = original_real_song_titles;
     }
 });
+
+document.querySelectorAll('.game-mode-option').forEach(option => {
+    option.addEventListener('click', () => {
+        // Uncheck all other options except the one that was clicked
+        document.querySelectorAll('.game-mode-option').forEach(otherOption => {
+            otherOption.checked = false;
+        });
+        // Set the clicked option to true
+        option.checked = true;
+
+        selectedMode = document.querySelector('.game-mode-option:checked').value;
+
+        // Make decisions based on the selected mode
+        if (selectedMode === 'classic') {
+            console.log("Classic Mode selected - Regular speed, unlimited time");
+            // Add code for Classic Mode here
+        } else if (selectedMode === 'timed') {
+            console.log("Timed Mode selected - 60 seconds to score as much as possible");
+            // Add code for Timed Mode here
+        } else if (selectedMode === 'hardcore') {
+            console.log("Hardcore Mode selected - Faster circles, limited time");
+            // Add code for Hardcore Mode here
+        }
+    });
+});
+
+
 
 fake_artist_names = [
     "EchoWave", "CrimsonFalls", "Starfire", "VelvetReign", "LunarVeil",

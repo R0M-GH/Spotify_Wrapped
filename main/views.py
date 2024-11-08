@@ -166,7 +166,7 @@ def spotify_callback(request):
 			user.spotify_refresh_token = refresh_token
 			user.save()  # Save tokens to the user model
 
-		return redirect("home_page")
+		return redirect("home")
 		# return JsonResponse({
 		# 	'message': 'Authorization successful',
 		# 	'access_token': access_token,

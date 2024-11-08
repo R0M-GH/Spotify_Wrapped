@@ -6,9 +6,9 @@
         {% csrf_token %}
         {{ form.username }}
         {{ form.password }}
-        <p>Link your spotify account here:<a href = '/spotify/login/'>BUTTON</a></p>
+{#        <p>Link your spotify account here:<a href = '/spotify/login/'>BUTTON</a></p>#}
         <p>Don't have an account! Create one <a href = '/signup'>here</a>!</p>
-        <button type = "submit" class = "btn btn-success">Submit</button>
+        <button type = "submit" class = "btn btn-success" onclick="window.location.href='/spotify/login/';">Submit</button>
     </form>
 
 {% endblock %}

@@ -31,7 +31,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
 
     date_joined = models.DateTimeField(default=timezone.now)
-    
+
     spotify_access_token = models.CharField(max_length=255, blank=True, null=True)
     spotify_refresh_token = models.CharField(max_length=255, blank=True, null=True)
 

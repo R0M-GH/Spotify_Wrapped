@@ -1,22 +1,21 @@
 import base64
 import json
 import os
+import random
+import string
+import urllib.parse
 
 import requests
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 from openai import OpenAI
-from .forms import LoginForm, RegistrationForm
+
 from .backends import AuthModelBackend
+from .forms import LoginForm, RegistrationForm
 from .models import CustomUserManager, User
-from Spotify_Wrapped import settings
-import random
-import string
-import urllib.parse
 
 
 def index(request):
@@ -98,9 +97,9 @@ def spotify_login(request):
 
 	query_params = {
 		'response_type': 'code',
-		'client_id': settings.SPOTIFY_CLIENT_ID,
+		'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
 		'scope': scope,
-		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+		'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
 		'state': state,
 	}
 
@@ -114,7 +113,7 @@ def spotify_callback(request):
 	state = request.GET.get('state')
 	error = request.GET.get('error')
 
-	auth_string = settings.SPOTIFY_CLIENT_ID + ":" + settings.SPOTIFY_CLIENT_SECRET
+	auth_string = os.getenv('SPOTIFY_CLIENT_ID') + ":" + os.getenv('SPOTIFY_CLIENT_SECRET')
 	auth_bytes = auth_string.encode("utf-8")
 	auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
 
@@ -128,9 +127,9 @@ def spotify_callback(request):
 	body = {
 		'grant_type': 'authorization_code',
 		'code': code,
-		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
-		'client_id': settings.SPOTIFY_CLIENT_ID,
-		'client_secret': settings.SPOTIFY_CLIENT_SECRET,
+		'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
+		'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
+		'client_secret': os.getenv('SPOTIFY_CLIENT_SECRET'),
 	}
 	header = {
 		'Authorization': 'Basic ' + auth_base64,
@@ -179,11 +178,9 @@ def spotify_data(request, time_range="medium_term"):
 
 	headers = {"Authorization": f"Bearer {access_token}"}
 
-	# Define URLs for Spotify API with time range
 	user_top_tracks_url = f"https://api.spotify.com/v1/me/top/tracks?limit=10&time_range={time_range}"
 	user_top_artists_url = f"https://api.spotify.com/v1/me/top/artists?limit=10&time_range={time_range}"
 
-	# Make requests to Spotify API
 	top_tracks_response = requests.get(user_top_tracks_url, headers=headers)
 	top_artists_response = requests.get(user_top_artists_url, headers=headers)
 

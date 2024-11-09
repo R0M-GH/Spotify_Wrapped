@@ -76,6 +76,16 @@ def login(request):
 		user = AuthModelBackend.authenticate(username, password)
 		if user is not None:
 			request.session['username'] = username
+
+			# # Replace this with actual Spotify API logic to get tokens
+			# spotify_access_token = 'obtained_access_token'
+			# spotify_refresh_token = 'obtained_refresh_token'
+			#
+			# # Set the tokens on the user model
+			# user.spotify_access_token = spotify_access_token
+			# user.spotify_refresh_token = spotify_refresh_token
+			# user.save()  # Save to database
+
 			# login(request, user)
 			return redirect("home_page")
 		else:
@@ -143,15 +153,24 @@ def spotify_callback(request):
 		access_token = response_data['access_token']
 		refresh_token = response_data['refresh_token']
 
-		# Store tokens in session (or database)
-		request.session['access_token'] = access_token
-		request.session['refresh_token'] = refresh_token
+		# # Store tokens in session (or database)
+		# request.session['access_token'] = access_token
+		# request.session['refresh_token'] = refresh_token
 
-		return JsonResponse({
-			'message': 'Authorization successful',
-			'access_token': access_token,
-			'refresh_token': refresh_token
-		})
+		# Assuming user session has 'username' set from login view
+		username = request.session.get('username')
+		if username:
+			user = User.objects.get(username=username)
+			user.spotify_access_token = access_token
+			user.spotify_refresh_token = refresh_token
+			user.save()  # Save tokens to the user model
+
+		return redirect("home")
+		# return JsonResponse({
+		# 	'message': 'Authorization successful',
+		# 	'access_token': access_token,
+		# 	'refresh_token': refresh_token
+		# })
 	else:
 		return JsonResponse({'error': 'Failed to obtain token'}, status=400)
 

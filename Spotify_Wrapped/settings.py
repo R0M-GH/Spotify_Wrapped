@@ -133,3 +133,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'reactapp/build/static')]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SPOTIFY_CLIENT_ID = '02054cfd2d3740abb9d07287141cc367'
+SPOTIFY_CLIENT_SECRET = '8f1e4849ca6c4ca9addaebee6d65778a'
+SPOTIFY_REDIRECT_URI = 'http://localhost:8000/spotify/callback'

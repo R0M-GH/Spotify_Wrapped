@@ -1,10 +1,55 @@
-<!DOCTYPE html>
+A<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Space Destroyers</title>
+    <link rel="stylesheet" href="{% static 'game.css' %}">
 </head>
 <body>
+    <div id="all">
+        <div class="main">
+            <div class="header">
+                <h2 id="title">Space Destroyers</h2>
+                <input type="button" value="Play" id="t-play" class="button-styles" aria-label="Play game">
+                <div id="christ-switch">
+                    <h1>Christmas Switch</h1>
+                    <input type="checkbox" id="christmas-switch" aria-label="Christmas mode">
+                </div>
+                <h2 class="h-score">High Score: 0</h2>
+            </div>
 
+            <!-- Game Instructions Section -->
+            <div class="instructions" id = "options">
+                <h3>How to Play:</h3>
+                <p>Click the circles as they appear to earn points. The faster you click, the higher your score!</p>
+                <div class="game-options">
+                    <label>
+                        <input type="radio" name="game-mode" value="classic" class="game-mode-option">
+                        Classic Mode - Regular speed, unlimited time
+                    </label>
+                    <label>
+                        <input type="radio" name="game-mode" value="timed" class="game-mode-option">
+                        Timed Mode - 60 seconds to score as much as possible
+                    </label>
+                    <label>
+                        <input type="radio" name="game-mode" value="hardcore" class="game-mode-option">
+                        Hardcore Mode - Faster circles, limited time
+                    </label>
+                </div>
+            </div>
+
+            <div class="spacer"><p> </p></div>
+        </div>
+        <div id="play" style="display:none;">
+            <ul class="container" id="button-array"></ul>
+            <div class="scores">
+                <h2 class="accuracy">0%</h2>
+                <h2 class="hit">Hits: </h2>
+                <h2 class="score">Points: 0</h2>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'game.js' %}"></script>
 </body>
 </html>

@@ -13,7 +13,6 @@ class CustomUserManager(UserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-
     def create_user(self, username=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
@@ -32,8 +31,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     date_joined = models.DateTimeField(default=timezone.now)
 
-    spotify_access_token = models.CharField(max_length=255, blank=True, null=True)
-    spotify_refresh_token = models.CharField(max_length=255, blank=True, null=True)
+    #spotify_access_token = models.CharField(max_length=255, blank=True, null=True)
+    #spotify_refresh_token = models.CharField(max_length=255, blank=True, null=True)
 
     objects = CustomUserManager()
     USERNAME_FIELD = 'username'

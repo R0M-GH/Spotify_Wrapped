@@ -3,8 +3,9 @@ import json
 import os
 
 import requests
+from dill import objects
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -23,7 +24,8 @@ def index(request):
 	return render(request, 'index.html')
 
 
-# @login_required
+
+@login_required
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
 
@@ -48,7 +50,7 @@ def wrapper_page(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 
-
+#User = get_user_model()
 def register(request):
 	if request.method == 'POST':
 		form = RegistrationForm(request.POST)
@@ -61,7 +63,7 @@ def register(request):
 				return render(request, 'registration/registration.html', {"form": form, 'error': True})
 
 			# Creates users
-			user = CustomUserManager.create_user(username=username, password=password1)
+			user = User.objects.create_user(username=username, password=password1)
 			return redirect("login")
 	else:
 		form = RegistrationForm()
@@ -76,19 +78,12 @@ def login(request):
 
 		user = AuthModelBackend.authenticate(username, password)
 		if user is not None:
+			print("use is not none")
 			request.session['username'] = username
 
-			# # Replace this with actual Spotify API logic to get tokens
-			# spotify_access_token = 'obtained_access_token'
-			# spotify_refresh_token = 'obtained_refresh_token'
-			#
-			# # Set the tokens on the user model
-			# user.spotify_access_token = spotify_access_token
-			# user.spotify_refresh_token = spotify_refresh_token
-			# user.save()  # Save to database
-
 			# login(request, user)
-			return redirect("home_page")
+			return redirect("spotify_login")
+
 		else:
 			form = LoginForm()
 			return render(request, 'registration/login.html', {'form': form, 'error': True})

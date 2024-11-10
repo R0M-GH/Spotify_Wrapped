@@ -4,7 +4,6 @@ from . import views
 urlpatterns = [
 	path('', views.login, name='login'),
 	path('index', views.index, name='index-page'),
-	path('home', views.home, name='home-page'),
 	path('signup', views.register, name='registration'),
 	path('spotify/login/', views.spotify_login, name='spotify_login'),
 	path('spotify/callback/', views.spotify_callback, name='spotify_callback'),

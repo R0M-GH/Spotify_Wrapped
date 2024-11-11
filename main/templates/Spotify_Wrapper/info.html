@@ -1,8 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/info.css' %}">
 </head>
 <body>
     <form method="post" action="{% url 'wrapper_page' %}">
@@ -10,5 +12,6 @@
     <!-- Info fields here -->
     <button type="submit">Submit Info</button>
 </form>
+
 </body>
 </html>

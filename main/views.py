@@ -26,7 +26,8 @@ def index(request):
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
 
-
+def welcome(request):
+	return render(request, 'Spotify_Wrapper/index.html')
 def game_page(request):
 	return render(request, 'Spotify_Wrapper/game.html')
 
@@ -47,7 +48,33 @@ def wrapper_page(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 
+def wrapper2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/wrapper2.html')
 
+def ConstellationArtists(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
+
+def ConstellationArtists2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
+
+def GenreNebulas(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/GenreNebulas.html')
+
+def GenreNebulas2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/GenreNebulas2.html')
+
+def StellarHits(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/StellarHits.html')
+
+def StellarHits2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/StellarHits2.html')
 def register(request):
 	if request.method == 'POST':
 		form = RegistrationForm(request.POST)

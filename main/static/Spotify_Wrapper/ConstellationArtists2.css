@@ -1,0 +1,160 @@
+.top-artists-2,
+.top-artists-2 * {
+    box-sizing: border-box;
+}
+
+.top-artists-2 {
+    background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
+    height: 1422.22px;
+    position: relative;
+    overflow: hidden;
+}
+
+.purple-planet {
+    width: 1018.78px;
+    height: 1018.78px;
+    position: absolute;
+    left: -506.96px;
+    top: 234.36px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    transform-origin: 0 0;
+    transform: rotate(-3deg) scale(1, 1);
+    object-fit: cover;
+}
+
+.star-animate {
+    width: 1337px;
+    height: 963px;
+    position: absolute;
+    right: 612px;
+    top: 30px;
+}
+
+.group-1 {
+    height: auto;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
+}
+
+.group-2 {
+    height: auto;
+    position: absolute;
+    left: 555.34px;
+    top: -304.92px;
+    transform: translate(-606.34px, 274.92px);
+    ;
+    overflow: visible;
+}
+
+.constellation-of-artists {
+    color: #faf6e7;
+    text-align: center;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 128px;
+    font-weight: 400;
+    position: absolute;
+    left: 466px;
+    top: 107px;
+    width: 1364px;
+}
+
+.cosmic-tunes {
+    color: #faf6e7;
+    text-align: left;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 64px;
+    font-weight: 400;
+    position: absolute;
+    right: 78.55%;
+    left: 1.4%;
+    width: 20.05%;
+    bottom: 93.18%;
+    top: 0.98%;
+    height: 5.84%;
+}
+
+.rectangle-4 {
+    background: linear-gradient(90.64deg, rgba(5, 37, 67, 0.70) 0%, rgba(1, 62, 119, 0.70) 100%);
+    width: 577.31px;
+    height: 119.54px;
+    position: absolute;
+    left: -260.58px;
+    top: 235.68px;
+    filter: blur(186.78px);
+}
+
+.component-1 {
+    width: 95.69px;
+    height: 95.69px;
+    position: absolute;
+    left: 1736.11px;
+    top: 575px;
+}
+
+.rectangle-3 {
+    background: linear-gradient(180.1deg, rgba(18, 18, 23, 0.00) 0%, rgba(255, 255, 255, 0.00) 100%);
+    border-radius: 76.39px;
+    width: 2px;
+    height: 133.33px;
+    position: absolute;
+    left: 94.28px;
+    top: 0px;
+    transform-origin: 0 0;
+    transform: rotate(45deg) scale(1, 1);
+}
+
+.rectangle-42 {
+    background: linear-gradient(90.64deg, rgba(5, 37, 67, 0.70) 0.009999999747378752%, rgba(9, 66, 133, 0.70) 92.1875%);
+    width: 665.53px;
+    height: 127.32px;
+    position: absolute;
+    left: 1660.58px;
+    top: 305.62px;
+    filter: blur(162.76px);
+}
+
+.rectangle-5 {
+    background: rgba(2, 47, 89, 0.60);
+    width: 665.53px;
+    height: 127.32px;
+    position: absolute;
+    left: 666.63px;
+    top: 1247.49px;
+    filter: blur(162.76px);
+}
+
+.moving-star {
+    width: 95.69px;
+    height: 95.69px;
+    position: absolute;
+    left: 1613.75px;
+    top: 826.25px;
+    transform-origin: 0 0;
+    transform: rotate(-180deg) scale(1, 1);
+    overflow: hidden;
+}
+
+.rectangle-32 {
+    background: linear-gradient(179.97deg, rgba(18, 18, 23, 1.00) 0%, rgba(255, 255, 255, 1.00) 100%);
+    border-radius: 76.39px;
+    width: 2px;
+    height: 133.33px;
+    position: absolute;
+    left: -5.72px;
+    top: 100px;
+    transform-origin: 0 0;
+    transform: rotate(45deg) scale(1, 1);
+}
+
+.moving-star2 {
+    width: 95.69px;
+    height: 95.69px;
+    position: absolute;
+    left: 531.8px;
+    top: 802.78px;
+    transform-origin: 0 0;
+    transform: rotate(90deg) scale(1, 1);
+    overflow: hidden;
+}

@@ -1,9 +1,9 @@
-.cosmic-conquest,
-.cosmic-conquest * {
+.top-artists,
+.top-artists * {
     box-sizing: border-box;
 }
 
-.cosmic-conquest {
+.top-artists {
     background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
     height: 1422.22px;
     position: relative;
@@ -14,8 +14,10 @@
     width: 1736.69px;
     height: 1738.64px;
     position: absolute;
-    left: calc(50% - 868.68px);
-    top: 328.05px;
+    left: calc(50% - 1187.37px);
+    top: 1514.72px;
+    transform-origin: 0 0;
+    transform: rotate(-60deg) scale(1, 1);
 }
 
 .outline {
@@ -69,6 +71,8 @@
     left: 0px;
     top: 0px;
     box-shadow: inset 0px 12.14px 12.14px 0px rgba(0, 0, 0, 0.25), inset 0px -18.21px 12.14px 0px rgba(0, 0, 0, 0.25), inset 0px 0px 6.07px 0px rgba(161, 110, 27, 1.00);
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
     backdrop-filter: blur(9.1px);
 }
 
@@ -128,6 +132,8 @@
     position: absolute;
     left: 0px;
     top: 0px;
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
 }
 
 .illustration {
@@ -201,6 +207,8 @@
     left: 0px;
     top: 0px;
     box-shadow: inset 0px 10.35px 10.35px 0px rgba(0, 0, 0, 0.25), inset 0px -15.52px 10.35px 0px rgba(0, 0, 0, 0.25), inset 0px 0px 5.17px 0px rgba(161, 110, 27, 1.00);
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
 }
 
 .rectangle-12 {
@@ -222,7 +230,7 @@
     height: 8.89px;
     position: absolute;
     left: 25.8px;
-    top: 5.18px;
+    top: 5.17px;
     transform-origin: 0 0;
     transform: rotate(35.039deg) scale(1, 1);
     filter: blur(5.17px);
@@ -258,6 +266,8 @@
     position: absolute;
     left: 0px;
     top: 0px;
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
 }
 
 .orange {
@@ -336,7 +346,7 @@
     width: 31.29px;
     height: 18.6px;
     position: absolute;
-    left: 3.07px;
+    left: 3.08px;
     top: 12.75px;
     transform-origin: 0 0;
     transform: rotate(35.039deg) scale(1, 1);
@@ -407,6 +417,8 @@
     position: absolute;
     left: 0px;
     top: 0px;
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
     backdrop-filter: blur(25.38px);
 }
 
@@ -606,16 +618,6 @@
     box-shadow: inset 0px 0px 20.98px 0px rgba(255, 255, 255, 0.25);
 }
 
-.star-53 {
-    border-radius: 0px;
-    width: 73.42px;
-    height: 73.42px;
-    position: absolute;
-    left: 36.71px;
-    top: 36.71px;
-    overflow: visible;
-}
-
 .blue-illustration {
     width: 117.09px;
     height: 117.09px;
@@ -635,6 +637,8 @@
     position: absolute;
     left: 0px;
     top: 0px;
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
     backdrop-filter: blur(46px);
 }
 
@@ -660,14 +664,16 @@
     position: absolute;
     left: 16.73px;
     top: 16.73px;
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
 }
 
 .line-6 {
     width: 1736.69px;
     height: 1738.64px;
     position: absolute;
-    left: -283.32px;
-    top: -218.05px;
+    left: -277.34px;
+    top: -217.34px;
 }
 
 .secret-line-6 {
@@ -680,6 +686,8 @@
     position: absolute;
     left: 0px;
     top: 0px;
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
 }
 
 .blue-illustration2 {
@@ -701,6 +709,8 @@
     left: 0px;
     top: 0px;
     box-shadow: inset 0px 8.22px 8.22px 0px rgba(255, 255, 255, 0.25), inset 0px -12.33px 8.22px 0px rgba(255, 255, 255, 0.25), inset 0px 0px 4.11px 0px rgba(65, 134, 149, 1.00);
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
     backdrop-filter: blur(6.17px);
 }
 
@@ -751,18 +761,6 @@
     box-shadow: inset 0px 0px 11.75px 0px rgba(255, 255, 255, 0.25);
 }
 
-.cosmic-song-count {
-    color: #faf6e7;
-    text-align: center;
-    font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 128px;
-    font-weight: 400;
-    position: absolute;
-    left: 553px;
-    top: 45px;
-    width: 1163px;
-}
-
 .outline-6 {
     border-radius: 50%;
     border-style: solid;
@@ -773,38 +771,77 @@
     position: absolute;
     left: 0px;
     top: 0px;
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
 }
 
 .purple-planet {
     width: 1018.78px;
     height: 1018.78px;
     position: absolute;
-    left: 478.15px;
-    top: 453.7px;
-    box-shadow: -36.05px 22.68px 155.73px 0px rgba(85, 2, 76, 0.80);
+    left: 1496.93px;
+    top: 1472.48px;
+    box-shadow: -36.05px 22.68px 155.73px 0px rgba(5, 30, 67, 0.80);
+    transform-origin: 0 0;
+    transform: rotate(-180deg) scale(1, 1);
     object-fit: cover;
 }
 
 .star-animate {
-    width: 908.08px;
-    height: 654.06px;
+    width: 1337px;
+    height: 963px;
     position: absolute;
-    right: 1057.29px;
-    top: 20.38px;
+    right: 612px;
+    top: 30px;
+}
+
+.group-1 {
+    height: auto;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
 }
 
 .group-2 {
     height: auto;
     position: absolute;
-    left: 377.18px;
-    top: -207.1px;
-    transform: translate(-411.82px, 186.73px);
+    left: 555.34px;
+    top: -304.92px;
+    transform: translate(-606.34px, 274.92px);
     ;
     overflow: visible;
 }
 
+.constellation-of-artists {
+    color: #faf6e7;
+    text-align: center;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 128px;
+    font-weight: 400;
+    position: absolute;
+    left: 290px;
+    top: 172.15px;
+    width: 1371px;
+}
+
+.cosmic-tunes {
+    color: #faf6e7;
+    text-align: left;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 64px;
+    font-weight: 400;
+    position: absolute;
+    right: 78%;
+    left: 1.95%;
+    width: 20.05%;
+    bottom: 92.96%;
+    top: 1.21%;
+    height: 5.84%;
+}
+
 .rectangle-4 {
-    background: linear-gradient(90.64deg, rgba(82, 0, 255, 0.50) 0%, rgba(202, 43, 157, 0.50) 100%);
+    background: linear-gradient(90.64deg, rgba(5, 37, 67, 0.70) 0%, rgba(1, 62, 119, 0.70) 100%);
     width: 577.31px;
     height: 119.54px;
     position: absolute;
@@ -837,22 +874,26 @@
     top: 788.54px;
 }
 
-.blue-planet {
+.green-planet {
     flex-shrink: 0;
     width: 279.83px;
     height: 279.83px;
     position: relative;
+    box-shadow: 4.75px 5.43px 57.73px 0px rgba(5, 91, 50, 0.50);
     object-fit: cover;
 }
 
-.top-artists {
-    color: #faf6e7;
+.top-songs {
+    background: linear-gradient(101.23deg, rgba(237, 237, 237, 0.80) 0%, rgba(182, 182, 182, 0.80) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     text-align: center;
-    font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 40px;
-    font-weight: 400;
+    font-family: 'ChakraPetch-Medium', sans-serif;
+    font-size: 33.9594612121582px;
+    letter-spacing: 0.16em;
+    font-weight: 500;
     position: relative;
-    width: 267px;
 }
 
 .component-1 {
@@ -876,7 +917,7 @@
 }
 
 .rectangle-42 {
-    background: linear-gradient(90.64deg, rgba(82, 0, 255, 0.50) 0%, rgba(146, 27, 188, 0.50) 100%);
+    background: linear-gradient(90.64deg, rgba(5, 37, 67, 0.70) 0.009999999747378752%, rgba(9, 66, 133, 0.70) 92.1875%);
     width: 665.53px;
     height: 127.32px;
     position: absolute;
@@ -886,7 +927,7 @@
 }
 
 .rectangle-5 {
-    background: linear-gradient(90.64deg, rgba(82, 0, 255, 0.60) 0%, rgba(146, 27, 188, 0.60) 100%);
+    background: rgba(2, 47, 89, 0.60);
     width: 665.53px;
     height: 127.32px;
     position: absolute;
@@ -936,42 +977,28 @@
     align-items: center;
     justify-content: flex-start;
     position: absolute;
-    left: 1497px;
-    top: 789px;
+    left: 1660.62px;
+    top: 789.22px;
 }
 
-.genre-breakdown {
+.etheron {
     background: linear-gradient(101.23deg, rgba(237, 237, 237, 0.80) 0%, rgba(182, 182, 182, 0.80) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
-    font-family: 'ChakraPetch-Medium', sans-serif;
+    font-family: 'Satoshi-Medium', sans-serif;
     font-size: 33.9594612121582px;
     letter-spacing: 0.16em;
     font-weight: 500;
     position: relative;
 }
 
-.yellow-planet {
+.purple-planet2 {
     flex-shrink: 0;
     width: 279.83px;
     height: 279.83px;
     position: relative;
+    box-shadow: -9.9px 6.23px 42.77px 0px rgba(85, 2, 76, 0.80);
     object-fit: cover;
-}
-
-.cosmic-tunes {
-    color: #faf6e7;
-    text-align: left;
-    font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 64px;
-    font-weight: 400;
-    position: absolute;
-    right: 78.15%;
-    left: 1.8%;
-    width: 20.05%;
-    bottom: 93.11%;
-    top: 1.05%;
-    height: 5.84%;
 }

@@ -27,6 +27,7 @@ header {
     height: auto;
   }
   animation: spin 50s linear infinite;
+  z-index: 5000;
 }
 .one {
   position: absolute;
@@ -36,6 +37,7 @@ header {
   width: 10%; /* Adjust the value as needed */
   height: 40%;
   object-fit: cover;
+  z-index: 5000;
 }
 
 .two {
@@ -46,6 +48,71 @@ header {
   width: 10%; /* Adjust the value as needed */
   height: 40%;
   object-fit: cover;
+  z-index: 5000;
+}
+.space {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  bottom:0%;
+  position: absolute;
+  right: 13%;
+  z-index: 1;
+    height: calc(100vh - 60px);
+  img {
+    width: 50%; /
+    height: auto;
+  }
+}
+.space2 {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  bottom:0%;
+  position: absolute;
+  right: 10%;
+  z-index: 1;
+    height: calc(120vh - 60px);
+  img {
+    width: 50%; /
+    height: auto;
+  }
+}
+.space3 {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  bottom:0%;
+  position: absolute;
+  right: 10%;
+  z-index: 1;
+    height: calc(120vh - 60px);
+  img {
+    width: 50%; /
+    height: auto;
+  }
+}
+.space4 {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  bottom:0%;
+  position: absolute;
+  right: 10%;
+  z-index: 1;
+    height: calc(120vh - 60px);
+  img {
+    width: 50%; /
+    height: auto;
+  }
 }
 .Cosmic-Song-Count {
 color: #faf6e7;
@@ -56,6 +123,8 @@ font-weight: 400;
 position: relative;
 margin-bottom: -5%;
 margin-top: 4%;
+    z-index: 5000;
+
 }
 .Genre-Breakdown {
   color: #faf6e7;
@@ -67,6 +136,7 @@ margin-top: 4%;
   animation: blinkColor 2s infinite;
   user-select: none;
   text-decoration: none;
+  z-index: 5000;
 }
 
 .TopArtists{
@@ -79,6 +149,7 @@ margin-top: 4%;
   animation: blinkColor 2s infinite;
   user-select: none;
   text-decoration: none;
+  z-index: 5000;
 }
 
 .CosmicTunes {

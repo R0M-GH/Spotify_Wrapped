@@ -2,16 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'Spotify_Wrapper/info.css' %}">
 </head>
 <body>
-    <form method="post" action="{% url 'wrapper_page' %}">
-    {% csrf_token %}
-    <!-- Info fields here -->
-    <button type="submit">Submit Info</button>
-</form>
 
 </body>
 </html>

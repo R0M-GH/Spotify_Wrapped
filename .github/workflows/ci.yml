@@ -1,9 +1,9 @@
 name: CI/CD Pipeline
 
 on:
-  push:
+  pull_request:
     branches:
-      - Vihaan  # Trigger on push to the Vihaan branch
+      - main
 
 jobs:
   build:
@@ -23,13 +23,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt  # Ensure pylint and coverage are in requirements.txt
 
-#      - name: Run Pylint
-#        run: |
-#          pylint main/  # Adjust to your actual app or module directory
-
-      - name: Assert 1 + 1 = 2
+      - name: Run Pylint
         run: |
-          python -c "assert 1 + 1 == 2, 'Test failed: 1 + 1 != 2'"  # Assert that 1 + 1 equals 2
+          pylint main/  # Adjust to your actual app or module directory
 
       - name: Run Tests
         run: |
@@ -44,3 +40,4 @@ jobs:
       - name: Check Code Coverage
         run: |
           coverage report --fail-under=80  # Fail if coverage is below 80%
+

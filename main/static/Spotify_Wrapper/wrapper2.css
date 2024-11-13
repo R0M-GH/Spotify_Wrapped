@@ -1,145 +1,52 @@
-.cosmic-conquest,
-.cosmic-conquest * {
-    box-sizing: border-box;
-}
-
-.cosmic-conquest {
+body {
     background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
-    height: 1422.22px;
-    position: relative;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
 }
-
-.rectangle-4 {
-    background: linear-gradient(90.64deg, rgba(82, 0, 255, 0.50) 0%, rgba(202, 43, 157, 0.50) 100%);
-    width: 577.31px;
-    height: 119.54px;
-    position: absolute;
-    left: -260.58px;
-    top: 235.68px;
-    filter: blur(186.78px);
-}
-
-.smooth-light {
-    background: linear-gradient(131.24deg, rgba(28, 36, 105, 1.00) 0%, rgba(28, 36, 105, 0.00) 53.5769522190094%, rgba(28, 36, 105, 0.00) 100%);
-    border-radius: 50%;
-    width: 261.49px;
-    height: 263.53px;
-    position: absolute;
-    left: 1013.35px;
-    top: 738.96px;
-    transform-origin: 0 0;
-    transform: rotate(180deg) scale(1, 1);
-    filter: blur(373.55px);
-}
-
-.component-1 {
-    width: 95.69px;
-    height: 95.69px;
-    position: absolute;
-    left: 1736.11px;
-    top: 575px;
-}
-
-.rectangle-3 {
-    background: linear-gradient(180.1deg, rgba(18, 18, 23, 0.00) 0%, rgba(255, 255, 255, 0.00) 100%);
-    border-radius: 76.39px;
-    width: 2px;
-    height: 133.33px;
-    position: absolute;
-    left: 94.28px;
-    top: 0px;
-    transform-origin: 0 0;
-    transform: rotate(45deg) scale(1, 1);
-}
-
-.rectangle-42 {
-    background: linear-gradient(90.64deg, rgba(82, 0, 255, 0.50) 0%, rgba(146, 27, 188, 0.50) 100%);
-    width: 665.53px;
-    height: 127.32px;
-    position: absolute;
-    left: 1660.58px;
-    top: 305.62px;
-    filter: blur(162.76px);
-}
-
-.rectangle-5 {
-    background: linear-gradient(90.64deg, rgba(82, 0, 255, 0.60) 0%, rgba(146, 27, 188, 0.60) 100%);
-    width: 665.53px;
-    height: 127.32px;
-    position: absolute;
-    left: 666.63px;
-    top: 1247.49px;
-    filter: blur(162.76px);
-}
-
-.moving-star {
-    width: 95.69px;
-    height: 95.69px;
-    position: absolute;
-    left: 1613.75px;
-    top: 826.25px;
-    transform-origin: 0 0;
-    transform: rotate(-180deg) scale(1, 1);
-    overflow: hidden;
-}
-
-.rectangle-32 {
-    background: linear-gradient(179.97deg, rgba(18, 18, 23, 1.00) 0%, rgba(255, 255, 255, 1.00) 100%);
-    border-radius: 76.39px;
-    width: 2px;
-    height: 133.33px;
-    position: absolute;
-    left: -5.72px;
-    top: 100px;
-    transform-origin: 0 0;
-    transform: rotate(45deg) scale(1, 1);
-}
-
-.moving-star2 {
-    width: 95.69px;
-    height: 95.69px;
-    position: absolute;
-    left: 531.8px;
-    top: 802.78px;
-    transform-origin: 0 0;
-    transform: rotate(90deg) scale(1, 1);
-    overflow: hidden;
-}
-
-.cosmic-tunes {
-    color: #faf6e7;
-    text-align: left;
-    font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 64px;
-    font-weight: 400;
-    position: absolute;
-    right: 78.55%;
-    left: 1.4%;
-    width: 20.05%;
-    bottom: 92.83%;
-    top: 1.34%;
-    height: 5.84%;
-}
-
-.purple-planet {
-    width: 1018.78px;
-    height: 1018.78px;
-    position: absolute;
-    left: -475px;
-    top: 242px;
-    box-shadow: -36.05px 22.68px 155.73px 0px rgba(85, 2, 76, 0.80);
-    object-fit: cover;
-}
-
-.cosmic-song-count {
-    color: #faf6e7;
+header {
+    background-color: transparent;
+    padding: 20px 0;
     text-align: center;
-    font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 128px;
-    font-weight: 400;
     position: absolute;
-    left: 667px;
-    top: 107px;
-    width: 1178px;
+    width: 100%;
+    top: 0;
+    left: 0;
 }
+.CosmicTunes {
+  color: #faf6e7;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  position: absolute;
+  font-size: 200%;
+  text-decoration: none;
+  left: 10px;
+}
+.mainplanet {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  top: 0%;
+  left: -25%;
+  position: absolute;
+    height: calc(100vh - 60px);
+  img {
+    width: 100%; /
+    height: auto;
+  }
+}
+.Cosmic-Song-Count {
+color: #faf6e7;
+right: -45%;
+font-family: 'ChakraPetch-Regular', sans-serif;
+font-size: 4vw;
+font-weight: 400;
+position: relative;
+margin-bottom: -5%;
+margin-top: 4%;
+}
+
+
+
+
+

@@ -2,171 +2,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapper.css' %}">
 </head>
 <body>
-    <div class="cosmic-conquest">
-    <div class="space">
-        <div class="outline-2">
-        </div>
-        <div class="line-2">
-            <div class="secret-line-2">
-            </div>
-            <div class="illustration">
-                <div class="ellipse-3">
-                </div>
-                <div class="ellipse-2">
-                </div>
-                <div class="ellipse-1">
-                </div>
-                <div class="frame-8">
-                    <div class="ellipse-42">
-                    </div>
-                    <div class="rectangle-12">
-                    </div>
-                    <div class="rectangle-22">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="outline-3">
-        </div>
-        <div class="line-3">
-            <div class="secret-line-3">
-            </div>
-            <div class="orange">
-                <div class="ellipse-43">
-                </div>
-                <div class="rectangle-13">
-                </div>
-                <div class="rectangle-23">
-                </div>
-            </div>
-            <div class="red">
-                <div class="ellipse-44">
-                </div>
-                <div class="rectangle-14">
-                </div>
-                <div class="rectangle-24">
-                </div>
-            </div>
-        </div>
-        <div class="outline-4">
-        </div>
-        <div class="line-4">
-            <div class="secret-line-4">
-            </div>
-            <div class="illustration2">
-                <div class="ellipse-32">
-                </div>
-                <div class="ellipse-22">
-                </div>
-                <div class="ellipse-12">
-                </div>
-                <div class="frame-82">
-                    <div class="ellipse-45">
-                    </div>
-                    <div class="rectangle-15">
-                    </div>
-                    <div class="rectangle-25">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="outline-5">
-        </div>
-        <div class="sun">
-            <div class="ellipse-33">
-            </div>
-            <div class="ellipse-23">
-            </div>
-            <div class="ellipse-13">
-            </div>
-        </div>
-        <div class="line-5">
-            <div class="secret-line-5">
-            </div>
-            <div class="purple-illustration">
-                <div class="ellipse-46">
-                </div>
-                <div class="ellipse-24">
-                </div>
-                <div class="ellipse-14">
-                </div>
-                <svg class="star-53" width="74" height="74" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g filter="url(#filter0_bdii_126_1361)">
-                        <path d="M34.6878 7.13313C35.5325 4.85016 38.7615 4.85016 39.6063 7.13312L46.644 26.1521C46.9096 26.8699 47.4755 27.4358 48.1932 27.7014L67.2122 34.739C69.4952 35.5838 69.4952 38.8128 67.2122 39.6576L48.1932 46.6952C47.4755 46.9608 46.9096 47.5267 46.644 48.2445L39.6063 67.2635C38.7615 69.5464 35.5325 69.5465 34.6878 67.2635L27.6501 48.2445C27.3845 47.5267 26.8186 46.9608 26.1009 46.6952L7.08186 39.6576C4.79889 38.8128 4.79889 35.5838 7.08185 34.739L26.1009 27.7014C26.8186 27.4358 27.3845 26.8699 27.6501 26.1521L34.6878 7.13313Z" fill="url(#paint0_linear_126_1361)" fill-opacity="0.5" shape-rendering="crispEdges" />
-                    </g>
-                    <defs>
-
-                        <linearGradient id="paint0_linear_126_1361" x1="37.147" y1="0.487061" x2="37.147" y2="73.9096" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#442E68" />
-                            <stop offset="1" stop-color="#4A425E" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
-            <div class="blue-illustration">
-                <div class="ellipse-34">
-                </div>
-                <div class="ellipse-25">
-                </div>
-                <div class="ellipse-15">
-                </div>
-            </div>
-        </div>
-        <div class="line-6">
-            <div class="secret-line-6">
-            </div>
-            <div class="blue-illustration2">
-                <div class="ellipse-47">
-                </div>
-            </div>
-            <div class="purple-illustration-2">
-                <div class="ellipse-35">
-                </div>
-                <div class="ellipse-26">
-                </div>
-                <div class="ellipse-16">
-                </div>
-            </div>
-            <div class="cosmic-song-count"> Cosmic Song Count </div>
-        </div>
-        <div class="outline-6">
-        </div>
-    </div><img class="purple-planet" src="{% static "Spotify_Wrapper/image/PurplePlanet.png" %}" />
-    <div class="star-animate">
+    <header>
+        <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+    </header>
+     <div class="Cosmic-Song-Count" style="user-select: none;"> Cosmic Song Count </div>
+    <a class="mainplanet" href="/wrapper2">
+        <img src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet.png" %}" alt="Centered Image">
+    </a>
+    <div class="secondPlanet">
+        <a class="Genre-Breakdown" href="/GenreNebulas">  Genre Nebula's</a>
+        <a class="TopArtists" href="/ConstellationArtists/"> Constellation of Artists</a>
+        <a href="/ConstellationArtists">
+            <img class="one" src="{% static "Spotify_Wrapper/image/CSC-BluePlanet.png" %}">
+        </a>
+        <a href="/GenreNebulas">
+            <img class="two" src="{% static "Spotify_Wrapper/image/CSC-YellowPlanet.png" %}">
+        </a>
     </div>
-    <div class="rectangle-4">
-    </div>
-    <div class="smooth-light">
-    </div>
-    <div class="frame-15">
-        <img class="blue-planet" src="blue-planet0.png" />
-        <div class="top-artists"> Top Artists </div>
-    </div>
-    <div class="component-1">
-        <div class="rectangle-3">
-        </div>
-    </div>
-    <div class="rectangle-42">
-    </div>
-    <div class="rectangle-5">
-    </div>
-    <div class="moving-star">
-        <div class="rectangle-32">
-        </div>
-    </div>
-    <div class="moving-star2">
-        <div class="rectangle-32">
-        </div>
-    </div>
-    <div class="frame-16">
-        <div class="genre-breakdown"> Genre Breakdown </div><img class="yellow-planet" src="yellow-planet0.png" />
-    </div>
-    <div class="cosmic-tunes"> Cosmic Tunes </div>
-</div>
 </body>
 </html>

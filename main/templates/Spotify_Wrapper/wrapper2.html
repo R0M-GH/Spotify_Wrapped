@@ -1,33 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapper2.css' %}">
 </head>
 <body>
-<div class="cosmic-conquest">
-    <div class="rectangle-4">
-    </div>
-    <div class="smooth-light">
-    </div>
-    <div class="component-1">
-        <div class="rectangle-3">
-        </div>
-    </div>
-    <div class="rectangle-42">
-    </div>
-    <div class="rectangle-5">
-    </div>
-    <div class="moving-star">
-        <div class="rectangle-32">
-        </div>
-    </div>
-    <div class="moving-star2">
-        <div class="rectangle-32">
-        </div>
-    </div>
-    <div class="cosmic-tunes"> Cosmic Tunes </div><img class="purple-planet" src="purple-planet0.png" />
-    <div class="cosmic-song-count"> Cosmic Song Count </div>
-</div>
+    <header>
+        <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+    </header>
+    <div class="Cosmic-Song-Count" style="user-select: none;"> Cosmic Song Count </div>
+    <a class="mainplanet" href="/GenreNebulas">
+        <img src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet.png" %}" alt="Centered Image">
+    </a>
 </body>
 </html>

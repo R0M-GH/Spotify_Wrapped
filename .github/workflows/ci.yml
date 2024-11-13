@@ -31,9 +31,9 @@ jobs:
         run: |
           python -c "assert 1 + 1 == 2, 'Test failed: 1 + 1 != 2'"  # Assert that 1 + 1 equals 2
 
-#      - name: Run Tests
-#        run: |
-#          pytest --max fail=1 --disable-warnings -q  # More efficient for pytest
+      - name: Run Tests
+        run: |
+          pytest --max fail=1 --disable-warnings -q  # More efficient for pytest
 
       - name: Measure Code Coverage
         run: |

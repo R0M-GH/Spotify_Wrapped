@@ -19,10 +19,10 @@ from .models import CustomUserManager, User
 
 
 def index(request):
-	return render(request, 'index.html')
+	return render(request, 'mainTemplates/index.html')
 
 
-# @login_required
+@login_required
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
 

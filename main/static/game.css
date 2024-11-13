@@ -1,5 +1,6 @@
 /* General page background */
 body {
+     background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
     background-color: #0a0c1a; /* Deep space blue */
     color: #ffffff;
     font-family: 'Arial', sans-serif;
@@ -12,15 +13,27 @@ body {
     align-items: center;
 }
 
+.pb {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between high score and play button */
+}
+
+
 /* Header styling */
 .header {
+    display: flex;
+    justify-content: center; /* Centers items horizontally */
+    align-items: center;     /* Centers items vertically */
     background-color: #1e1f35; /* Dark space gray */
+    flex-direction:column;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px 2px #3d3d5c, 0px 0px 20px #000; /* Faint outer glow */
     transition: box-shadow 0.3s ease;
-    align-items: center;
 }
+
+
 
 /* Title styling */
 #title {
@@ -88,6 +101,7 @@ body {
 
 /* Circle button styling */
 .circle {
+    font-family: 'Orbitron', sans-serif; /* Futuristic font */
     width: 80px;
     height: 80px;
     background-color: #ff477e; /* Space-themed pink */
@@ -103,14 +117,6 @@ body {
     background-color: #ff89b6; /* Lighter pink */
 }
 
-/* Christmas switch styling */
-#christmas-switch {
-    position: relative;
-    top: 40px;
-    margin: 0 10px;
-    accent-color: #ff477e; /* Same as circle color */
-}
-
 /* Play area styling */
 #play {
     display: flex;
@@ -124,6 +130,7 @@ body {
     border-radius: 8px;
     color: #ffffff;
     box-shadow: 0px 0px 10px 2px #3d3d5c;
+    flex-direction: column;
 }
 
 .instructions h3 {
@@ -163,7 +170,21 @@ body {
     color: #8a2be2; /* Change color on hover */
 }
 
-#chirst-switch{
-    align-items: center;
+.chi{
+    display: flex;
+    justify-content: center; /* Centers items horizontally */
+    align-items: center;     /* Centers items vertically */
+    background-color: #1e1f35; /* Dark space gray */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 2px #3d3d5c, 0px 0px 20px #000; /* Faint outer glow */
+    transition: box-shadow 0.3s ease;
+}
 
+
+/* Christmas switch styling */
+#christmas-switch {
+    position: relative;
+    top: 10px;
+    margin: 0 10px;
+    accent-color: #ff477e; /* Same as circle color */
 }

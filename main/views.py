@@ -19,7 +19,7 @@ from .models import CustomUserManager, User
 
 
 def index(request):
-	return render(request, 'index.html')
+	return render(request, 'mainTemplates/index.html')
 
 
 # @login_required
@@ -166,11 +166,11 @@ def spotify_callback(request):
 			user.save()  # Save tokens to the user model
 
 		return redirect("home")
-		# return JsonResponse({
-		# 	'message': 'Authorization successful',
-		# 	'access_token': access_token,
-		# 	'refresh_token': refresh_token
-		# })
+	# return JsonResponse({
+	# 	'message': 'Authorization successful',
+	# 	'access_token': access_token,
+	# 	'refresh_token': refresh_token
+	# })
 	else:
 		return JsonResponse({'error': 'Failed to obtain token'}, status=400)
 

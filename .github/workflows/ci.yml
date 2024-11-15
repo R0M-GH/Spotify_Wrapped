@@ -16,28 +16,28 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'  # Flexibility for any Python 3.x version
+          python-version: '3.11.7'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Ensure pylint and coverage are in requirements.txt
+          pip install -r requirements.txt
+          pip install pylint coverage
 
       - name: Run Pylint
         run: |
-          pylint main/  # Adjust to your actual app or module directory
+          pylint main/  # Replace 'your_app_directory' with your app name
 
       - name: Run Tests
         run: |
-          pytest --max fail=1 --disable-warnings -q  # More efficient for pytest
+          python manage.py test --keepdb  # Add any additional flags as needed
 
       - name: Measure Code Coverage
         run: |
-          coverage run -m pytest  # Run pytest with coverage
-          coverage report  # Show coverage report in console
-          coverage html  # Optional: Generate HTML report for local viewing
+          coverage run -m manage.py test
+          coverage report
+          coverage html
 
       - name: Check Code Coverage
         run: |
-          coverage report --fail-under=80  # Fail if coverage is below 80%
-
+          coverage report --fail-under=80  # Fail if coverage is less than 80%

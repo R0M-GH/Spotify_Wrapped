@@ -19,13 +19,21 @@ from .models import CustomUserManager, User
 
 
 def index(request):
-	return render(request, 'index.html')
-
+	return render(request, 'mainTemplates/index.html')
+def welcome(request):
+	return render(request, 'Spotify_Wrapper/welcome.html')
+def summary(request):
+	return render(request, 'Spotify_Wrapper/summary.html')
+def accountpage(request):
+	return render(request, 'Spotify_Wrapper/accountpage.html')
+def contact(request):
+	return render(request, 'Spotify_Wrapper/contact.html')
+def newwrapper(request):
+	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
 # @login_required
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
-
 
 def game_page(request):
 	return render(request, 'Spotify_Wrapper/game.html')
@@ -36,18 +44,39 @@ def library_page(request):
 	return render(request, 'Spotify_Wrapper/library.html')
 
 
-def info_page(request):
-	if request.method == 'POST':
-		# Process info form submission
-		return redirect('wrapper_page')
-	return render(request, 'Spotify_Wrapper/info.html')
-
 
 def wrapper_page(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 
+def wrapper2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/wrapper2.html')
 
+
+def ConstellationArtists(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
+
+def ConstellationArtists2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
+
+def GenreNebulas(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/GenreNebulas.html')
+
+def GenreNebulas2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/GenreNebulas2.html')
+
+def StellarHits(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/StellarHits.html')
+
+def StellarHits2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/StellarHits2.html')
 def register(request):
 	if request.method == 'POST':
 		form = RegistrationForm(request.POST)

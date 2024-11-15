@@ -13,17 +13,6 @@ header {
     top: 0;
     left: 0;
 }
-.YourLibrary {
-user-select: none;
-color: #faf6e7;
-text-align: center;
-font-family: 'ChakraPetch-Regular', sans-serif;
-font-size: 5vw;
-font-weight: 400;
-position: relative;
-margin-bottom: -5%;
-margin-top: 4%;
-}
 .CosmicTunes {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
@@ -32,62 +21,31 @@ margin-top: 4%;
   text-decoration: none;
   left: 70px;
   z-index: 9999;
-
 }
-.newWrapper {
-  font-family: 'ChakraPetch-Regular', sans-serif;
-  background-color: #334AA8;
-  position: fixed;
-  border: none;
-  right: 10px;
-  bottom: 10px;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 32px;
-  margin: 4px 2px;
-  border-radius: 5px;
-  z-index: 9999;
-  animation: blinkBackground 3s infinite;
+.mainplanet {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  top: 70%;
+  left: -35%;
+  rotate: 180deg;
+  position: absolute;
+    height: calc(100vh - 60px);
+  img {
+    width: 100%; /
+    height: auto;
+  }
 }
-
-.newWrapper:hover {
-  background-color: #243372;
-}
-
-.game {
-  font-family: 'ChakraPetch-Regular', sans-serif;
-  background-color: #334AA8;
-  position: fixed;
-  border: none;
-  left: 10px;
-  bottom: 10px;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 32px;
-  margin: 4px 2px;
-  border-radius: 5px;
-  z-index: 9999;
-  animation: blinkBackground 3s infinite;
-}
-
-.game:hover {
-  background-color: #243372;
-}
-
-@keyframes blinkBackground {
-    0% {
-        background: #334AA8;
-    }
-    50% {
-        background: #0E152F;
-    }
-    100% {
-        background: #334AA8;
-    }
+.Cosmic-Song-Count {
+color: #faf6e7;
+right: -55%;
+font-family: 'ChakraPetch-Regular', sans-serif;
+font-size: 4vw;
+font-weight: 400;
+position: relative;
+margin-bottom: -5%;
+margin-top: 4%;
 }
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;

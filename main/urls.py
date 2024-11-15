@@ -11,6 +11,7 @@ urlpatterns = [
 	path('spotify/login/', views.spotify_login, name='spotify_login'),
 	path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
 	path('home', views.home, name='home'),
+	path('summary/',views.summary, name='summary'),
 	path('ConstellationArtists/', views.ConstellationArtists, name='ConstellationArtists/'),
 	path('ConstellationArtists2/', views.ConstellationArtists2, name='ConstellationArtists2/'),
 	path('GenreNebulas/', views.GenreNebulas, name='GenreNebulas/'),

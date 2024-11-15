@@ -29,6 +29,7 @@ header {
   animation: spin 50s linear infinite;
   z-index: 5000;
 }
+
 .one {
   position: absolute;
   left: 5%;

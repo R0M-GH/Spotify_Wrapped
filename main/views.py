@@ -52,6 +52,10 @@ def wrapper2(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper2.html')
 
+def summary(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/summary.html')
+
 def ConstellationArtists(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')

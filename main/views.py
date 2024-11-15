@@ -20,14 +20,21 @@ from .models import CustomUserManager, User
 
 def index(request):
 	return render(request, 'mainTemplates/index.html')
-
+def welcome(request):
+	return render(request, 'Spotify_Wrapper/welcome.html')
+def summary(request):
+	return render(request, 'Spotify_Wrapper/summary.html')
+def accountpage(request):
+	return render(request, 'Spotify_Wrapper/accountpage.html')
+def contact(request):
+	return render(request, 'Spotify_Wrapper/contact.html')
+def newwrapper(request):
+	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
 @login_required
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
 
-def welcome(request):
-	return render(request, 'Spotify_Wrapper/index.html')
 def game_page(request):
 	return render(request, 'Spotify_Wrapper/game.html')
 
@@ -36,12 +43,6 @@ def library_page(request):
 	# add library display logic here
 	return render(request, 'Spotify_Wrapper/library.html')
 
-
-def info_page(request):
-	if request.method == 'POST':
-		# Process info form submission
-		return redirect('wrapper_page')
-	return render(request, 'Spotify_Wrapper/info.html')
 
 
 def wrapper_page(request):
@@ -52,9 +53,6 @@ def wrapper2(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper2.html')
 
-def summary(request):
-	# Load users most recent wrapper info here
-	return render(request, 'Spotify_Wrapper/summary.html')
 
 def ConstellationArtists(request):
 	# Load users most recent wrapper info here

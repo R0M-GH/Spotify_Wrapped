@@ -7,11 +7,31 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapper.css' %}">
+    <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+
 </head>
 <body>
     <header>
         <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+         <div class="hamburger-menu">
+    <div class="hamburger" id="hamburger">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+        </div>
     </header>
+    <nav class="menu" id="menu">
+      <ul>
+        <li><a href="/library">Libray</a></li>
+        <li><a href="/game">Game</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/accountpage">Account</a></li>
+        <li><a href="/login">Logout</a></li>
+      </ul>
+    </nav>
+  </div>
+  <script src="script.js"></script>
      <div class="Cosmic-Song-Count" style="user-select: none;"> Constellation of Artists </div>
     <a class="mainplanet" href="/ConstellationArtists2/">
         <img src="{% static "Spotify_Wrapper/image/CA-BluePlanet.png" %}" alt="Centered Image">

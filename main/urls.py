@@ -5,9 +5,9 @@ app_name = 'main'  # Add this line to define the namespace
 
 urlpatterns = [
 	path('', views.login, name='login'),
-	path('index', views.index, name='index-page'),
-	path('home', views.home, name='home-page'),
-	path('signup', views.register, name='registration'),
+	path('index/', views.index, name='index-page'),
+	path('home/', views.home, name='home-page'),
+	path('signup/', views.register, name='registration'),
 	path('spotify/login/', views.spotify_login, name='spotify_login'),
 	path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
 	path('home', views.home, name='home'),
@@ -20,9 +20,14 @@ urlpatterns = [
 	path('StellarHits2/', views.StellarHits2, name='StellarHits2/'),
 
 	path('game/', views.game_page, name='game_page'),
-path('welcome/', views.welcome, name='welcome'),
+	path('welcome/', views.welcome, name='welcome'),
 	path('library/', views.library_page, name='library_page'),
-	path('info/', views.info_page, name='info_page'),
+	path('contact/', views.contact, name='contact'),
+	path('summary/', views.summary, name='summary'),
+
+	path('accountpage/', views.accountpage, name='accountpage'),
+	path('newwrapper/', views.newwrapper, name='newwrapper'),
+
 	path('wrapper/', views.wrapper_page, name='wrapper'),
 
 	path('wrapper2/', views.wrapper2, name='wrapper2'),

@@ -12,83 +12,19 @@ header {
     width: 100%;
     top: 0;
     left: 0;
+      z-index: 9999;
 }
-.YourLibrary {
-user-select: none;
-color: #faf6e7;
-text-align: center;
-font-family: 'ChakraPetch-Regular', sans-serif;
-font-size: 5vw;
-font-weight: 400;
-position: relative;
-margin-bottom: -5%;
-margin-top: 4%;
-}
+
 .CosmicTunes {
-  color: #faf6e7;
-  font-family: 'ChakraPetch-Regular', sans-serif;
-  position: absolute;
-  font-size: 200%;
-  text-decoration: none;
-  left: 70px;
-  z-index: 9999;
-
-}
-.newWrapper {
-  font-family: 'ChakraPetch-Regular', sans-serif;
-  background-color: #334AA8;
-  position: fixed;
-  border: none;
-  right: 10px;
-  bottom: 10px;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 32px;
-  margin: 4px 2px;
-  border-radius: 5px;
-  z-index: 9999;
-  animation: blinkBackground 3s infinite;
+    color: #faf6e7;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    position: absolute;
+    font-size: 200%;
+    text-decoration: none;
+    left: 70px;
+    z-index: 9999;
 }
 
-.newWrapper:hover {
-  background-color: #243372;
-}
-
-.game {
-  font-family: 'ChakraPetch-Regular', sans-serif;
-  background-color: #334AA8;
-  position: fixed;
-  border: none;
-  left: 10px;
-  bottom: 10px;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 32px;
-  margin: 4px 2px;
-  border-radius: 5px;
-  z-index: 9999;
-  animation: blinkBackground 3s infinite;
-}
-
-.game:hover {
-  background-color: #243372;
-}
-
-@keyframes blinkBackground {
-    0% {
-        background: #334AA8;
-    }
-    50% {
-        background: #0E152F;
-    }
-    100% {
-        background: #334AA8;
-    }
-}
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;
   top: 10px;
@@ -149,7 +85,7 @@ margin-top: 4%;
 
 .menu li a {
       z-index: 9999;
-  font-family: 'ChakraPetch-Regular', sans-serif;
+font-family: 'ChakraPetch-Regular', sans-serif;
 
   font-size: 230%;
   text-decoration: none;
@@ -159,12 +95,26 @@ margin-top: 4%;
 
 .menu li:hover {
       z-index: 9999;
+font-family: 'ChakraPetch-Regular', sans-serif;
 
     border-radius: 5%;
   color: #FFFFFF;
   background-color: #334AA8;
 }
 .menu li a:hover {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+
       color: white;
 }
+.Cosmic-Song-Count {
+color: #faf6e7;
+text-align: center;
+font-family: 'ChakraPetch-Regular', sans-serif;
+font-size: 5vw;
+font-weight: 400;
+position: relative;
+margin-bottom: -5%;
+margin-top: 4%;
+    z-index: 5000;
 
+}

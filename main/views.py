@@ -9,14 +9,15 @@ import requests
 from dill import objects
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 from openai import OpenAI
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ForgetForm
 from .backends import AuthModelBackend
-from .models import CustomUserManager, User
+from .models import CustomUserManager, User, Wraps
 from Spotify_Wrapped import settings
 
 
@@ -46,8 +47,6 @@ def game_page(request):
 def library_page(request):
 	# add library display logic here
 	return render(request, 'Spotify_Wrapper/library.html')
-
-
 
 def wrapper_page(request):
 	# Load users most recent wrapper info here
@@ -87,15 +86,17 @@ def register(request):
 		if form.is_valid():
 			username = form.cleaned_data['username']
 			password1 = form.cleaned_data['password1']
+			birthday = form.cleaned_data['birthday']
 
 			# Check if username already exists in User model
 			if User.objects.filter(username=username).exists():
 				return render(request, 'registration/registration.html', {"form": form, 'error': True})
 
 			# Creates users
-			#user = User.objects.create_user(username=username, password=password1)
-			user = CustomUserManager.create_user(username=username, password=password1)
-			return redirect("login")
+			user = User.objects.create_user(username=username, password=password1)
+			user.birthday = birthday
+			#user = CustomUserManager.create_user(username=username, password=password1)
+			return redirect("user_login")
 	else:
 		form = RegistrationForm()
 	return render(request, 'registration/registration.html', {"form": form})
@@ -122,6 +123,33 @@ def user_login(request):
 		form = LoginForm()
 	return render(request, 'registration/login.html', {'form': form})
 
+def forgot_password(request):
+	if request.method == 'POST':
+		username = request.POST['username']
+		birthday = request.POST['birthday']
+		new_password1 = request.POST['new_password1']
+		new_password2 = request.POST['new_password2']
+
+		if new_password1 != new_password2:
+			return render(request, 'registration/Forget.html', {'error': 'Passwords do not match'})
+
+		try:
+			user = User.objects.get(username=username)
+
+			if str(user.birthday) == birthday:  # Check if birthday matches
+				user.password = make_password(new_password1)
+				user.save()
+				return redirect('login')
+			else:
+				form = ForgetForm()
+				return render(request, 'registration/Forget.html', {'form': form, 'error': 'Birthday does not match'})
+
+		except User.DoesNotExist:
+			form = ForgetForm()
+			return render(request, 'registration/Forget.html', {'form': form, 'error': True})
+	else:
+		form = ForgetForm()
+	return render(request, 'registration/forget.html', {'form': form})
 
 def generate_random_state(length):
 	return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
@@ -225,7 +253,13 @@ def spotify_data(request, time_range="medium_term"):
 			"top_artists": top_artists_response.json(),
 			"time_range": time_range
 		}
-		return JsonResponse(data)
+
+		json_wrapped_data = json.dumps(data)
+		username = request.session.get('username')
+
+		wrap = Wraps(username=username, wrap_json=json_wrapped_data)
+		wrap.save()
+
 	else:
 		return JsonResponse({"error": "Failed to retrieve data from Spotify"}, status=400)
 

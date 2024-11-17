@@ -2,10 +2,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-	path('', views.login, name='login'),
+	path('', views.user_login, name='user_login'),
 	path('index/', views.index, name='index-page'),
 	path('home/', views.home, name='home-page'),
 	path('signup/', views.register, name='registration'),
+	path('forgot/', views.forgot_password, name='forgot'),
 	path('spotify/login/', views.spotify_login, name='spotify_login'),
 	path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
 	path('home', views.home, name='home'),

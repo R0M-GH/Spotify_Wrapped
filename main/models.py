@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
+from django.db.models import JSONField
 from django.utils import timezone
 from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin
 
@@ -44,3 +45,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_username(self):
         return self.username
+
+class Wraps(models.Model):
+    username = models.CharField(max_length=50, blank=True, default='', unique=True)
+    creation_date = models.DateTimeField(default=timezone.now)
+    wrap_json = JSONField()
+
+
+

@@ -172,19 +172,6 @@ def spotify_callback(request):
 		return JsonResponse({'error': 'Failed to obtain token'}, status=400)
 
 
-@csrf_exempt
-@login_required
-def get_token():
-	load_dotenv()
-	auth_string = os.getenv('SPOTIFY_CLIENT_ID') + ":" + os.getenv('SPOTIFY_CLIENT_SECRET')
-	auth_bytes = auth_string.encode("utf-8")
-	auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
-	url = "https://accounts.spotify.com/api/token"
-	headers = {"Authorization": "Basic " + auth_base64, "Content-Type": "application/x-www-form-urlencoded"}
-	data = {"grant_type": "client_credentials"}
-	result = requests.post(url, headers=headers, data=data)
-	json_result = json.loads(result.content)
-	return json_result["access_token"]
 
 
 @csrf_exempt
@@ -211,7 +198,6 @@ def spotify_data(request, time_range="medium_term"):
 		return JsonResponse(data)
 	else:
 		return JsonResponse({"error": "Failed to retrieve data from Spotify"}, status=400)
-
 
 @csrf_exempt
 @login_required

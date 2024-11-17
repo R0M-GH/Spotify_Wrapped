@@ -13,7 +13,7 @@
 <body>
     <header>
         <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
- <div class="hamburger-menu">
+         <div class="hamburger-menu">
     <div class="hamburger" id="hamburger">
       <div class="line"></div>
       <div class="line"></div>
@@ -21,7 +21,6 @@
     </div>
         </div>
     </header>
-
     <nav class="menu" id="menu">
       <ul>
         <li><a href="/library">Libray</a></li>
@@ -32,20 +31,22 @@
       </ul>
     </nav>
   </div>
-     <div class="Cosmic-Song-Count" style="user-select: none;"> Cosmic Song Count </div>
-    <a class="mainplanet" href="/wrapper2">
-        <img src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet.png" %}" alt="Centered Image">
+  <script src="script.js"></script>
+     <div class="Cosmic-Song-Count" style="user-select: none;"> Constellation of Artists </div>
+    <a class="mainplanet" href="/ConstellationArtists2/">
+        <img src="{% static "Spotify_Wrapper/image/CA-BluePlanet.png" %}" alt="Centered Image">
     </a>
     <div class="secondPlanet">
-        <a class="Genre-Breakdown" href="/GenreNebulas">  Genre Nebula's</a>
-        <a class="TopArtists" href="/ConstellationArtists/"> Constellation of Artists</a>
-        <a href="/ConstellationArtists">
-            <img class="one" src="{% static "Spotify_Wrapper/image/CSC-BluePlanet.png" %}">
+        <a class="Genre-Breakdown" href="/wrapper">  Cosmic Song Count</a>
+        <a class="TopArtists" href="/StellarHits"> Stellar Hits</a>
+        <a href="/StellarHits/">
+            <img class="one" src="{% static "Spotify_Wrapper/image/CA-GreenPlanet.png" %}">
         </a>
-        <a href="/GenreNebulas">
-            <img class="two" src="{% static "Spotify_Wrapper/image/CSC-YellowPlanet.png" %}">
+        <a href="/wrapper/">
+            <img class="two" src="{% static "Spotify_Wrapper/image/CA-PurplePlanet.png" %}">
         </a>
-        <img class="space" src="{% static "Spotify_Wrapper/image/Space.png" %}">
+        <img class="space4" src="{% static "Spotify_Wrapper/image/Space4.png" %}">
+
     </div>
 </body>
 </html>

@@ -1,0 +1,190 @@
+/* General page background */
+body {
+     background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
+    background-color: #0a0c1a; /* Deep space blue */
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Main container */
+#all {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pb {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between high score and play button */
+}
+
+
+/* Header styling */
+.header {
+    display: flex;
+    justify-content: center; /* Centers items horizontally */
+    align-items: center;     /* Centers items vertically */
+    background-color: #1e1f35; /* Dark space gray */
+    flex-direction:column;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 2px #3d3d5c, 0px 0px 20px #000; /* Faint outer glow */
+    transition: box-shadow 0.3s ease;
+}
+
+
+
+/* Title styling */
+#title {
+    color: #ffffff;
+    font-size: 36px;
+    text-align: center;
+    text-shadow: 0px 0px 10px #8a2be2, 0px 0px 20px #4a00e0; /* Purple glow */
+    transition: text-shadow 0.3s ease-in-out;
+}
+
+/* Button styles */
+.button-styles {
+    background-color: #4a00e0; /* Electric purple */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.button-styles:hover {
+    background-color: #8a2be2; /* Lighter purple */
+    box-shadow: 0px 0px 15px #8a2be2;
+}
+
+/* Spacer styling */
+.spacer p {
+    height: 20px;
+    color: transparent;
+}
+
+/* Score display styling */
+.scores {
+    justify-content:left;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.scores h2 {
+    font-size: 20px;
+    color: #5de5e7; /* Light cyan */
+    text-shadow: 0px 0px 5px #00e5e5; /* Soft glow effect */
+    margin: 10px;
+}
+
+/* Circle container styling */
+#button-array {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden; /* Keeps circles within boundaries */
+    margin: 20px 0;
+    color: #5de5e7; /* Light cyan */
+}
+
+/* Circle button styling */
+.circle {
+    font-family: 'Orbitron', sans-serif; /* Futuristic font */
+    width: 80px;
+    height: 80px;
+    background-color: #ff477e; /* Space-themed pink */
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    box-shadow: 0px 0px 10px 3px #ff2e63; /* Glowing pink effect */
+}
+
+.circle:hover {
+    transform: scale(1.2); /* Grow on hover */
+    background-color: #ff89b6; /* Lighter pink */
+}
+
+/* Play area styling */
+#play {
+    display: flex;
+}
+
+/* Instructions styling */
+.instructions {
+    margin-top: 20px;
+    background-color: #1b1c3c; /* Slightly darker than header */
+    padding: 15px;
+    border-radius: 8px;
+    color: #ffffff;
+    box-shadow: 0px 0px 10px 2px #3d3d5c;
+    flex-direction: column;
+}
+
+.instructions h3 {
+    font-size: 24px;
+    color: #8a2be2;
+    text-shadow: 0px 0px 5px #8a2be2;
+    margin-bottom: 10px;
+}
+
+.instructions p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #d1d1e0;
+}
+
+/* Game mode options styling */
+.game-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.game-mode-option {
+    margin-right: 10px;
+    accent-color: #4a00e0; /* Matches main button color */
+    cursor: pointer;
+}
+
+.game-options label {
+    font-size: 16px;
+    color: #5de5e7; /* Light cyan */
+    display: flex;
+    align-items: center;
+}
+
+.game-options label:hover {
+    color: #8a2be2; /* Change color on hover */
+}
+
+.chi{
+    display: flex;
+    justify-content: center; /* Centers items horizontally */
+    align-items: center;     /* Centers items vertically */
+    background-color: #1e1f35; /* Dark space gray */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 2px #3d3d5c, 0px 0px 20px #000; /* Faint outer glow */
+    transition: box-shadow 0.3s ease;
+}
+
+
+/* Christmas switch styling */
+#christmas-switch {
+    position: relative;
+    top: 10px;
+    margin: 0 10px;
+    accent-color: #ff477e; /* Same as circle color */
+}

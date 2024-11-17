@@ -1,6 +1,9 @@
 import base64
 import json
 import os
+import random
+import string
+import urllib.parse
 
 import requests
 from dill import objects
@@ -15,14 +18,20 @@ from .forms import LoginForm, RegistrationForm
 from .backends import AuthModelBackend
 from .models import CustomUserManager, User
 from Spotify_Wrapped import settings
-import random
-import string
-import urllib.parse
 
 
 def index(request):
-	return render(request, 'index.html')
-
+	return render(request, 'mainTemplates/index.html')
+def welcome(request):
+	return render(request, 'Spotify_Wrapper/welcome.html')
+def summary(request):
+	return render(request, 'Spotify_Wrapper/summary.html')
+def accountpage(request):
+	return render(request, 'Spotify_Wrapper/accountpage.html')
+def contact(request):
+	return render(request, 'Spotify_Wrapper/contact.html')
+def newwrapper(request):
+	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
 
 @login_required
@@ -39,18 +48,39 @@ def library_page(request):
 	return render(request, 'Spotify_Wrapper/library.html')
 
 
-def info_page(request):
-	if request.method == 'POST':
-		# Process info form submission
-		return redirect('wrapper_page')
-	return render(request, 'Spotify_Wrapper/info.html')
-
 
 def wrapper_page(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 
-#User = get_user_model()
+def wrapper2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/wrapper2.html')
+
+
+def ConstellationArtists(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
+
+def ConstellationArtists2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
+
+def GenreNebulas(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/GenreNebulas.html')
+
+def GenreNebulas2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/GenreNebulas2.html')
+
+def StellarHits(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/StellarHits.html')
+
+def StellarHits2(request):
+	# Load users most recent wrapper info here
+	return render(request, 'Spotify_Wrapper/StellarHits2.html')
 def register(request):
 	if request.method == 'POST':
 		form = RegistrationForm(request.POST)
@@ -63,7 +93,8 @@ def register(request):
 				return render(request, 'registration/registration.html', {"form": form, 'error': True})
 
 			# Creates users
-			user = User.objects.create_user(username=username, password=password1)
+			#user = User.objects.create_user(username=username, password=password1)
+			user = CustomUserManager.create_user(username=username, password=password1)
 			return redirect("login")
 	else:
 		form = RegistrationForm()
@@ -79,7 +110,6 @@ def user_login(request):
 		# user = AuthModelBackend.authenticate(request, username, password)
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
-			print("use is not none")
 			request.session['username'] = username
 
 			login(request, user)
@@ -104,9 +134,9 @@ def spotify_login(request):
 
 	query_params = {
 		'response_type': 'code',
-		'client_id': settings.SPOTIFY_CLIENT_ID,
+		'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
 		'scope': scope,
-		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+		'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
 		'state': state,
 	}
 
@@ -120,7 +150,7 @@ def spotify_callback(request):
 	state = request.GET.get('state')
 	error = request.GET.get('error')
 
-	auth_string = settings.SPOTIFY_CLIENT_ID + ":" + settings.SPOTIFY_CLIENT_SECRET
+	auth_string = os.getenv('SPOTIFY_CLIENT_ID') + ":" + os.getenv('SPOTIFY_CLIENT_SECRET')
 	auth_bytes = auth_string.encode("utf-8")
 	auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
 
@@ -134,9 +164,9 @@ def spotify_callback(request):
 	body = {
 		'grant_type': 'authorization_code',
 		'code': code,
-		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
-		'client_id': settings.SPOTIFY_CLIENT_ID,
-		'client_secret': settings.SPOTIFY_CLIENT_SECRET,
+		'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
+		'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
+		'client_secret': os.getenv('SPOTIFY_CLIENT_SECRET'),
 	}
 	header = {
 		'Authorization': 'Basic ' + auth_base64,
@@ -198,6 +228,7 @@ def spotify_data(request, time_range="medium_term"):
 		return JsonResponse(data)
 	else:
 		return JsonResponse({"error": "Failed to retrieve data from Spotify"}, status=400)
+
 
 @csrf_exempt
 @login_required

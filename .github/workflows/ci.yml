@@ -24,10 +24,6 @@ jobs:
           pip install -r requirements.txt
           pip install pylint coverage pytest pytest-cov  # Added pytest and pytest-cov for testing
 
-      - name: Run Pylint
-        run: |
-          pylint main/  # Ensure correct path to the directory
-
       - name: Run Tests with Coverage
         run: |
           pytest --cov=your_app_directory --cov-fail-under=80  # Use pytest for testing with coverage
@@ -41,3 +37,7 @@ jobs:
       - name: Check Code Coverage
         run: |
           coverage report --fail-under=80  # Fail if coverage is less than 80%
+
+      - name: Run Pylint
+        run: |
+          pylint main/  # Ensure correct path to the directory

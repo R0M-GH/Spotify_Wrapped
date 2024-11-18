@@ -1,0 +1,102 @@
+/* General body styles */
+body {
+    background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+.form {
+    background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
+
+}
+.CosmicTunes {
+    color: #faf6e7;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    position: absolute;
+    font-size: 2.5rem;
+    text-decoration: none;
+    left: 10px;
+    top: 20px;
+    z-index: 9999;
+}
+.login {
+    color: #faf6e7;
+    position: absolute;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 180px;
+    left: 38%;
+    top: 10%;
+}
+.form-group {
+    width: 30%;
+    margin-bottom: 20px;
+    position: absolute;
+    left:35%;
+    top: 40%;
+}
+
+.form-group input {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    height: 30px;
+    width: 100%;
+    padding: 10px;
+    font-size: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group2 {
+    width: 30%;
+    margin-bottom: 20px;
+    position: absolute;
+    left:35%;
+    top: 50%;
+}
+
+.form-group2 input {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    height: 30px;
+    width: 100%;
+    padding: 10px;
+    font-size: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.create{
+    font-family: 'ChakraPetch-Regular', sans-serif;
+  background-color: #334AA8;
+  position: fixed;
+  border: none;
+  left: 51%;
+  bottom: 33.5%;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 32px;
+  margin: 4px 2px;
+  border-radius: 5px;
+  z-index: 9999;
+}
+.create:hover {
+    background: #1B285E;
+}
+.btn-success{
+     font-family: 'ChakraPetch-Regular', sans-serif;
+  background-color: #334AA8;
+  position: absolute;
+  border: none;
+  left: 43%;
+  bottom: 33.5%;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 32px;
+  margin: 4px 2px;
+  border-radius: 5px;
+}
+.btn-success:hover {
+    background-color: #1B285E;
+}

@@ -1,22 +1,32 @@
-{% extends 'mainTemplates/base.html' %}
 {% block title %}Register{% endblock %}
-
+{% load static %}
 {% block content %}
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Cosmic Tunes Login Page">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>create - Cosmic Tunes</title>
+        <link rel="stylesheet" href="{% static 'Spotify_Wrapper/registration.css' %}">
+    </head>
     <body>
     <div class="form-container">
-        <h1>Create Account</h1>
+        <div class="create">Create Account</div>
         <form method="POST" id="register-form" class="form">
             {% csrf_token %}
             {{ form.non_field_errors }} <!-- Display form errors -->
-
+            <div class="u">
             <!-- Add placeholder for username -->
             {{ form.username }}
-
+            </div>
+            <div class="p1">
             <!-- Add placeholder for password -->
             {{ form.password1 }}
-
+            </div>
+            <div class="p2">
             <!-- Add placeholder for confirm password -->
             {{ form.password2 }}
+            </div>
         </form>
     </div>
     </body>

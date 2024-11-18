@@ -117,16 +117,15 @@ header {
   }
 }
 .Cosmic-Song-Count {
-color: #faf6e7;
-text-align: center;
-font-family: 'ChakraPetch-Regular', sans-serif;
-font-size: 5vw;
-font-weight: 400;
-position: relative;
-margin-bottom: -5%;
-margin-top: 4%;
+    color: #faf6e7;
+    text-align: center;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 5vw;
+    font-weight: 400;
+    position: relative;
+    margin-bottom: -5%;
+    margin-top: 4%;
     z-index: 5000;
-
 }
 .Genre-Breakdown {
   color: #faf6e7;

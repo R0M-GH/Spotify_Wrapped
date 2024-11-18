@@ -22,19 +22,19 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pylint coverage
+          pip install pylint coverage pytest pytest-cov  # Added pytest and pytest-cov for testing
 
       - name: Run Pylint
         run: |
-          pylint main/  # Replace 'your_app_directory' with your app name
+          pylint main/  # Ensure correct path to the directory
 
-      - name: Run Tests
+      - name: Run Tests with Coverage
         run: |
-          python manage.py test --keepdb  # Add any additional flags as needed
+          pytest --cov=your_app_directory --cov-fail-under=80  # Use pytest for testing with coverage
 
       - name: Measure Code Coverage
         run: |
-          coverage run -m manage.py test
+          coverage run -m pytest  # Ensure tests run under coverage
           coverage report
           coverage html
 

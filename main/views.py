@@ -31,7 +31,7 @@ def contact(request):
 def newwrapper(request):
 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
-# @login_required
+@login_required
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
 
@@ -77,23 +77,45 @@ def StellarHits(request):
 def StellarHits2(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/StellarHits2.html')
+# def register(request):
+# 	if request.method == 'POST':
+# 		form = RegistrationForm(request.POST)
+# 		if form.is_valid():
+# 			username = form.cleaned_data['username']
+# 			password1 = form.cleaned_data['password1']
+#
+# 			# Check if username already exists in User model
+# 			if User.objects.filter(username=username).exists():
+# 				return render(request, 'registration/registration.html', {"form": form, 'error': True})
+#
+# 			# Creates users
+# 			user = CustomUserManager.create_user(username=username, password=password1)
+# 			return redirect("login")
+# 	else:
+# 		form = RegistrationForm()
+# 	return render(request, 'registration/registration.html', {"form": form})
+
 def register(request):
-	if request.method == 'POST':
-		form = RegistrationForm(request.POST)
-		if form.is_valid():
-			username = form.cleaned_data['username']
-			password1 = form.cleaned_data['password1']
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password1 = form.cleaned_data['password1']
+            password2 = form.cleaned_data['password2']
 
-			# Check if username already exists in User model
-			if User.objects.filter(username=username).exists():
-				return render(request, 'registration/registration.html', {"form": form, 'error': True})
+            # Check if username already exists in User model
+            if User.objects.filter(username=username).exists():
+                form.add_error('username', "This username is already taken.")  # Add error to the form
+            elif password1 != password2:
+                form.add_error('password2', "Passwords do not match.")  # Ensure passwords match
+            else:
+                # Create the user if all validations pass
+                User.objects.create_user(username=username, password=password1)
+                return redirect("login")  # Redirect to login after successful registration
+    else:
+        form = RegistrationForm()
 
-			# Creates users
-			user = CustomUserManager.create_user(username=username, password=password1)
-			return redirect("login")
-	else:
-		form = RegistrationForm()
-	return render(request, 'registration/registration.html', {"form": form})
+    return render(request, 'registration/registration.html', {"form": form})  # Always render the form
 
 
 def login(request):
@@ -222,7 +244,8 @@ def get_token():
 @csrf_exempt
 @login_required
 def spotify_data(request, time_range="medium_term"):
-	access_token = User.objects.get(user=request.user).spotify_access_token
+	#access_token = User.objects.get(user=request.user).spotify_access_token
+	access_token = request.user.spotify_access_token
 
 	headers = {"Authorization": f"Bearer {access_token}"}
 

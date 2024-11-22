@@ -32,10 +32,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     date_joined = models.DateTimeField(default=timezone.now)
 
-    birthday = models.DateField(blank=True, null=True)
+    birthday = models.DateField(null=True, blank=True)
 
-    spotify_access_token = models.CharField(max_length=255,  blank=True, null=True)
-    spotify_refresh_token = models.CharField(max_length=255, blank=True, null=True)
+    spotify_access_token = models.CharField(max_length=255, default='')
+    spotify_refresh_token = models.CharField(max_length=255, default='')
 
     objects = CustomUserManager()
     USERNAME_FIELD = 'username'

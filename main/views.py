@@ -10,7 +10,7 @@ from dill import objects
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.hashers import make_password
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
@@ -95,7 +95,7 @@ def register(request):
 			# Creates users
 			user = User.objects.create_user(username=username, password=password1)
 			user.birthday = birthday
-			#user = CustomUserManager.create_user(username=username, password=password1)
+			user.save()
 			return redirect("user_login")
 	else:
 		form = RegistrationForm()
@@ -126,7 +126,7 @@ def user_login(request):
 def forgot_password(request):
 	if request.method == 'POST':
 		username = request.POST['username']
-		birthday = request.POST['birthday']
+		security_answer = request.POST['security_answer']
 		new_password1 = request.POST['new_password1']
 		new_password2 = request.POST['new_password2']
 
@@ -136,10 +136,10 @@ def forgot_password(request):
 		try:
 			user = User.objects.get(username=username)
 
-			if str(user.birthday) == birthday:  # Check if birthday matches
+			if str(user.birthday) == str(security_answer): # Check if birthday matches
 				user.password = make_password(new_password1)
 				user.save()
-				return redirect('login')
+				return redirect('user_login')
 			else:
 				form = ForgetForm()
 				return render(request, 'registration/Forget.html', {'form': form, 'error': 'Birthday does not match'})
@@ -151,20 +151,27 @@ def forgot_password(request):
 		form = ForgetForm()
 	return render(request, 'registration/forget.html', {'form': form})
 
+
+
 def generate_random_state(length):
 	return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 
 def spotify_login(request):
 	state = generate_random_state(16)
-	scope = 'user-read-private user-read-email'
+	scope = 'user-read-private user-read-email user-top-read'
 	auth_url = 'https://accounts.spotify.com/authorize?'
 
 	query_params = {
 		'response_type': 'code',
-		'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
+
+		#'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
+		'client_id': settings.SPOTIFY_CLIENT_ID,
+
 		'scope': scope,
-		'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
+
+		#'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
+		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
 		'state': state,
 	}
 
@@ -178,7 +185,9 @@ def spotify_callback(request):
 	state = request.GET.get('state')
 	error = request.GET.get('error')
 
-	auth_string = os.getenv('SPOTIFY_CLIENT_ID') + ":" + os.getenv('SPOTIFY_CLIENT_SECRET')
+	# auth_string = os.getenv('SPOTIFY_CLIENT_ID') + ":" + os.getenv('SPOTIFY_CLIENT_SECRET')
+	auth_string = settings.SPOTIFY_CLIENT_ID + ":" + settings.SPOTIFY_CLIENT_SECRET
+
 	auth_bytes = auth_string.encode("utf-8")
 	auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
 
@@ -192,9 +201,15 @@ def spotify_callback(request):
 	body = {
 		'grant_type': 'authorization_code',
 		'code': code,
-		'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
-		'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
-		'client_secret': os.getenv('SPOTIFY_CLIENT_SECRET'),
+
+		# 'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
+		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+
+		# 'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
+		'client_id': settings.SPOTIFY_CLIENT_ID,
+
+		# 'client_secret': os.getenv('SPOTIFY_CLIENT_SECRET'),
+		'client_secret': settings.SPOTIFY_CLIENT_SECRET,
 	}
 	header = {
 		'Authorization': 'Basic ' + auth_base64,
@@ -208,10 +223,6 @@ def spotify_callback(request):
 		access_token = response_data['access_token']
 		refresh_token = response_data['refresh_token']
 
-		# # Store tokens in session (or database)
-		# request.session['access_token'] = access_token
-		# request.session['refresh_token'] = refresh_token
-
 		# Assuming user session has 'username' set from login view
 		username = request.session.get('username')
 		if username:
@@ -221,32 +232,59 @@ def spotify_callback(request):
 			user.save()  # Save tokens to the user model
 
 		return redirect("home")
-		# return JsonResponse({
-		# 	'message': 'Authorization successful',
-		# 	'access_token': access_token,
-		# 	'refresh_token': refresh_token
-		# })
 	else:
 		return JsonResponse({'error': 'Failed to obtain token'}, status=400)
 
 
+def refresh_spotify_token(user):
+	refresh_token = user.spotify_refresh_token
 
+	response = requests.post('https://accounts.spotify.com/api/token', data={
+		'grant_type': 'refresh_token',
+		'refresh_token': refresh_token,
+		'client_id': 'your_client_id',
+		'client_secret': 'your_client_secret',
+	})
+
+	if response.status_code == 200:
+		tokens = response.json()
+		access_token = tokens['access_token']
+		user.spotify_access_token = access_token
+		user.save()
+		return access_token
+	else:
+		return None
 
 @csrf_exempt
 @login_required
 def spotify_data(request, time_range="medium_term"):
-	access_token = User.objects.get(user=request.user).spotify_access_token
+	username = request.session.get('username')
+	user = User.objects.get(username=username)
+	access_token = user.spotify_access_token
+
+	if access_token:
+		headers = {
+			'Authorization': f'Bearer {access_token}'
+		}
+		response = requests.get('https://api.spotify.com/v1/me', headers=headers)
+
+		if response.status_code == 401:  # Unauthorized, token may have expired
+			access_token = refresh_spotify_token(user)
+			if access_token is None:
+				return JsonResponse({'error': 'Failed to refresh access token.'}, status=400)
+	else:
+		return JsonResponse({'error': 'User is not authenticated with Spotify. And no access token exists for the user'}, status=401)
 
 	headers = {"Authorization": f"Bearer {access_token}"}
 
 	# Define URLs for Spotify API with time range
-	user_top_tracks_url = f"https://api.spotify.com/v1/me/top/tracks?limit=10&time_range={time_range}"
-	user_top_artists_url = f"https://api.spotify.com/v1/me/top/artists?limit=10&time_range={time_range}"
+	user_top_tracks_url = f"https://api.spotify.com/v1/me/top/tracks?limit=5&time_range={time_range}"
+	user_top_artists_url = f"https://api.spotify.com/v1/me/top/artists?limit=5&time_range={time_range}"
 
 	# Make requests to Spotify API
 	top_tracks_response = requests.get(user_top_tracks_url, headers=headers)
-	top_artists_response = requests.get(user_top_artists_url, headers=headers)
 
+	top_artists_response = requests.get(user_top_artists_url, headers=headers)
 	if top_tracks_response.status_code == 200 and top_artists_response.status_code == 200:
 		data = {
 			"top_tracks": top_tracks_response.json(),
@@ -255,11 +293,12 @@ def spotify_data(request, time_range="medium_term"):
 		}
 
 		json_wrapped_data = json.dumps(data)
-		username = request.session.get('username')
 
 		wrap = Wraps(username=username, wrap_json=json_wrapped_data)
 		wrap.save()
-
+# THIS IS FOR TESTING (DELETE TWO LINES BELOW DEPENDING ON IMPLEMENTATION)
+		user_wraps = Wraps.objects.get(username=username)
+		return HttpResponse(user_wraps.wrap_json, content_type="application/json")
 	else:
 		return JsonResponse({"error": "Failed to retrieve data from Spotify"}, status=400)
 

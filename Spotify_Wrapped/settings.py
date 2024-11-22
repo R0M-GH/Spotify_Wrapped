@@ -127,6 +127,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = 'user_login'
+
 SPOTIFY_CLIENT_ID = '02054cfd2d3740abb9d07287141cc367'
 SPOTIFY_CLIENT_SECRET = '8f1e4849ca6c4ca9addaebee6d65778a'
 SPOTIFY_REDIRECT_URI = 'http://localhost:8000/spotify/callback'

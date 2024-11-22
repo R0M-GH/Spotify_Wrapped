@@ -13,10 +13,8 @@ class LoginForm(forms.Form):
 
 class ForgetForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter your username'}))
-    securityAnswer = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Enter your birthday'}), required=True)
-
-    #securityAnswer = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter in the format: MM/DD/YYYY'}))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password'}))
+    security_answer = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Enter your birthday'}), required=True)
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}))
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password'}))
 
 

@@ -49,9 +49,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
 class Wraps(models.Model):
-    username = models.CharField(max_length=50, blank=True, default='', unique=True)
+    username = models.CharField(max_length=50, blank=True, default='', unique=False)
     creation_date = models.DateTimeField(default=timezone.now)
     wrap_json = JSONField()
+
+    def __str__(self):
+        return self.username + str(self.creation_date)
 
 
 

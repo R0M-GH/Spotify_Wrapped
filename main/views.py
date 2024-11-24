@@ -283,8 +283,10 @@ def spotify_data(request, time_range="medium_term"):
 
 	# Make requests to Spotify API
 	top_tracks_response = requests.get(user_top_tracks_url, headers=headers)
-
 	top_artists_response = requests.get(user_top_artists_url, headers=headers)
+	print(user_top_tracks_url)
+	print(user_top_artists_url)
+	print(access_token)
 	if top_tracks_response.status_code == 200 and top_artists_response.status_code == 200:
 		data = {
 			"top_tracks": top_tracks_response.json(),

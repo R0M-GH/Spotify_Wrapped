@@ -32,6 +32,58 @@ class UserModelTest(TestCase):
         with self.assertRaises(Exception):
             User.objects.create_user(username="uniqueuser", password="password456")
 
+    def test_get_username(self):
+        user = User(username="testuser")
+        self.assertEqual(user.get_username(), "testuser")
+
+    def test_default_values(self):
+        """Test default values for new users."""
+        user = User.objects.create_user(username="defaultuser", password="password123")
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_superuser)
+        self.assertFalse(user.is_staff)
+        self.assertIsNone(user.spotify_access_token)
+        self.assertIsNone(user.spotify_refresh_token)
+
+    def test_spotify_tokens(self):
+        """Test setting and retrieving Spotify tokens."""
+        user = User.objects.create_user(
+            username="spotifyuser",
+            password="password123",
+            spotify_access_token="access_token_123",
+            spotify_refresh_token="refresh_token_123"
+        )
+        self.assertEqual(user.spotify_access_token, "access_token_123")
+        self.assertEqual(user.spotify_refresh_token, "refresh_token_123")
+
+    def test_create_user_without_username(self):
+        """Test creating a user without a username raises ValueError."""
+        with self.assertRaises(ValueError) as context:
+            User.objects.create_user(username=None, password="password123")
+        self.assertEqual(str(context.exception), "You have not provided a valid username.")
+
+    def test_create_superuser_with_missing_fields(self):
+        """Test that creating a superuser with missing is_staff or is_superuser fields works correctly."""
+        admin_user = User.objects.create_superuser(username="adminuser", password="password123")
+        self.assertTrue(admin_user.is_staff)
+        self.assertTrue(admin_user.is_superuser)
+
+    def test_date_joined_default(self):
+        """Test that date_joined is set to the current time by default."""
+        user = User.objects.create_user(username="dateuser", password="password123")
+        self.assertIsNotNone(user.date_joined)
+
+    def test_user_permissions(self):
+        """Test that PermissionsMixin methods and attributes are functional."""
+        user = User.objects.create_user(username="permissionuser", password="password123")
+        self.assertFalse(user.is_superuser)
+        self.assertTrue(user.is_active)
+
+    def test_invalid_username(self):
+        """Test creating a user with an invalid username."""
+        with self.assertRaises(ValueError):
+            User.objects.create_user(username="", password="password123")
+
 
 class UrlTests(SimpleTestCase):
 

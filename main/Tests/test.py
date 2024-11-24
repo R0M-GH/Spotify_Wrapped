@@ -2,8 +2,8 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from .views import login, home, register
-from .forms import RegistrationForm, LoginForm
+from main.views import login, home, register
+from main.forms import RegistrationForm, LoginForm
 from unittest.mock import patch
 
 User = get_user_model()  # Get the custom user model

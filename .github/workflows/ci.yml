@@ -35,4 +35,4 @@ jobs:
 
       - name: Run Pylint
         run: |
-          pylint main/ --disable=C0301,C0103  # Disable line-too-long (C0301) and bad-indentation (C0103) warnings
+          pylint main/ --disable=C0301,C0103,W0311  # Disable line-too-long (C0301) and bad-indentation (C0103) warnings

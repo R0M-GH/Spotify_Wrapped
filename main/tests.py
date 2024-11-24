@@ -325,6 +325,62 @@ class LibraryPageViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'Spotify_Wrapper/library.html')
 
+class ContactViewTest(TestCase):
+    def test_contact_view(self):
+        response = self.client.get(reverse('contact'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/contact.html')
+
+class AccountPageViewTest(TestCase):
+    def test_account_page_view(self):
+        response = self.client.get(reverse('accountpage'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')
+
+class NewWrapperViewTest(TestCase):
+    def test_new_wrapper_view(self):
+        response = self.client.get(reverse('newwrapper'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/newwrapper.html')
+
+class WrapperPageViewTest(TestCase):
+    def test_wrapper_page_view(self):
+        response = self.client.get(reverse('wrapper'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/wrapper.html')
+
+class Wrapper2PageViewTest(TestCase):
+    def test_wrapper2_page_view(self):
+        response = self.client.get(reverse('wrapper2'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/wrapper2.html')
+
+
+# class SpotifyDataAPITest(TestCase):
+#     def test_spotify_data_api(self):
+#         # Reverse the URL correctly using the 'spotify_data' pattern and the 'time_range' argument
+#         url = reverse('spotify_data', kwargs={'time_range': '2023-01-01/2023-01-31'})
+#
+#         # The full URL should include 'index.html/api/' before the time_range
+#         full_url = f"/index.html/api/{url.split('/api/')[1]}"
+#
+#         # Make the GET request to the full URL
+#         response = self.client.get(full_url)
+#
+#         # Assert that the status code is 200 (OK)
+#         self.assertEqual(response.status_code, 200)
+#
+#         # Optionally check the response content if necessary
+#         # self.assertContains(response, 'Expected Content')
+
+
+
+
+
+
+
+
+
 
 
 

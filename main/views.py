@@ -159,7 +159,7 @@ def generate_random_state(length):
 
 def spotify_login(request):
 	state = generate_random_state(16)
-	scope = 'user-read-private user-read-email user-top-read'
+	scope = 'user-read-private user-read-email user-top-read streaming user-modify-playback-state'
 	auth_url = 'https://accounts.spotify.com/authorize?'
 
 	query_params = {
@@ -317,3 +317,26 @@ def llama_request(token, request):
 		if chunk.choices[0].delta.content:
 			info += chunk.choices[0].delta.content
 	return JsonResponse({'info': info})
+
+
+@login_required
+def playback(request):
+	# Fetch the user's Spotify access token
+	username = request.session.get('username')
+	user = User.objects.get(username=username)
+	access_token = user.spotify_access_token
+
+	# Fetch user's top tracks from Spotify API
+	headers = {"Authorization": f"Bearer {access_token}"}
+	response = requests.get(
+		"https://api.spotify.com/v1/me/top/tracks?limit=10",
+		headers=headers,
+	)
+
+	if response.status_code == 200:
+		top_tracks = response.json()['items']  # Extract top tracks
+	else:
+		top_tracks = []  # Handle error or no tracks found
+
+	# Pass track information (URIs, names, etc.) to the template
+	return render(request, 'mainTemplates/playback.html', {'access_token': access_token ,'top_tracks': top_tracks})

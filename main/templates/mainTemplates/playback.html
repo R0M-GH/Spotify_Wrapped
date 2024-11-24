@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Tracks</title>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+</head>
+<body>
+    <h1>Your Top Tracks</h1>
+    <ul id="tracks-list">
+        {% for track in top_tracks %}
+            <li>
+                {{ track.name }} by {{ track.artists|join:", " }}
+                <button onclick="playTrack('{{ track.uri }}')">Play</button>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        // Spotify Web Playback SDK Initialization
+        let player;
+        const token = '{{ access_token}}';  // Pass user's access token dynamically
+
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            player = new Spotify.Player({
+                name: 'Web Playback SDK Player',
+                getOAuthToken: cb => { cb(token); },
+                volume: 0.5
+            });
+
+            // Connect the player
+            player.connect();
+
+            // Log player state
+            player.addListener('player_state_changed', state => {
+                console.log('Player State:', state);
+            });
+
+            // Handle player errors
+            player.addListener('initialization_error', ({ message }) => console.error(message));
+            player.addListener('authentication_error', ({ message }) => console.error(message));
+            player.addListener('account_error', ({ message }) => console.error(message));
+            player.addListener('playback_error', ({ message }) => console.error(message));
+        };
+
+        // Function to play a track
+        function playTrack(trackUri) {
+            fetch('https://api.spotify.com/v1/me/player/play', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    uris: [trackUri]  // Play the selected track
+                })
+            }).then(response => {
+                if (response.status === 204) {
+                    console.log('Track playing successfully');
+                } else {
+                    console.error('Error playing track:', response);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

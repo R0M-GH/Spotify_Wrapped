@@ -289,3 +289,18 @@ class AuthModelBackendTests(TestCase):
         self.assertIsNotNone(user)
         self.assertEqual(user, self.user)
 
+class IndexViewTest(TestCase):
+    def test_index_view(self):
+        response = self.client.get(reverse('index-page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mainTemplates/index.html')
+
+class RegisterViewTest(TestCase):
+    def test_register_view(self):
+        response = self.client.get(reverse('registration'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'registration/registration.html')
+
+
+
+

@@ -5,6 +5,8 @@ from django.urls import reverse, resolve
 from main.views import login, home, register
 from main.forms import RegistrationForm, LoginForm
 from unittest.mock import patch
+from django.contrib.auth.hashers import make_password
+from main.backends import AuthModelBackend
 
 User = get_user_model()  # Get the custom user model
 
@@ -190,4 +192,48 @@ class ViewTests(TestCase):
     #     response = self.client.get(reverse('spotify_data', kwargs={'time_range': 'medium_term'}))
     #     self.assertEqual(response.status_code, 200)
     #     self.assertJSONEqual(response.content, mock_response)
+
+class AuthModelBackendTests(TestCase):
+    def setUp(self):
+        self.backend = AuthModelBackend()
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create(
+            username="testuser",
+            password=make_password("securepassword"),  # Ensure password is hashed
+            is_active=True
+        )
+
+    def test_authenticate_valid_user(self):
+        """Test authentication with a valid username and password."""
+        user = self.backend.authenticate(username="testuser", password="securepassword")
+        self.assertIsNotNone(user)
+        self.assertEqual(user, self.user)
+
+    def test_authenticate_invalid_password(self):
+        """Test authentication with an invalid password."""
+        user = self.backend.authenticate(username="testuser", password="wrongpassword")
+        self.assertIsNone(user)
+
+    def test_authenticate_invalid_username(self):
+        """Test authentication with a username that does not exist."""
+        user = self.backend.authenticate(username="nonexistent", password="securepassword")
+        self.assertIsNone(user)
+
+    def test_authenticate_inactive_user(self):
+        """Test authentication with an inactive user."""
+        self.user.is_active = False
+        self.user.save()
+        user = self.backend.authenticate(username="testuser", password="securepassword")
+        self.assertIsNone(user)
+
+    def test_authenticate_with_no_username(self):
+        """Test authentication when no username is provided."""
+        user = self.backend.authenticate(password="securepassword")
+        self.assertIsNone(user)
+
+    def test_authenticate_with_kwargs_username_field(self):
+        """Test authentication using the username field from kwargs."""
+        user = self.backend.authenticate(password="securepassword", username="testuser")
+        self.assertIsNotNone(user)
+        self.assertEqual(user, self.user)
 

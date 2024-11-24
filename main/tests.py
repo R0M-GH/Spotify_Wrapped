@@ -301,6 +301,32 @@ class RegisterViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/registration.html')
 
+class SummaryViewTest(TestCase):
+    def test_summary_view(self):
+        response = self.client.get(reverse('summary'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/summary.html')
+
+class ConstellationArtistsViewTest(TestCase):
+    def test_constellation_artists_view(self):
+        response = self.client.get(reverse('ConstellationArtists/'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/ConstellationArtists.html')
+
+class GamePageViewTest(TestCase):
+    def test_game_page_view(self):
+        response = self.client.get(reverse('game_page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
+
+class LibraryPageViewTest(TestCase):
+    def test_library_page_view(self):
+        response = self.client.get(reverse('library_page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/library.html')
+
+
+
 
 
 

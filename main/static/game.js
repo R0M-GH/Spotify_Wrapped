@@ -5,7 +5,7 @@ let points = 0;        // Tracks successful clicks
 let missed = 0;        // Tracks missed clicks
 let hits = 0;
 let totalCircles = 0;
-const size = 100;      // Initial size of each circle in pixels
+const size = 150;      // Initial size of each circle in pixels
 const duration = 20000; // Duration in milliseconds (15 seconds)
 const frequency = 333; // Frequency of circle appearance (every 1 second)
 const play = document.getElementById('t-play'); // Start button element
@@ -17,6 +17,12 @@ const christmasSwitch = document.getElementById('christmas-switch'); // Christma
 const sco = document.getElementById('scores');
 const options = document.getElementById('options');
 let selectedMode = 'classic';
+const sleigh = new Image(); // Create an image element
+sleigh.src = '/static/Images/sleigh.png'; // Set the image source
+sleigh.style.position = 'absolute';
+sleigh.style.display = 'none';
+document.body.appendChild(sleigh);
+sleigh.style.top = '-50px'; // Always at the top of the screen
 
 leftC = 50;
 
@@ -142,12 +148,13 @@ function makeCircles() {
             fullplay.style.display = 'none';
             options.style.display = 'flex';
             instructions.style.display = 'flex';
+            sleigh.style.display = 'none';
 
             circles = []; // Reset the circles array
             container.innerHTML = ""; // Clear previous circles from the container
-
+            createSleigh(10000);
             updateHighScore();
-
+            sleigh.style.display = 'none';
             return;
         }
 
@@ -162,6 +169,7 @@ function makeCircles() {
         circle.style.color = 'white';
         circle.style.borderRadius = '50%'; // Make it circular
         circle.style.transition = 'width 0.1s, height 0.1s'; // Smooth transition for shrinking
+        circle.style.fontSize = `${20}px`
 
         circle.addEventListener('click', function() {
                 killButtons.call(this, true);
@@ -184,72 +192,62 @@ function makeCircles() {
 }
 
 function applyClassicMode(circle) {
+    sleigh.style.display = 'none';
     shrinkCircles();
     circle.style.top = getRandomPosition('top');
     circle.style.left = getRandomPosition('left');
 }
 
 function applyBouncingMode(circle) {
+    sleigh.style.display = 'none';
     enableBouncing(circle);
     circle.style.top = getRandomPosition('top');
     circle.style.left = getRandomPosition('left');
 }
 
 function applyShootingMode(circle) {
+    sleigh.style.display = 'none';
     circle.style.top = getRandomTop();
     circle.style.left = getRandomTop();
     enableShooting(circle);
 }
 
 function applyGlidingMode(circle) {
+    sleigh.style.display = 'flex';
     createGlidingBall(circle);
     circle.style.left = getLeftC();
-    circle.style.top = '60px'; // Example top position for the circle
+    circle.style.top = '130px'; // Example top position for the circle
 
 
 }
 
 
 function shrinkCircle(circle) {
-    // Get the current size of the circle
-    const currentSize = parseInt(circle.style.width);
+    let currentWidth = parseInt(circle.style.width);
+    let currentHeight = parseInt(circle.style.height);
+    let currentFontSize = parseInt(window.getComputedStyle(circle).fontSize);
 
-    // Calculate the new size after shrinking
-    const newSize = Math.max(0, currentSize - shrinkAmount);
-    circle.style.width = `${newSize}px`;
-    circle.style.height = `${newSize}px`;
+    // Decrease the width, height by 30 and font size by 4 each time
+    currentWidth -= 30;
+    currentHeight -= 30;
+    currentFontSize -= 5;
 
-    // Set a smaller font size relative to the circle's size
-    const newFontSize = Math.max(0, newSize / 3); // Adjust the divisor to control text size
-    circle.style.fontSize = `${newFontSize}px`;
-
-    // Update the displayed text
-    circle.textContent = `${newSize}px`;
-
-    // Hide the circle if it shrinks to 0
-    if (newSize <= 0) {
-        circle.style.display = 'none';
+    // Ensure the width and height do not go below zero
+    if (currentWidth <= 0 || currentHeight <= 0 || currentFontSize <= 0) {
+        circle.style.display = 'none';  // Hide the circle if it shrinks to 0
+        missed += 1;  // Increment missed count
+        updateScoreDisplay();  // Update score display
+    } else {
+        // Update the circle's size and font size
+        circle.style.width = currentWidth + 'px';
+        circle.style.height = currentHeight + 'px';
+        circle.style.fontSize = currentFontSize + 'px';
     }
 }
 
-
 function shrinkCircles() {
     circles.forEach(circle => {
-        const currentSize = parseInt(circle.style.width);
-        const newSize = Math.max(0, currentSize - shrinkAmount); // Calculate new size
-
-        circle.style.width = `${newSize}px`;
-        circle.style.height = `${newSize}px`;
-
-        const currentFontSize = parseInt(window.getComputedStyle(circle).fontSize);
-        const newFontSize = Math.max(0, (newSize / currentSize) * currentFontSize);
-        circle.style.fontSize = `${newFontSize}px`;
-
-        if (currentSize - shrinkAmount <= 0) {
-            circle.style.display = 'none'; // Hide the circle if it shrinks to 0
-            missed += 1; // Increment missed count when circle shrinks to zero
-            updateScoreDisplay(); // Update score after each missed shrink
-        }
+        shrinkCircle(circle);
     });
 }
 
@@ -325,115 +323,213 @@ function enableShooting(circle) {
     requestAnimationFrame(moveCircle);
 }
 
-function enableBouncing(circle) {
-    // Set an initial random speed with a minimum threshold
-    let dx = (Math.random() - 0.5) * 4; // Speed range [-2, 2]
-    let dy = (Math.random() - 0.5) * 4; // Speed range [-2, 2]
-    let speedIncreaseFactor = 1.05; // Speed increase factor after each bounce
-    let maxSpeed = 5; // Maximum speed value for dx and dy
-    let deleteSpeedThreshold = 8; // Speed threshold to delete circle
+let balls = [];  // To store all the balls on screen
 
-    // Get viewport dimensions (the entire screen)
+function enableBouncing(circle) {
+    let dx, dy;
+
+    // Generate initial random speeds with a wider range and avoid values between -1 and 1
+    do {
+        dx = (Math.random() - 0.5) * 6; // Speed range [-3, 3]
+    } while (Math.abs(dx) < 1); // Ensure dx is not between -1 and 1
+
+    do {
+        dy = (Math.random() - 0.5) * 6; // Speed range [-3, 3]
+    } while (Math.abs(dy) < 1); // Ensure dy is not between -1 and 1
+
+    let speedIncreaseFactor = 1.05; // Speed increase factor after each bounce
+    let maxSpeed = 5; // Max speed limit
+    let deleteSpeedThreshold = 5; // Speed threshold for deletion
+    let timeoutDuration = Math.random() * 2000 + 5000; // 3-5 seconds timeout
+
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
+    let isOver = false; // Check if the game is over
+
+    // Set initial random position within bounds
+    circle.style.left = `${Math.random() * screenWidth}px`;
+    circle.style.top = `${Math.random() * screenHeight}px`;
+
+    // Add the circle to the list of active balls
+    balls.push({ circle, dx, dy });
+
+    // Detect collision between two balls
+    function checkCollisions() {
+        balls.forEach((otherBall) => {
+            if (otherBall === circle) return; // Skip self collision
+
+            const otherRect = otherBall.circle.getBoundingClientRect();
+            const circleRect = circle.getBoundingClientRect();
+
+            // Calculate the distance between the centers of the two circles
+            const distX = otherRect.left + otherRect.width / 2 - (circleRect.left + circleRect.width / 2);
+            const distY = otherRect.top + otherRect.height / 2 - (circleRect.top + circleRect.height / 2);
+            const distance = Math.sqrt(distX * distX + distY * distY);
+
+            // If the circles are close enough (colliding)
+            if (distance < (circleRect.width / 2 + otherRect.width / 2)) {
+                // Calculate the angle of the collision
+                const angle = Math.atan2(distY, distX);
+
+                // Calculate the new velocities based on elastic collision formulas
+                const speed1 = Math.sqrt(dx * dx + dy * dy);
+                const speed2 = Math.sqrt(otherBall.dx * otherBall.dx + otherBall.dy * otherBall.dy);
+                const direction1 = Math.atan2(dy, dx);
+                const direction2 = Math.atan2(otherBall.dy, otherBall.dx);
+
+                // Reflect velocities in the direction of the collision angle
+                const newDx1 = speed2 * Math.cos(direction2 - angle);
+                const newDy1 = speed2 * Math.sin(direction2 - angle);
+                const newDx2 = speed1 * Math.cos(direction1 - angle);
+                const newDy2 = speed1 * Math.sin(direction1 - angle);
+
+                // Apply the new velocities to both balls
+                dx = newDx1;
+                dy = newDy1;
+                otherBall.dx = newDx2;
+                otherBall.dy = newDy2;
+
+                // Adjust positions slightly to ensure they no longer overlap
+                const overlap = (circleRect.width / 2 + otherRect.width / 2) - distance;
+                const angleOfCollision = Math.atan2(distY, distX);
+                circle.style.left = `${circle.offsetLeft - Math.cos(angleOfCollision) * overlap}px`;
+                circle.style.top = `${circle.offsetTop - Math.sin(angleOfCollision) * overlap}px`;
+                otherBall.circle.style.left = `${otherBall.circle.offsetLeft + Math.cos(angleOfCollision) * overlap}px`;
+                otherBall.circle.style.top = `${otherBall.circle.offsetTop + Math.sin(angleOfCollision) * overlap}px`;
+            }
+        });
+    }
 
     function moveCircle() {
-        const circleRect = circle.getBoundingClientRect(); // Circle boundaries
+        const circleRect = circle.getBoundingClientRect(); // Get circle boundaries
 
         // Update circle position
         circle.style.left = `${circle.offsetLeft + dx}px`;
         circle.style.top = `${circle.offsetTop + dy}px`;
 
-        // Detect if the circle hits the left or right boundary of the screen
+        // Detect collisions with screen edges
         if (circleRect.left + dx < 0) {
-            dx = Math.abs(dx); // Move right
-            increaseSpeed(); // Increase speed after bouncing off the left edge
+            dx = Math.abs(dx); // Bounce off left edge
+            increaseSpeed();
         } else if (circleRect.right + dx > screenWidth) {
-            dx = -Math.abs(dx); // Move left
-            increaseSpeed(); // Increase speed after bouncing off the right edge
+            dx = -Math.abs(dx); // Bounce off right edge
+            increaseSpeed();
         }
 
-        // Detect if the circle hits the top or bottom boundary of the screen
         if (circleRect.top + dy < 0) {
-            dy = Math.abs(dy); // Move down
-            increaseSpeed(); // Increase speed after bouncing off the top edge
+            dy = Math.abs(dy); // Bounce off top edge
+            increaseSpeed();
         } else if (circleRect.bottom + dy > screenHeight) {
-            dy = -Math.abs(dy); // Move up
-            increaseSpeed(); // Increase speed after bouncing off the bottom edge
+            dy = -Math.abs(dy); // Bounce off bottom edge
+            increaseSpeed();
         }
 
-        // Ensure dx and dy stay non-zero to avoid getting stuck
+        // Prevent ball from getting stuck in very low speed
         if (Math.abs(dx) < 0.5) dx = (Math.random() < 0.5 ? -1 : 1) * 1;
         if (Math.abs(dy) < 0.5) dy = (Math.random() < 0.5 ? -1 : 1) * 1;
 
-        // Continue the animation if the game is not over
+        // Implement damping: slowly reduce the speed if the ball is not moving fast
+        if (Math.abs(dx) < 1) dx *= 0.99; // Apply damping to slow speeds
+        if (Math.abs(dy) < 1) dy *= 0.99;
+
+        // Check for ball-to-ball collisions
+        checkCollisions();
+
+        // Request animation frame if the game is not over
         if (!isOver) {
             requestAnimationFrame(moveCircle);
         }
     }
 
-    // Function to increase the speed of the circle after each bounce
+    // Function to increase speed after bouncing
     function increaseSpeed() {
         dx *= speedIncreaseFactor;
         dy *= speedIncreaseFactor;
 
-        // Cap the speed at maxSpeed
+        // Cap the speed
         dx = Math.min(dx, maxSpeed);
         dy = Math.min(dy, maxSpeed);
 
-        // If speed exceeds deleteSpeedThreshold, remove the circle
+        // If speed exceeds threshold, remove the ball
         if (Math.abs(dx) >= deleteSpeedThreshold || Math.abs(dy) >= deleteSpeedThreshold) {
-            circle.remove(); // Remove the circle from the DOM
-            cancelAnimationFrame(moveCircle); // Stop the animation
+            circle.remove(); // Remove from DOM
+            cancelAnimationFrame(moveCircle);
+            circle.style.display = 'none';  // Hide the circle if it shrinks to 0
+            missed += 1;  // Increment missed count
+            updateScoreDisplay();  // Update score display
         }
     }
 
-    // Start the bouncing animation
+    // Set a timeout to remove the ball after 3-5 seconds
+    setTimeout(() => {
+        circle.remove(); // Remove ball after random time
+        cancelAnimationFrame(moveCircle); // Stop the animation
+    }, timeoutDuration);
+
+    // Start the animation
     requestAnimationFrame(moveCircle);
 }
 
+// Function to create the sleigh at a specific horizontal position
+function createSleigh(initialLeft) {
+    sleigh.style.left = `${initialLeft}px`; // Initial horizontal position
+}
 
+// Function to create and glide a ball along with the sleigh
 function createGlidingBall(circle) {
-    // Set an initial speed for the upward motion
-    let dy = 3;
+    let dy = 2 + (Math.random() * 3); // Set an initial downward speed
 
-    // Function to move the circle upwards
+
     function moveCircle() {
         // Update the circle's position
         circle.style.top = `${circle.offsetTop + dy}px`;
 
-        // If the game is not over, continue moving the circle
+        // Update the sleigh's position to follow the circle horizontally
+        sleigh.style.left = `${circle.offsetLeft}px`;
+
+        // If the game is not over, continue moving the circle and sleigh
         if (!isOver) {
             requestAnimationFrame(moveCircle);
         }
     }
 
-    // Start the upward motion
+    // Start the motion
     requestAnimationFrame(moveCircle);
+    if(isOver) {
+    sleigh.style.display = 'none';
+    }
+
 }
 
 
 
-const root = document.body; // Apply class to the <body> tag
 
+const root = document.body; // Apply class to the <body> tag
 // Toggle the class when the switch is toggled
 christmasSwitch.addEventListener('change', () => {
+    const chioElement = document.getElementById('chio'); // Get the element with id 'chio'
+
     if (christmasSwitch.checked) {
-       root.classList.add('christmas-theme');
+        root.classList.add('christmas-theme');
+        fake_artist_names = fake_christmas_artists;
+        fake_song_titles = fake_christmas_songs;
+        real_artist_names = real_christmas_artists;
+        real_song_titles = real_christmas_songs;
+        chioElement.style.display = "flex";
+        sleigh.style.display = 'flex';
 
-       fake_artist_names = fake_christmas_artists;
-       fake_song_titles = fake_christmas_songs;
-       real_artist_names = real_christmas_artists;
-       real_song_titles = real_christmas_songs;
     } else {
-       root.classList.remove('christmas-theme');
+        root.classList.remove('christmas-theme');
+        chioElement.style.display = "none";   // Make it invisible
+        sleigh.style.display = 'none';
 
-       fake_artist_names = original_fake_artist_names;
-       fake_song_titles = original_fake_song_titles;
-       real_artist_names = original_real_artist_names;
-       real_song_titles = original_real_song_titles;
+        fake_artist_names = original_fake_artist_names;
+        fake_song_titles = original_fake_song_titles;
+        real_artist_names = original_real_artist_names;
+        real_song_titles = original_real_song_titles;
     }
 });
+
 
 
 

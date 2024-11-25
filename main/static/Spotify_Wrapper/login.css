@@ -16,6 +16,7 @@ body {
     font-family: 'ChakraPetch-Regular', sans-serif;
     position: absolute;
     font-size: 2.5rem;
+    user-select: none;
     text-decoration: none;
     left: 10px;
     top: 20px;
@@ -26,7 +27,7 @@ body {
     color: #faf6e7;
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 180px;
+    font-size: 1000%;
     left: 38%;
     top: 10%;
 }

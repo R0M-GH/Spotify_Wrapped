@@ -47,11 +47,8 @@ def newwrapper(request):
 @login_required
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
-
-
 def game(request):
 	return render(request, 'Spotify_Wrapper/game.html')
-
 def wrapper(request):
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 def wrapper2(request):
@@ -62,7 +59,6 @@ def GenreNebulas2(request):
 	return render(request, 'Spotify_Wrapper/GenreNebulas2.html')
 def StellarHits(request):
 	return render(request, 'Spotify_Wrapper/StellarHits.html')
-
 def StellarHits2(request):
 	return render(request, 'Spotify_Wrapper/StellarHits2.html')
 def newwrapper(request):
@@ -71,39 +67,24 @@ def ConstellationArtists(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
 def ConstellationArtists2(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
-
 def account(request):
 	return render(request, 'Spotify_Wrapper/accountpage.html')
-
-
 def library(request):
 	# add library display logic here
 	return render(request, 'Spotify_Wrapper/library.html')
-
-
 def wrapped_page(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
-
-
 def wrapper2(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper2.html')
-
-
 def artist_constellation(request):
 	return render(request, f'Spotify_Wrapper/ConstellationArtists{request.session.get("page", "")}.html')
-
-
 def genre_nebula(request):
 	return render(request, f'Spotify_Wrapper/GenreNebulas{request.session.get("page", "")}.html')
-
-
 def stellar_hits(request):
 	# Load users most recent wrapper info here
 	return render(request, f'Spotify_Wrapper/StellarHits{request.session.get("page"), ""}.html')
-
-
 def register(request):
 	if request.method == 'POST':
 		form = RegistrationForm(request.POST)
@@ -120,19 +101,16 @@ def register(request):
 			user = User.objects.create_user(username=username, password=password1)
 			user.birthday = birthday
 			user.save()
-			return redirect("user-login")
+			return redirect("user_login")
 	else:
 		form = RegistrationForm()
 	return render(request, 'registration/registration.html', {"form": form})
-
-
 def user_login(request):
 	request.session.flush()
 	if request.method == 'POST':
 		username = request.POST['username']
 		password = request.POST['password']
 
-		# user = AuthModelBackend.authenticate(request, username, password)
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			request.session['username'] = username
@@ -146,8 +124,6 @@ def user_login(request):
 	else:
 		form = LoginForm()
 	return render(request, 'registration/login.html', {'form': form})
-
-
 def forgot_password(request):
 	if request.method == 'POST':
 		username = request.POST['username']
@@ -175,12 +151,8 @@ def forgot_password(request):
 	else:
 		form = ForgetForm()
 	return render(request, 'registration/forget.html', {'form': form})
-
-
 def generate_random_state(length):
 	return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-
-
 def spotify_login(request):
 	state = generate_random_state(16)
 	scope = 'user-read-private user-read-email user-top-read streaming user-modify-playback-state'
@@ -202,8 +174,6 @@ def spotify_login(request):
 	url = auth_url + urllib.parse.urlencode(query_params)
 
 	return redirect(url)
-
-
 def spotify_callback(request):
 	code = request.GET.get('code')
 	state = request.GET.get('state')
@@ -255,11 +225,9 @@ def spotify_callback(request):
 			user.spotify_refresh_token = refresh_token
 			user.save()  # Save tokens to the user model
 
-		return redirect("home")
+		return redirect("library")
 	else:
 		return JsonResponse({'error': 'Failed to obtain token'}, status=400)
-
-
 def refresh_spotify_token(user):
 	refresh_token = user.spotify_refresh_token
 
@@ -278,8 +246,6 @@ def refresh_spotify_token(user):
 		return access_token
 	else:
 		return None
-
-
 @csrf_exempt
 @login_required
 def make_wrapped(request, time_range='medium', limit=5):
@@ -343,19 +309,18 @@ def make_wrapped(request, time_range='medium', limit=5):
 	wrap = Wraps.objects.create(username=user.username, wrap_json=json.dumps(data))
 	wrap.save()
 
+	return render(request, 'Spotify_Wrapper/wrapper.html', {'wrap_json': wrap.wrap_json})
 	# THIS IS FOR TESTING (DELETE TWO LINES BELOW DEPENDING ON IMPLEMENTATION)
-	return HttpResponse(wrap.wrap_json, content_type='application/json')
-
-
+	#return HttpResponse(wrap.wrap_json, content_type='application/json')
 @csrf_exempt
 @login_required
 def get_wrapped(request, dt):
 	wrap = Wraps.objects.get(username=request.session.get('username'),
 	                         creation_date=datetime.strptime(dt, '%Y-%m-%d %H:%M:%S.%f'))
+
 	if not wrap:
 		return JsonResponse({'error': 'Wrapped does not exist'}, status=404)
 	return wrap
-
 
 @csrf_exempt
 @login_required

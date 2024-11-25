@@ -7,43 +7,66 @@
     <link rel="stylesheet" href="{% static 'game.css' %}">
 </head>
 <body>
+    <!-- Star container for moving stars -->
+    <div class="stars">
+        <!-- Randomly generated stars -->
+        <div class="star" style="top: 30%; left: 10%; animation-duration: 12s; animation-delay: 0s;"></div>
+        <div class="star" style="top: 50%; left: 20%; animation-duration: 15s; animation-delay: 1s;"></div>
+        <div class="star" style="top: 70%; left: 40%; animation-duration: 20s; animation-delay: 3s;"></div>
+        <div class="star" style="top: 10%; left: 80%; animation-duration: 18s; animation-delay: 5s;"></div>
+        <div class="star" style="top: 40%; left: 60%; animation-duration: 25s; animation-delay: 2s;"></div>
+    </div>
+
     <div id="all">
         <div class="main">
             <div class="header">
-                <div class = "tophead">
+                <div class="tophead">
                     <h2 id="title">Space Destroyers</h2>
                 </div>
-                <div class = pb>
+                <div class="pb">
                     <h2 class="h-score">High Score: 0</h2>
                     <input type="button" value="Play" id="t-play" class="button-styles" aria-label="Play game">
                 </div>
             </div>
 
             <!-- Game Instructions Section -->
-            <div class="instructions" id = "options">
+            <div class="instructions" id="options">
                 <h3>How to Play:</h3>
                 <p>Click the circles as they appear to earn points. The faster you click, the higher your score!</p>
+                    <p>Note, only click on songs and artists that are in YOUR top 50 most listened. </p>
+                        <p>Clicking on your songs will add 2 points, clicking on the wrong songs will deduct 1!</p>
+                            <p>The percentage represents your accuracy, the percent of targets you were able to click.</p>
                 <div class="game-options">
                     <label>
                         <input type="radio" name="game-mode" value="classic" class="game-mode-option" checked>
+                        <span class="planet-icon classic"></span>
                         Classic Mode - shrinking balls
                     </label>
                     <label>
                         <input type="radio" name="game-mode" value="bouncing" class="game-mode-option">
-                        Bouncing Mode - balls bouncing off of each other
+                        <span class="planet-icon bouncing"></span>
+                        Mid Line - balls gravitate to the middle
                     </label>
                     <label>
                         <input type="radio" name="game-mode" value="shooting" class="game-mode-option">
+                        <span class="planet-icon shooting"></span>
                         Shooting Stars Mode - balls shoot across screen
                     </label>
-                    <div class="chi">
-                        <h3>Christmas Theme Option:</h3>
-                        <input type="checkbox" id="christmas-switch" aria-label="Christmas mode">
+                    <label class="" id="chio">
+                        <input type="radio" name="game-mode" value="gliding" class="game-mode-option">
+                        <span class="planet-icon chri"></span>
+                        Christmas - catch Santa's presents
+                    </label>
+                    <div class = "chi" id="christmas-switch-container">
+                        <label for="christmas-switch">Enable Christmas Theme</label>
+                        <input type="checkbox" id="christmas-switch">
                     </div>
                 </div>
             </div>
+
             <div class="spacer"><p> </p></div>
         </div>
+
         <div id="play" style="display:none;">
             <ul class="container" id="button-array"></ul>
             <div class="scores">
@@ -53,6 +76,7 @@
             </div>
         </div>
     </div>
+
     <script src="{% static 'game.js' %}"></script>
 </body>
 </html>

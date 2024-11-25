@@ -52,6 +52,27 @@ def home(request):
 def game(request):
 	return render(request, 'Spotify_Wrapper/game.html')
 
+def wrapper(request):
+	return render(request, 'Spotify_Wrapper/wrapper.html')
+def wrapper2(request):
+	return render(request, 'Spotify_Wrapper/wrapper2.html')
+def GenreNebulas(request):
+	return render(request, 'Spotify_Wrapper/GenreNebulas.html')
+def GenreNebulas2(request):
+	return render(request, 'Spotify_Wrapper/GenreNebulas2.html')
+def StellarHits(request):
+	return render(request, 'Spotify_Wrapper/StellarHits.html')
+
+def StellarHits2(request):
+	return render(request, 'Spotify_Wrapper/StellarHits2.html')
+def ConstellationArtists(request):
+	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
+def ConstellationArtists2(request):
+	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
+
+def account(request):
+	return render(request, 'Spotify_Wrapper/accountpage.html')
+
 
 def library(request):
 	# add library display logic here

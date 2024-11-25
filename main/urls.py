@@ -23,16 +23,20 @@ urlpatterns = [
 	path('stellar-hits/<int:page>/', views.stellar_hits, name='stellar-hits'),
 
 	path('game/', views.game, name='game'),
+	path('accountpage/', views.account, name='game'),
 	path('welcome/', views.welcome, name='welcome'),
 	path('library/', views.library, name='library'),
-
 	path('spotify/login/', views.spotify_login, name='spotify_login'),
 	path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
-
-
-	path('game/', views.game_page, name='game_page'),
 	path('welcome/', views.welcome, name='welcome'),
-	path('library/', views.library_page, name='library_page'),
+	path('wrapper/', views.wrapper, name='welcome'),
+	path('GenreNebulas/', views.GenreNebulas, name='welcome'),
+	path('GenreNebulas2/', views.GenreNebulas2, name='welcome'),
+	path('StellarHits/', views.StellarHits, name='welcome'),
+	path('StellarHits2/', views.StellarHits2, name='welcome'),
+path('ConstellationArtists/', views.ConstellationArtists, name='welcome'),
+path('ConstellationArtists2/', views.ConstellationArtists2, name='welcome'),
+	path('wrapper2/', views.wrapper2, name='welcome'),
 	path('contact/', views.contact, name='contact'),
 	path('summary/', views.summary, name='summary'),
 path('summary2/', views.summary2, name='summary2'),

@@ -22,6 +22,7 @@ body {
     z-index: 9999;
 }
 .login {
+    user-select: none;
     color: #faf6e7;
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
@@ -99,4 +100,9 @@ body {
 }
 .btn-success:hover {
     background-color: #1B285E;
+}
+.one {
+    height: 100%;
+    width: 100%;
+    z-index: -1;
 }

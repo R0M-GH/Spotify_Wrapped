@@ -24,6 +24,8 @@ def welcome(request):
 	return render(request, 'Spotify_Wrapper/welcome.html')
 def summary(request):
 	return render(request, 'Spotify_Wrapper/summary.html')
+def summary2(request):
+	return render(request, 'Spotify_Wrapper/summary2.html')
 def accountpage(request):
 	return render(request, 'Spotify_Wrapper/accountpage.html')
 def contact(request):

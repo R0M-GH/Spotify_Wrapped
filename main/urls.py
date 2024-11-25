@@ -23,6 +23,7 @@ urlpatterns = [
 	path('library/', views.library_page, name='library_page'),
 	path('contact/', views.contact, name='contact'),
 	path('summary/', views.summary, name='summary'),
+path('summary2/', views.summary2, name='summary2'),
 
 	path('accountpage/', views.accountpage, name='accountpage'),
 	path('newwrapper/', views.newwrapper, name='newwrapper'),

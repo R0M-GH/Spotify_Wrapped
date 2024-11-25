@@ -30,6 +30,38 @@ header {
   animation: spin 50s linear infinite;
   z-index: 5000;
 }
+.mainplanet444 {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  position: absolute;
+    height: calc(100vh - 60px);
+  img {
+    width: 80%;
+    height: auto;
+  }
+  z-index: 5000;
+    top: 25%;
+    right: 33%;
+}
+.mainplanet444:hover {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  position: absolute;
+    height: calc(100vh - 60px);
+  img {
+    width: 90%;
+    height: auto;
+  }
+  z-index: 5000;
+    top: 25%;
+    right: 33%;
+}
 
 .one {
   position: absolute;
@@ -41,6 +73,16 @@ header {
   object-fit: cover;
   z-index: 5000;
 }
+.one:hover {
+    position: absolute;
+  left: 5%;
+  top: 65%;
+  transform: translate(-50%, -50%);
+  width: 10%; /* Adjust the value as needed */
+  height: 55%;
+  object-fit: cover;
+  z-index: 5000;
+}
 
 .two {
   position: absolute;
@@ -49,6 +91,16 @@ header {
   transform: translate(-50%, -50%);
   width: 10%; /* Adjust the value as needed */
   height: 40%;
+  object-fit: cover;
+  z-index: 5000;
+}
+.two:hover {
+  position: absolute;
+  right: -5%;
+  top: 65%;
+  transform: translate(-50%, -50%);
+  width: 10%; /* Adjust the value as needed */
+  height: 55%;
   object-fit: cover;
   z-index: 5000;
 }
@@ -126,6 +178,18 @@ header {
     margin-bottom: -5%;
     margin-top: 4%;
     z-index: 5000;
+}
+.Genre-Breakdown {
+  color: #faf6e7;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  position: absolute;
+  right: 10%;
+  top: 62.5%;
+  font-size: 200%;
+  animation: blinkColor 2s infinite;
+  user-select: none;
+  text-decoration: none;
+  z-index: 5000;
 }
 .Genre-Breakdown {
   color: #faf6e7;

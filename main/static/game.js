@@ -40,7 +40,7 @@ function updateScoreDisplay() {
     const scoreElement = document.querySelector('.score');
 
     const accuracy = (hits / (hits + missed) * 100 || 0).toFixed(2);
-    accuracyElement.textContent = `${accuracy}% Accuracy`; // Display accuracy as percentage
+    accuracyElement.textContent = `${accuracy}%`; // Display accuracy as percentage
     hitElement.textContent = `${hits} Hits`; // Display updated hits count
     scoreElement.textContent = `${points} Points`; // Display points
 }
@@ -84,6 +84,7 @@ function getRandomItem() {
 }
 
 function makeCircles() {
+    // Reset game variables and UI elements
     points = 0;        // Tracks successful clicks
     missed = 0;        // Tracks missed clicks
     hits = 0;
@@ -97,6 +98,8 @@ function makeCircles() {
     circles = []; // Reset the circles array
     container.innerHTML = ""; // Clear previous circles from the container
 
+
+    // Set up interval for creating circles
     setTimeout(function() {
         isOver = true;
         shrinkAllCircles(); // Call to shrink all circles after game is over
@@ -108,6 +111,7 @@ function makeCircles() {
             header.style.display = 'flex';
             fullplay.style.display = 'none';
             options.style.display = 'flex';
+            instructions.style.display = 'flex';
 
             circles = []; // Reset the circles array
             container.innerHTML = ""; // Clear previous circles from the container
@@ -117,8 +121,9 @@ function makeCircles() {
             return;
         }
 
+        // Create the circle element
         const circle = document.createElement('button'); // Create a button element for accessibility
-        circle.classList.add('class-container');
+        circle.className += 'circle';
         circle.style.width = `${size}px`;
         circle.style.height = `${size}px`;
         circle.style.position = 'absolute';
@@ -126,26 +131,29 @@ function makeCircles() {
         circle.style.left = getRandomPercentage();
         const itemName = getRandomItem();
         circle.textContent = itemName.name;
+        circle.style.color = 'white';
         circle.style.borderRadius = '50%'; // Make it circular
         circle.style.transition = 'width 0.1s, height 0.1s'; // Smooth transition for shrinking
 
-        // Add an event listener to the circle for clicking
-        circle.addEventListener('click', function() {
-            const isReal = itemName.isFake === false; // Check if the item is real or fake
-            killButtons.call(this, isReal);
-            shrinkCircle(this); // Call the shrink function on click
-            updateScoreDisplay()
-        });
+        // Set behavior based on mode
+        if (selectedMode === 'classic') {
+            circle.addEventListener('click', function() {
+                killButtons.call(this, true);
+                shrinkCircle(this);
+            });
+            shrinkCircles();
+        } else if (selectedMode === 'bouncing') {
+            enableBouncing(circle);  // Apply bouncing effect
+        } else if (selectedMode === 'shooting') {
+            enableShooting(circle);  // Apply shooting effect
+        }
 
-
-        circles.push(circle); // Store reference to the circle
+        circles.push(circle);
         container.appendChild(circle);
-        console.log("circle added");
-        totalCircles = totalCircles + 1;
-        shrinkCircles();
-
-    }, frequency); // Set interval time based on frequency
+        totalCircles += 1;
+    }, frequency);
 }
+
 
 function shrinkCircle(circle) {
     // Get the current size of the circle
@@ -238,16 +246,89 @@ document.querySelectorAll('.game-mode-option').forEach(option => {
         if (selectedMode === 'classic') {
             console.log("Classic Mode selected - Regular speed, unlimited time");
             // Add code for Classic Mode here
-        } else if (selectedMode === 'timed') {
+        } else if (selectedMode === 'bouncing') {
             console.log("Timed Mode selected - 60 seconds to score as much as possible");
             // Add code for Timed Mode here
-        } else if (selectedMode === 'hardcore') {
+        } else if (selectedMode === 'shooting') {
             console.log("Hardcore Mode selected - Faster circles, limited time");
             // Add code for Hardcore Mode here
         }
     });
 });
 
+function enableBouncing(circle) {
+    let dx = (Math.random() - 0.5) * 5; // Random horizontal speed
+    let dy = (Math.random() - 0.5) * 5; // Random vertical speed
+    // Update position logic:
+    ball.style.left = `${parseFloat(ball.style.left) + dx}px`;
+    ball.style.top = `${parseFloat(ball.style.top) + dy}px`;
+
+    function moveCircle() {
+        const rect = container.getBoundingClientRect();
+        const circleRect = circle.getBoundingClientRect();
+
+        // Check boundaries
+        if (circleRect.left + dx < rect.left || circleRect.right + dx > rect.right) dx *= -1;
+        if (circleRect.top + dy < rect.top || circleRect.bottom + dy > rect.bottom) dy *= -1;
+
+        // Update position
+        circle.style.left = `${circle.offsetLeft + dx}px`;
+        circle.style.top = `${circle.offsetTop + dy}px`;
+
+        if (!isOver) {
+            requestAnimationFrame(moveCircle);
+        }
+    }
+
+    requestAnimationFrame(moveCircle);
+}
+
+function enableShooting(circle) {
+    const rect = container.getBoundingClientRect();
+    const startSide = Math.floor(Math.random() * 4); // Randomize starting side: 0=top, 1=right, 2=bottom, 3=left
+    let dx = 0, dy = 0;
+
+    // Set initial position and movement direction based on the starting side
+    switch (startSide) {
+        case 0: // Top
+            circle.style.top = '0px';
+            circle.style.left = `${Math.random() * rect.width}px`;
+            dy = 5;
+            break;
+        case 1: // Right
+            circle.style.top = `${Math.random() * rect.height}px`;
+            circle.style.left = `${rect.width - circle.offsetWidth}px`;
+            dx = -5;
+            break;
+        case 2: // Bottom
+            circle.style.top = `${rect.height - circle.offsetHeight}px`;
+            circle.style.left = `${Math.random() * rect.width}px`;
+            dy = -5;
+            break;
+        case 3: // Left
+            circle.style.top = `${Math.random() * rect.height}px`;
+            circle.style.left = '0px';
+            dx = 5;
+            break;
+    }
+
+    function shootCircle() {
+        // Update position
+        circle.style.left = `${circle.offsetLeft + dx}px`;
+        circle.style.top = `${circle.offsetTop + dy}px`;
+
+        const circleRect = circle.getBoundingClientRect();
+        if (circleRect.bottom < 0 || circleRect.top > rect.height || circleRect.right < 0 || circleRect.left > rect.width) {
+            circle.style.display = 'none';
+            missed += 1;
+            updateScoreDisplay();
+        } else if (!isOver) {
+            requestAnimationFrame(shootCircle);
+        }
+    }
+
+    requestAnimationFrame(shootCircle);
+}
 
 
 fake_artist_names = [

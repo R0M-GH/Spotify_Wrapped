@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
+from django.db.models import JSONField
 from django.utils import timezone
 from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin
 
@@ -13,7 +14,6 @@ class CustomUserManager(UserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-
     def create_user(self, username=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
@@ -32,8 +32,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     date_joined = models.DateTimeField(default=timezone.now)
 
-    spotify_access_token = models.CharField(max_length=255, blank=True, null=True)
-    spotify_refresh_token = models.CharField(max_length=255, blank=True, null=True)
+    birthday = models.DateField(null=True, blank=True)
+
+    spotify_access_token = models.CharField(max_length=255, default='')
+    spotify_refresh_token = models.CharField(max_length=255, default='')
 
     objects = CustomUserManager()
     USERNAME_FIELD = 'username'
@@ -45,3 +47,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_username(self):
         return self.username
+
+class Wraps(models.Model):
+    username = models.CharField(max_length=50, blank=True, default='', unique=False)
+    creation_date = models.DateTimeField(default=timezone.now)
+    wrap_json = JSONField()
+
+    def __str__(self):
+        return self.username + str(self.creation_date)
+
+
+

@@ -270,3 +270,17 @@ margin-top: 4%;
 }
 
 
+.photos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+  gap: 2.5%;
+}
+
+.photos img {
+  width: 15%; /* Adjust the size of the images */
+  height: auto;
+    border-radius: 5%;
+
+}

@@ -7,16 +7,18 @@
         <h1>Create Account</h1>
         <form method="POST" id="register-form" class="form">
             {% csrf_token %}
-            {{ form.non_field_errors }} <!-- Display form errors -->
+{#            {{ form.non_field_errors }} <!-- Display form errors -->#}
 
             <!-- Add placeholder for username -->
             {{ form.username }}
 
+            {{ form.birthday }}
             <!-- Add placeholder for password -->
             {{ form.password1 }}
-
             <!-- Add placeholder for confirm password -->
             {{ form.password2 }}
+
+            <button type = "submit" class = "btn btn-success">Submit</button>
         </form>
     </div>
     </body>

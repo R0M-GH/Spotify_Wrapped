@@ -1,14 +1,15 @@
 {% extends 'mainTemplates/base.html' %}
-{% block title %}Login{% endblock %}
+{% block title %}Forget Password Screen{% endblock %}
 
 {% block content %}
     <form method = "POST" id="forget-form" class="form">
         {% csrf_token %}
         {{ form.username }}
-        {{ form.password }}
+        {{ form.security_answer }}
+        {{ form.new_password1 }}
+        {{ form.new_password2 }}
 
         <p>Don't have an account! Create one <a href = '/signup'>here</a>!</p>
-        <p>Forgot your password! Click <a href = '/forgot/'>here</a>!</p>
         <button type = "submit" class = "btn btn-success">Submit</button>
     </form>
 

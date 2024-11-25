@@ -6,31 +6,39 @@ import string
 import urllib.parse
 
 import requests
-from dill import objects
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-from dotenv import load_dotenv
 from openai import OpenAI
-from .forms import LoginForm, RegistrationForm, ForgetForm
-from .backends import AuthModelBackend
-from .models import CustomUserManager, User, Wraps
+
 from Spotify_Wrapped import settings
+from .forms import LoginForm, RegistrationForm, ForgetForm
+from .models import User, Wraps
 
 
 def index(request):
 	return render(request, 'mainTemplates/index.html')
+
+
 def welcome(request):
 	return render(request, 'Spotify_Wrapper/welcome.html')
+
+
 def summary(request):
 	return render(request, 'Spotify_Wrapper/summary.html')
+
+
 def accountpage(request):
 	return render(request, 'Spotify_Wrapper/accountpage.html')
+
+
 def contact(request):
 	return render(request, 'Spotify_Wrapper/contact.html')
+
+
 def newwrapper(request):
 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
@@ -48,9 +56,11 @@ def library_page(request):
 	# add library display logic here
 	return render(request, 'Spotify_Wrapper/library.html')
 
+
 def wrapper_page(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
+
 
 def wrapper2(request):
 	# Load users most recent wrapper info here
@@ -61,25 +71,32 @@ def ConstellationArtists(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
 
+
 def ConstellationArtists2(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
+
 
 def GenreNebulas(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/GenreNebulas.html')
 
+
 def GenreNebulas2(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/GenreNebulas2.html')
+
 
 def StellarHits(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/StellarHits.html')
 
+
 def StellarHits2(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/StellarHits2.html')
+
+
 def register(request):
 	if request.method == 'POST':
 		form = RegistrationForm(request.POST)
@@ -123,6 +140,7 @@ def user_login(request):
 		form = LoginForm()
 	return render(request, 'registration/login.html', {'form': form})
 
+
 def forgot_password(request):
 	if request.method == 'POST':
 		username = request.POST['username']
@@ -136,7 +154,7 @@ def forgot_password(request):
 		try:
 			user = User.objects.get(username=username)
 
-			if str(user.birthday) == str(security_answer): # Check if birthday matches
+			if str(user.birthday) == str(security_answer):  # Check if birthday matches
 				user.password = make_password(new_password1)
 				user.save()
 				return redirect('user_login')
@@ -152,7 +170,6 @@ def forgot_password(request):
 	return render(request, 'registration/forget.html', {'form': form})
 
 
-
 def generate_random_state(length):
 	return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
@@ -165,12 +182,12 @@ def spotify_login(request):
 	query_params = {
 		'response_type': 'code',
 
-		#'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
+		# 'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
 		'client_id': settings.SPOTIFY_CLIENT_ID,
 
 		'scope': scope,
 
-		#'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
+		# 'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
 		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
 		'state': state,
 	}
@@ -246,7 +263,7 @@ def refresh_spotify_token(user):
 		'client_secret': 'your_client_secret',
 	})
 
-	if response.status_code == 200:
+	if response.status_code != 200:
 		tokens = response.json()
 		access_token = tokens['access_token']
 		user.spotify_access_token = access_token
@@ -255,54 +272,44 @@ def refresh_spotify_token(user):
 	else:
 		return None
 
+
 @csrf_exempt
 @login_required
-def spotify_data(request, time_range="medium_term"):
-	username = request.session.get('username')
-	user = User.objects.get(username=username)
-	access_token = user.spotify_access_token
+def spotify_data(request, time_range='medium_term'):
+	user = User.objects.get(username=request.user.username)
+	endpoint = 'https://api.spotify.com/v1/me/'
 
-	if access_token:
-		headers = {
-			'Authorization': f'Bearer {access_token}'
-		}
-		response = requests.get('https://api.spotify.com/v1/me', headers=headers)
+	if not user.spotify_access_token:
+		return JsonResponse({'error': 'User is not authenticated with Spotify.'}, status=401)
 
-		if response.status_code == 401:  # Unauthorized, token may have expired
-			access_token = refresh_spotify_token(user)
-			if access_token is None:
-				return JsonResponse({'error': 'Failed to refresh access token.'}, status=400)
-	else:
-		return JsonResponse({'error': 'User is not authenticated with Spotify. And no access token exists for the user'}, status=401)
+	headers = {'Authorization': f'Bearer {user.spotify_access_token}'}
+	response = requests.get(endpoint, headers=headers)
 
-	headers = {"Authorization": f"Bearer {access_token}"}
+	if response.status_code == 401:
+		access_token = refresh_spotify_token(user)
+		if not access_token:
+			return JsonResponse({'error': 'Failed to refresh access token.'}, status=400)
+		user.spotify_access_token = access_token
+		user.save()
 
-	# Define URLs for Spotify API with time range
-	user_top_tracks_url = f"https://api.spotify.com/v1/me/top/tracks?limit=5&time_range={time_range}"
-	user_top_artists_url = f"https://api.spotify.com/v1/me/top/artists?limit=5&time_range={time_range}"
+	top_tracks_response = requests.get(f'{endpoint}/top/tracks?limit=5&time_range={time_range}', headers=headers)
+	top_artists_response = requests.get(f'{endpoint}/top/artists?limit=5&time_range={time_range}', headers=headers)
 
-	# Make requests to Spotify API
-	top_tracks_response = requests.get(user_top_tracks_url, headers=headers)
-	top_artists_response = requests.get(user_top_artists_url, headers=headers)
-	print(user_top_tracks_url)
-	print(user_top_artists_url)
-	print(access_token)
-	if top_tracks_response.status_code == 200 and top_artists_response.status_code == 200:
-		data = {
-			"top_tracks": top_tracks_response.json(),
-			"top_artists": top_artists_response.json(),
-			"time_range": time_range
-		}
+	if top_tracks_response.status_code != 200 and top_artists_response.status_code != 200:
+		return JsonResponse({'error': 'Failed to retrieve data from Spotify'}, status=400)
 
-		json_wrapped_data = json.dumps(data)
+	data = {
+		'time_range': time_range,
+		'top_tracks': top_tracks_response.json(),
+		'top_artists': top_artists_response.json(),
+	}
 
-		wrap = Wraps(username=username, wrap_json=json_wrapped_data)
-		wrap.save()
-# THIS IS FOR TESTING (DELETE TWO LINES BELOW DEPENDING ON IMPLEMENTATION)
-		user_wraps = Wraps.objects.get(username=username)
-		return HttpResponse(user_wraps.wrap_json, content_type="application/json")
-	else:
-		return JsonResponse({"error": "Failed to retrieve data from Spotify"}, status=400)
+	json_wrapped_data = json.dumps(data)
+	wrap = Wraps(username=user.username, wrap_json=json_wrapped_data)
+	wrap.save()
+
+	# THIS IS FOR TESTING (DELETE TWO LINES BELOW DEPENDING ON IMPLEMENTATION)
+	return HttpResponse(wrap.wrap_json, content_type='application/json')
 
 
 @csrf_exempt
@@ -339,4 +346,4 @@ def playback(request):
 		top_tracks = []  # Handle error or no tracks found
 
 	# Pass track information (URIs, names, etc.) to the template
-	return render(request, 'mainTemplates/playback.html', {'access_token': access_token ,'top_tracks': top_tracks})
+	return render(request, 'mainTemplates/playback.html', {'access_token': access_token, 'top_tracks': top_tracks})

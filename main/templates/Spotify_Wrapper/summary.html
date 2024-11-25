@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/summary.css' %}">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapper.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
 </head>
 <body>
@@ -27,5 +27,20 @@
     </nav>
   </div>
   <script src="script.js"></script>
+<div class="Cosmic-Song-Count" style="user-select: none;"> Summary </div>
+    <a class="mainplanet444" href="/summary2/">
+        <img src="{% static "Spotify_Wrapper/image/MARS.png" %}" alt="Centered Image">
+    </a>
+    <div class="secondPlanet">
+        <a class="Genre-Breakdown" href="/GenreNebulas">  Genre Nebula's</a>
+        <a class="TopArtists" href="/ConstellationArtists/"> Constellation of Artists</a>
+        <a href="/ConstellationArtists">
+            <img class="one" src="{% static "Spotify_Wrapper/image/CSC-BluePlanet.png" %}">
+        </a>
+        <a href="/GenreNebulas">
+            <img class="two" src="{% static "Spotify_Wrapper/image/CSC-YellowPlanet.png" %}">
+        </a>
+        <img class="space" src="{% static "Spotify_Wrapper/image/Space.png" %}">
+    </div>
 </body>
 </html>

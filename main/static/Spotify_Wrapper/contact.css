@@ -15,145 +15,6 @@ header {
       z-index: 9999;
 }
 
-.mainplanet {
-    user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  align-items: center;
-  position: relative;
-    height: calc(100vh - 60px);
-  img {
-    width: 50%; /
-    height: auto;
-  }
-  animation: spin 50s linear infinite;
-  z-index: 5000;
-}
-
-.one {
-  position: absolute;
-  left: 5%;
-  top: 65%;
-  transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 40%;
-  object-fit: cover;
-  z-index: 5000;
-}
-
-.two {
-  position: absolute;
-  right: -5%;
-  top: 65%;
-  transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 40%;
-  object-fit: cover;
-  z-index: 5000;
-}
-.space {
-    user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  align-items: center;
-  bottom:0%;
-  position: absolute;
-  right: 13%;
-  z-index: 1;
-    height: calc(100vh - 60px);
-  img {
-    width: 50%; /
-    height: auto;
-  }
-}
-.space2 {
-    user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  align-items: center;
-  bottom:0%;
-  position: absolute;
-  right: 10%;
-  z-index: 1;
-    height: calc(120vh - 60px);
-  img {
-    width: 50%; /
-    height: auto;
-  }
-}
-.space3 {
-    user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  align-items: center;
-  bottom:0%;
-  position: absolute;
-  right: 10%;
-  z-index: 1;
-    height: calc(120vh - 60px);
-  img {
-    width: 50%; /
-    height: auto;
-  }
-}
-.space4 {
-    user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  align-items: center;
-  bottom:0%;
-  position: absolute;
-  right: 10%;
-  z-index: 1;
-    height: calc(120vh - 60px);
-  img {
-    width: 50%; /
-    height: auto;
-  }
-}
-.Cosmic-Song-Count {
-color: #faf6e7;
-text-align: center;
-font-family: 'ChakraPetch-Regular', sans-serif;
-font-size: 5vw;
-font-weight: 400;
-position: relative;
-margin-bottom: -5%;
-margin-top: 4%;
-    z-index: 5000;
-
-}
-.Genre-Breakdown {
-  color: #faf6e7;
-  font-family: 'ChakraPetch-Regular', sans-serif;
-  position: absolute;
-  right: 10%;
-  top: 62.5%;
-  font-size: 200%;
-  animation: blinkColor 2s infinite;
-  user-select: none;
-  text-decoration: none;
-  z-index: 5000;
-}
-
-.TopArtists{
-  color: #faf6e7;
-  font-family: 'ChakraPetch-Regular', sans-serif;
-  position: absolute;
-  left: 10%;
-  top: 62.5%;
-  font-size: 200%;
-  animation: blinkColor 2s infinite;
-  user-select: none;
-  text-decoration: none;
-  z-index: 5000;
-}
-
 .CosmicTunes {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
@@ -163,31 +24,17 @@ margin-top: 4%;
   left: 70px;
   z-index: 9999;
 }
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.Cosmic-Song-Count {
+    color: #faf6e7;
+    text-align: center;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 5vw;
+    font-weight: 400;
+    position: relative;
+    margin-bottom: -5%;
+    margin-top: 4%;
+    z-index: 5000;
 }
-@keyframes blinkColor {
-    0% {
-        color: #faf6e7; /* Initial color (lighter) */
-    }
-    50% {
-        color: #9C9A91; /* Darker shade of the initial color */
-    }
-    100% {
-        color: #faf6e7; /* Return to the original color */
-    }
-}
-@media (max-width: 480px) {
-    .Cosmic-Song-Count {
-        font-size: 16px; /* Ensure it's legible on very small screens */
-    }
-}
-
 
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;
@@ -276,11 +123,93 @@ margin-top: 4%;
   align-items: center;
   margin-top: 5%;
   gap: 2.5%;
+
 }
 
 .photos img {
   width: 15%; /* Adjust the size of the images */
   height: auto;
     border-radius: 5%;
+  user-select: none;
 
+}
+.photo p {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: #faf6e7; /* Text color */
+    margin-top: 10px; /* Space between the image and the name */
+}
+.josh {
+    position: absolute;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: #faf6e7;
+    left: 8%;
+    font-size: 25px;
+    text-align: center;
+}
+.Rom {
+    position: absolute;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: #faf6e7;
+    left: 44%;
+    font-size: 25px;
+        text-align: center;
+
+}
+.Vih {
+    position: absolute;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: #faf6e7;
+    left:25%;
+    font-size: 25px;
+        text-align: center;
+
+}
+.je {
+    position: absolute;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: #faf6e7;
+    left:79%;
+    font-size: 25px;
+        text-align: center;
+
+}
+.jc {
+    position: absolute;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: #faf6e7;
+    left:61%;
+    font-size: 25px;
+        text-align: center;
+}
+.one {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  bottom:0%;
+  position: absolute;
+  right: 0%;
+  z-index: -1;
+    height: calc(120vh - 60px);
+  img {
+    width: 50%; /
+    height: auto;
+  }
+}
+.two {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  bottom:0%;
+  position: absolute;
+  left: 0%;
+  z-index: -1;
+    height: calc(120vh - 60px);
+  img {
+    width: 50%; /
+    height: auto;
+  }
 }

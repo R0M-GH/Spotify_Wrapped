@@ -1,15 +1,36 @@
-{% extends 'mainTemplates/base.html' %}
-{% block title %}Login{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Cosmic Tunes Login Page">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Cosmic Tunes</title>
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/login.css' %}">
+</head>
+<body>
+    <header>
+        <a class="CosmicTunes" href="/">Cosmic Tunes</a>
+    </header>
 
-{% block content %}
-    <form method = "POST" id="forget-form" class="form">
-        {% csrf_token %}
-        {{ form.username }}
-        {{ form.password }}
-
-        <p>Don't have an account! Create one <a href = '/signup'>here</a>!</p>
-        <p>Forgot your password! Click <a href = '/forgot/'>here</a>!</p>
-        <button type = "submit" class = "btn btn-success">Submit</button>
-    </form>
-
-{% endblock %}
+    {% block content %}
+    <div class="login-container">
+        <form method="post" id="login-form" class="form">
+            <div class="login">Login</div>
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.username }}
+            </div>
+            <div class="form-group2">
+                {{ form.password }}
+            </div>
+            <a href="/signup" class="create">Create</a>
+            <button type="submit" class="btn-success">Login</button>
+            <o>h</o>
+        </form>
+    </div>
+        <img class="one" src="{% static "Spotify_Wrapper/image/login2.png" %}">
+    {% endblock %}
+</body>
+</html>

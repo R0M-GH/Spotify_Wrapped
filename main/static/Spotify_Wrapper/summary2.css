@@ -22,31 +22,31 @@ header {
   left: 70px;
   z-index: 9999;
 }
-.mainplanet {
+.mainplanet444 {
     user-select: none;
   display: flex;
   flex-direction: column;
   background-color: transparent;
-  top: 0%;
-  left: -25%;
-  position: absolute;
-    height: calc(100vh - 60px);
-  img {
-    width: 100%; /
-    height: auto;
-  }
-}
-.mainplanet:hover {
-    user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  top: -10%;
-  left: -35%;
+  top: 40%;
+  left: -10%;
   position: absolute;
     height: calc(100vh - 60px);
   img {
     width: 120%; /
+    height: auto;
+  }
+}
+.mainplanet444:hover {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  top: 30%;
+  left: -10%;
+  position: absolute;
+    height: calc(100vh - 60px);
+  img {
+    width: 140%; /
     height: auto;
   }
 }
@@ -139,5 +139,3 @@ margin-top: 4%;
 .menu li a:hover {
       color: white;
 }
-
-

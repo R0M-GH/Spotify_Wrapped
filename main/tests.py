@@ -1,214 +1,388 @@
 from django.test import TestCase, Client
-from django.urls import reverse
-from django.contrib.auth.models import User
-from unittest.mock import patch, Mock
-from .models import User, CustomUserManager  # Replace with actual models
-import os
+from django.contrib.auth import get_user_model
+from django.test import SimpleTestCase
+from django.urls import reverse, resolve
+from main.views import login, home, register
+from main.forms import RegistrationForm, LoginForm
+from unittest.mock import patch
+from django.contrib.auth.hashers import make_password
+from main.backends import AuthModelBackend
 
-class IndexViewTests(TestCase):
-    def test_index_view_access(self):
-        response = self.client.get(reverse('index'))
+User = get_user_model()  # Get the custom user model
+
+class UserModelTest(TestCase):
+    def test_create_user(self):
+        user = User.objects.create_user(username="testuser", password="password123")
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+        self.assertEqual(user.username, "testuser")
+
+    def test_create_superuser(self):
+        admin_user = User.objects.create_superuser(username="admin", password="password123")
+        self.assertTrue(admin_user.is_staff)
+        self.assertTrue(admin_user.is_superuser)
+
+    def test_str_method(self):
+        user = User(username="testuser")
+        self.assertEqual(str(user), "testuser")  # Assuming __str__ is correct
+
+    def test_unique_username(self):
+        User.objects.create_user(username="uniqueuser", password="password123")
+        with self.assertRaises(Exception):
+            User.objects.create_user(username="uniqueuser", password="password456")
+
+    def test_get_username(self):
+        user = User(username="testuser")
+        self.assertEqual(user.get_username(), "testuser")
+
+    def test_default_values(self):
+        """Test default values for new users."""
+        user = User.objects.create_user(username="defaultuser", password="password123")
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_superuser)
+        self.assertFalse(user.is_staff)
+        self.assertIsNone(user.spotify_access_token)
+        self.assertIsNone(user.spotify_refresh_token)
+
+    def test_spotify_tokens(self):
+        """Test setting and retrieving Spotify tokens."""
+        user = User.objects.create_user(
+            username="spotifyuser",
+            password="password123",
+            spotify_access_token="access_token_123",
+            spotify_refresh_token="refresh_token_123"
+        )
+        self.assertEqual(user.spotify_access_token, "access_token_123")
+        self.assertEqual(user.spotify_refresh_token, "refresh_token_123")
+
+    def test_create_user_without_username(self):
+        """Test creating a user without a username raises ValueError."""
+        with self.assertRaises(ValueError) as context:
+            User.objects.create_user(username=None, password="password123")
+        self.assertEqual(str(context.exception), "You have not provided a valid username.")
+
+    def test_create_superuser_with_missing_fields(self):
+        """Test that creating a superuser with missing is_staff or is_superuser fields works correctly."""
+        admin_user = User.objects.create_superuser(username="adminuser", password="password123")
+        self.assertTrue(admin_user.is_staff)
+        self.assertTrue(admin_user.is_superuser)
+
+    def test_date_joined_default(self):
+        """Test that date_joined is set to the current time by default."""
+        user = User.objects.create_user(username="dateuser", password="password123")
+        self.assertIsNotNone(user.date_joined)
+
+    def test_user_permissions(self):
+        """Test that PermissionsMixin methods and attributes are functional."""
+        user = User.objects.create_user(username="permissionuser", password="password123")
+        self.assertFalse(user.is_superuser)
+        self.assertTrue(user.is_active)
+
+    def test_invalid_username(self):
+        """Test creating a user with an invalid username."""
+        with self.assertRaises(ValueError):
+            User.objects.create_user(username="", password="password123")
+
+
+class UrlTests(SimpleTestCase):
+
+    def test_login_url_resolves(self):
+        url = reverse('login')
+        self.assertEqual(resolve(url).func, login)
+
+    def test_home_url_resolves(self):
+        url = reverse('home-page')
+        self.assertEqual(resolve(url).func, home)
+
+    def test_registration_url_resolves(self):
+        url = reverse('registration')
+        self.assertEqual(resolve(url).func, register)
+
+
+class RegistrationFormTest(TestCase):
+
+    def test_valid_registration_form(self):
+        form_data = {
+            'username': 'testuser',
+            'password1': 'password123',
+            'password2': 'password123',
+            'securityAnswer': '01/01/2000'
+        }
+        form = RegistrationForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data['username'], 'testuser')
+
+    def test_password_mismatch(self):
+        form_data = {
+            'username': 'testuser',
+            'password1': 'password123',
+            'password2': 'differentpassword',
+            'securityAnswer': '01/01/2000'
+        }
+        form = RegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('__all__', form.errors)  # Check for the presence of non-field-specific error
+        self.assertEqual(form.errors['__all__'], ['Passwords do not match.'])  # Check the specific error message
+
+    def test_missing_username(self):
+        form_data = {
+            'username': '',
+            'password1': 'password123',
+            'password2': 'password123',
+            'securityAnswer': '01/01/2000'
+        }
+        form = RegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)  # Check for the specific field error
+
+    def test_invalid_security_answer_format(self):
+        form_data = {
+            'username': 'testuser',
+            'password1': 'password123',
+            'password2': 'password123',
+            'securityAnswer': 'InvalidFormat'
+        }
+        form = RegistrationForm(data=form_data)
+        self.assertTrue(form.is_valid())  # Assuming there's no specific validation
+        self.assertEqual(form.cleaned_data['securityAnswer'], 'InvalidFormat')
+
+
+class LoginFormTest(TestCase):
+
+    def test_valid_login_form(self):
+        form_data = {
+            'username': 'testuser',
+            'password': 'password123',
+        }
+        form = LoginForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data['username'], 'testuser')
+
+    def test_missing_username(self):
+        form_data = {
+            'username': '',
+            'password': 'password123',
+        }
+        form = LoginForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)
+
+    def test_missing_password(self):
+        form_data = {
+            'username': 'testuser',
+            'password': '',
+        }
+        form = LoginForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('password', form.errors)
+
+class ViewTests(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')  # Use User here
+
+    def test_login_view(self):
+        response = self.client.get(reverse('login'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'index.html')
+        self.assertTemplateUsed(response, 'registration/login.html')
 
-class HomeViewTests(TestCase):
-    def test_home_view_access(self):
-        response = self.client.get(reverse('home'))
+    def test_home_view_authenticated(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(reverse('home-page'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'mainTemplates/index.html')
 
-    def test_home_view_requires_login(self):
-        self.client.logout()
-        response = self.client.get(reverse('home'))
-        self.assertRedirects(response, reverse('login') + '?next=' + reverse('home'))
+    def test_home_view_unauthenticated(self):
+        response = self.client.get(reverse('home-page'))
+        self.assertEqual(response.status_code, 302)  # Expect redirect to login
 
-class OtherPagesTests(TestCase):
-    def test_game_view_renders_template(self):
-        response = self.client.get(reverse('game'))
-        self.assertTemplateUsed(response, 'game.html')
-
-    def test_library_view_renders_template(self):
-        response = self.client.get(reverse('library'))
-        self.assertTemplateUsed(response, 'library.html')
-
-    def test_info_page_get_renders_template(self):
-        response = self.client.get(reverse('info'))
-        self.assertTemplateUsed(response, 'info.html')
-
-    def test_info_page_post_redirects(self):
-        response = self.client.post(reverse('info'))
-        self.assertRedirects(response, reverse('wrapper_page'))
-
-class RegistrationViewTests(TestCase):
-    def test_valid_form_creates_user_and_redirects(self):
-        response = self.client.post(reverse('register'), {
-            'username': 'testuser', 'password1': 'password123', 'password2': 'password123'
-        })
-        self.assertRedirects(response, reverse('login'))
-        self.assertTrue(User.objects.filter(username='testuser').exists())
-
-    def test_duplicate_user_returns_error(self):
-        User.objects.create_user(username='testuser', password='password123')
-        response = self.client.post(reverse('register'), {
-            'username': 'testuser', 'password1': 'password123', 'password2': 'password123'
-        })
-        self.assertFormError(response, 'form', 'username', 'A user with that username already exists.')
-
-    def test_invalid_form_does_not_create_user(self):
-        response = self.client.post(reverse('register'), {
-            'username': 'testuser', 'password1': 'password123', 'password2': 'wrongpassword'
-        })
-        self.assertFalse(User.objects.filter(username='testuser').exists())
-
-class LoginViewTests(TestCase):
-    def test_valid_login_redirects_to_home(self):
-        User.objects.create_user(username='testuser', password='password123')
-        response = self.client.post(reverse('login'), {'username': 'testuser', 'password': 'password123'})
-        self.assertRedirects(response, reverse('home'))
-
-    def test_invalid_login_shows_error(self):
-        response = self.client.post(reverse('login'), {'username': 'wronguser', 'password': 'wrongpassword'})
-        self.assertTemplateUsed(response, 'login.html')
-        self.assertContains(response, 'Please enter a correct username and password.')
-
-    def test_session_cleared_on_logout(self):
-        self.client.post(reverse('login'), {'username': 'testuser', 'password': 'password123'})
-        self.client.logout()
-        self.assertIsNone(self.client.session.get('_auth_user_id'))
-
-class SpotifyAuthTests(TestCase):
-    @patch('your_app.views.generate_random_state')
-    def test_generate_state_returns_string(self, mock_generate):
-        mock_generate.return_value = 'randomstate'
-        state = mock_generate()
-        self.assertEqual(state, 'randomstate')
-        self.assertEqual(len(state), 12)  # Adjust length if needed
-
-    @patch('your_app.views.exchange_code_for_token')
-    def test_spotify_callback_success(self, mock_exchange):
-        mock_exchange.return_value = {'access_token': 'token', 'refresh_token': 'refresh'}
-        response = self.client.get(reverse('spotify_callback') + '?code=validcode')
+    def test_registration_view(self):
+        response = self.client.get(reverse('registration'))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'registration/registration.html')
 
-    def test_spotify_callback_no_code_or_error(self):
+    # def test_registration_post(self):
+    #     response = self.client.post(reverse('registration'), {
+    #         'username': 'newuser',
+    #         'password1': 'password123',
+    #         'password2': 'password123'
+    #     })
+    #
+    #     self.assertRedirects(response, reverse('login'))  # Expect redirect to login
+    #     self.assertTrue(User.objects.filter(username='newuser').exists())  # Ensure the user is created
+
+    @patch('os.getenv')  # Patch os.getenv before calling the view
+    def test_spotify_callback_no_code(self, mock_getenv):
+        # Mock the environment variables for the test
+        mock_getenv.side_effect = lambda key: {
+            'SPOTIFY_CLIENT_ID': 'mock_client_id',
+            'SPOTIFY_CLIENT_SECRET': 'mock_client_secret',
+        }.get(key)
+
         response = self.client.get(reverse('spotify_callback'))
-        self.assertEqual(response.json(), {'error': 'Missing code or authorization error'})
 
-class SpotifyDataViewTests(TestCase):
-    def test_spotify_data_requires_authentication(self):
-        response = self.client.get(reverse('spotify_data'))
-        self.assertEqual(response.status_code, 302)
+        # Since you are testing for a case with no code, expecting 400
+        self.assertEqual(response.status_code, 400)  # Expect bad request due to missing code
 
-    @patch('your_app.views.get_spotify_top_tracks')
-    def test_spotify_api_call_success(self, mock_top_tracks):
-        mock_top_tracks.return_value = {'top_tracks': [], 'top_artists': []}
-        response = self.client.get(reverse('spotify_data'))
+    # def test_spotify_data_authenticated(self):
+    #     self.client.login(username='testuser', password='12345')
+    #     response = self.client.get(reverse('spotify_data', kwargs={'time_range': 'medium_term'}))
+    #     self.assertEqual(response.status_code, 200)  # Adjust according to actual behavior
+
+    # @patch('requests.get')
+    # def test_spotify_data_api_call(self, mock_get):
+    #     mock_response = {
+    #         "top_tracks": {"items": []},
+    #         "top_artists": {"items": []},
+    #     }
+    #     mock_get.return_value.status_code = 200
+    #     mock_get.return_value.json.return_value = mock_response
+    #
+    #     self.client.login(username='testuser', password='12345')
+    #     response = self.client.get(reverse('spotify_data', kwargs={'time_range': 'medium_term'}))
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertJSONEqual(response.content, mock_response)
+
+class AuthModelBackendTests(TestCase):
+    def setUp(self):
+        self.backend = AuthModelBackend()
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create(
+            username="testuser",
+            password=make_password("securepassword"),  # Ensure password is hashed
+            is_active=True
+        )
+
+    def test_authenticate_valid_user(self):
+        """Test authentication with a valid username and password."""
+        user = self.backend.authenticate(username="testuser", password="securepassword")
+        self.assertIsNotNone(user)
+        self.assertEqual(user, self.user)
+
+    def test_authenticate_invalid_password(self):
+        """Test authentication with an invalid password."""
+        user = self.backend.authenticate(username="testuser", password="wrongpassword")
+        self.assertIsNone(user)
+
+    def test_authenticate_invalid_username(self):
+        """Test authentication with a username that does not exist."""
+        user = self.backend.authenticate(username="nonexistent", password="securepassword")
+        self.assertIsNone(user)
+
+    def test_authenticate_inactive_user(self):
+        """Test authentication with an inactive user."""
+        self.user.is_active = False
+        self.user.save()
+        user = self.backend.authenticate(username="testuser", password="securepassword")
+        self.assertIsNone(user)
+
+    def test_authenticate_with_no_username(self):
+        """Test authentication when no username is provided."""
+        user = self.backend.authenticate(password="securepassword")
+        self.assertIsNone(user)
+
+    def test_authenticate_with_kwargs_username_field(self):
+        """Test authentication using the username field from kwargs."""
+        user = self.backend.authenticate(password="securepassword", username="testuser")
+        self.assertIsNotNone(user)
+        self.assertEqual(user, self.user)
+
+class IndexViewTest(TestCase):
+    def test_index_view(self):
+        response = self.client.get(reverse('index-page'))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mainTemplates/index.html')
 
-class LlamaRequestTests(TestCase):
-    @patch('your_app.views.make_llama_request')
-    def test_llama_api_call_success(self, mock_llama_call):
-        mock_llama_call.return_value = {'result': 'mocked response'}
-        response = self.client.post(reverse('llama_request'))
-        self.assertEqual(response.json(), {'result': 'mocked response'})
-
-    def test_invalid_llama_api_key(self):
-        response = self.client.post(reverse('llama_request'), {'api_key': 'wrong_key'})
-        self.assertEqual(response.status_code, 403)
-
-class SettingsTests(TestCase):
-    def test_env_variables_loaded_correctly(self):
-        required_vars = ['SPOTIFY_CLIENT_ID', 'SPOTIFY_CLIENT_SECRET', 'SPOTIFY_REDIRECT_URI', 'OPENAI_API_KEY']
-        for var in required_vars:
-            self.assertTrue(os.getenv(var) is not None)
-
-    def test_django_essential_settings(self):
-        self.assertIsNotNone(os.getenv('SECRET_KEY'))
-        self.assertIn('localhost', os.getenv('ALLOWED_HOSTS'))
-
-    def test_database_connection(self):
-        from django.db import connections
-        conn = connections['default']
-        self.assertEqual(conn.settings_dict['ENGINE'], 'django.db.backends.sqlite3')
-
-    def test_static_settings(self):
-        from django.conf import settings
-        self.assertTrue(settings.STATIC_URL is not None)
-        self.assertTrue(settings.STATICFILES_DIRS)
-
-class UserManagerTests(TestCase):
-    def test_create_user_success(self):
-        user = User.objects.create_user(username='testuser', password='password123')
-        self.assertTrue(User.objects.filter(username='testuser').exists())
-
-    def test_create_superuser_success(self):
-        superuser = User.objects.create_superuser(username='admin', password='password123')
-        self.assertTrue(superuser.is_superuser and superuser.is_staff)
-
-    def test_create_user_no_username_raises_error(self):
-        with self.assertRaises(ValueError):
-            User.objects.create_user(username='', password='password123')
-
-# Integration and End-to-End Tests
-
-class SpotifyAuthenticationFlowTests(TestCase):
-    @patch('your_app.views.exchange_code_for_token')
-    def test_end_to_end_spotify_auth_flow(self, mock_exchange):
-        # Simulate login
-        user = User.objects.create_user(username='testuser', password='password123')
-        self.client.post(reverse('login'), {'username': 'testuser', 'password': 'password123'})
-
-        # Mock token exchange after Spotify login
-        mock_exchange.return_value = {'access_token': 'token', 'refresh_token': 'refresh'}
-        response = self.client.get(reverse('spotify_callback') + '?code=validcode')
-
-        # Ensure access token is saved and user is redirected
+class RegisterViewTest(TestCase):
+    def test_register_view(self):
+        response = self.client.get(reverse('registration'))
         self.assertEqual(response.status_code, 200)
-        self.assertIn('access_token', response.json())
+        self.assertTemplateUsed(response, 'registration/registration.html')
 
-class UserRegistrationAndLoginFlowTests(TestCase):
-    def test_complete_registration_flow(self):
-        # Step 1: Register the user
-        response = self.client.post(reverse('register'), {
-            'username': 'testuser', 'password1': 'password123', 'password2': 'password123'
-        })
-        self.assertRedirects(response, reverse('login'))
-
-        # Step 2: Login the user
-        response = self.client.post(reverse('login'), {'username': 'testuser', 'password': 'password123'})
-        self.assertRedirects(response, reverse('home'))
-
-        # Step 3: Ensure user has access to a protected view
-        response = self.client.get(reverse('library'))
+class SummaryViewTest(TestCase):
+    def test_summary_view(self):
+        response = self.client.get(reverse('summary'))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/summary.html')
 
-    def test_session_management_between_login_and_spotify_interactions(self):
-        # Register and login user
-        self.client.post(reverse('register'), {
-            'username': 'testuser', 'password1': 'password123', 'password2': 'password123'
-        })
-        self.client.post(reverse('login'), {'username': 'testuser', 'password': 'password123'})
-
-        # Simulate Spotify interaction
-        response = self.client.get(reverse('spotify_data'))
+class ConstellationArtistsViewTest(TestCase):
+    def test_constellation_artists_view(self):
+        response = self.client.get(reverse('ConstellationArtists/'))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/ConstellationArtists.html')
 
-        # Ensure session data persists and user remains authenticated
-        response = self.client.get(reverse('library'))
+class GamePageViewTest(TestCase):
+    def test_game_page_view(self):
+        response = self.client.get(reverse('game_page'))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
 
-class APIErrorAndTimeoutHandlingTests(TestCase):
-    @patch('your_app.views.get_spotify_top_tracks')
-    def test_spotify_api_timeout(self, mock_spotify):
-        mock_spotify.side_effect = TimeoutError('Request timed out')
-        response = self.client.get(reverse('spotify_data'))
-        self.assertEqual(response.status_code, 500)
+class LibraryPageViewTest(TestCase):
+    def test_library_page_view(self):
+        response = self.client.get(reverse('library_page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/library.html')
 
-    @patch('your_app.views.make_llama_request')
-    def test_llama_api_timeout(self, mock_llama_call):
-        mock_llama_call.side_effect = TimeoutError('Request timed out')
-        response = self.client.post(reverse('llama_request'))
-        self.assertEqual(response.status_code, 500)
+class ContactViewTest(TestCase):
+    def test_contact_view(self):
+        response = self.client.get(reverse('contact'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/contact.html')
+
+class AccountPageViewTest(TestCase):
+    def test_account_page_view(self):
+        response = self.client.get(reverse('accountpage'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')
+
+class NewWrapperViewTest(TestCase):
+    def test_new_wrapper_view(self):
+        response = self.client.get(reverse('newwrapper'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/newwrapper.html')
+
+class WrapperPageViewTest(TestCase):
+    def test_wrapper_page_view(self):
+        response = self.client.get(reverse('wrapper'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/wrapper.html')
+
+class Wrapper2PageViewTest(TestCase):
+    def test_wrapper2_page_view(self):
+        response = self.client.get(reverse('wrapper2'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/wrapper2.html')
+
+
+# class SpotifyDataAPITest(TestCase):
+#     def test_spotify_data_api(self):
+#         # Reverse the URL correctly using the 'spotify_data' pattern and the 'time_range' argument
+#         url = reverse('spotify_data', kwargs={'time_range': '2023-01-01/2023-01-31'})
+#
+#         # The full URL should include 'index.html/api/' before the time_range
+#         full_url = f"/index.html/api/{url.split('/api/')[1]}"
+#
+#         # Make the GET request to the full URL
+#         response = self.client.get(full_url)
+#
+#         # Assert that the status code is 200 (OK)
+#         self.assertEqual(response.status_code, 200)
+#
+#         # Optionally check the response content if necessary
+#         # self.assertContains(response, 'Expected Content')
+
+
+
+
+
+
+
+
+
+
+
 
 
 

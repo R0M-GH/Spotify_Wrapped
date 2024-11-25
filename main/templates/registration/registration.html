@@ -14,18 +14,23 @@
         <div class="create">Create Account</div>
         <form method="POST" id="register-form" class="form">
             {% csrf_token %}
-            {{ form.non_field_errors }} <!-- Display form errors -->
+            <div class="error">
+                {{ form.non_field_errors }}
+            </div> <!-- Display form errors -->
             <div class="u">
             <!-- Add placeholder for username -->
-            {{ form.username }}
+                {{ form.username }}
+            </div>
+            <div class="u2">
+                {{form.birthday}}
             </div>
             <div class="p1">
             <!-- Add placeholder for password -->
-            {{ form.password1 }}
+                {{ form.password1 }}
             </div>
             <div class="p2">
             <!-- Add placeholder for confirm password -->
-            {{ form.password2 }}
+                {{ form.password2 }}
             </div>
             <button type = "submit" class = "btn-success">Create</button>
         </form>

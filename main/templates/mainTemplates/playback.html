@@ -17,36 +17,115 @@
         {% endfor %}
     </ul>
 
-    <script>
-        // Spotify Web Playback SDK Initialization
-        let player;
-        const token = '{{ access_token}}';  // Pass user's access token dynamically
+<script>
+    // Spotify Web Playback SDK Initialization
+    let player;
+    let deviceId;
+    const token = '{{ access_token }}'; // Pass user's access token dynamically
+    const defaultTrackUri = '{{ top_tracks.0.uri }}'; // Choose the first track as the default to play
 
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            player = new Spotify.Player({
-                name: 'Web Playback SDK Player',
-                getOAuthToken: cb => { cb(token); },
-                volume: 0.5
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        player = new Spotify.Player({
+            name: 'Web Playback SDK Player',
+            getOAuthToken: cb => { cb(token); },
+            volume: 0.5
+        });
+
+        // Connect the player
+        player.connect();
+
+        // Get the device ID
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+            deviceId = device_id; // Save the device ID for playback
+
+            // Attempt to play the default track automatically
+            autoPlayTrack(defaultTrackUri);
+        });
+
+        // Log player state
+        player.addListener('player_state_changed', state => {
+            console.log('Player State:', state);
+        });
+
+        // Handle player errors
+        player.addListener('initialization_error', ({ message }) => console.error(message));
+        player.addListener('authentication_error', ({ message }) => console.error(message));
+        player.addListener('account_error', ({ message }) => console.error(message));
+        player.addListener('playback_error', ({ message }) => console.error(message));
+    };
+
+    // Function to auto-play a track
+    function autoPlayTrack(trackUri) {
+        player.activateElement().then(() => { // Activate playback
+            fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    uris: [trackUri]  // Play the specified track
+                })
+            }).then(response => {
+                if (response.status === 204) {
+                    console.log('Track playing successfully');
+                } else {
+                    console.error('Error playing track:', response);
+                }
             });
+        }).catch(err => console.error('Error activating playback:', err));
+    }
+</script>
 
-            // Connect the player
-            player.connect();
+<!script>
+    // Spotify Web Playback SDK Initialization
+    let player;
+    let deviceId;
+    const token = '{{ access_token }}'; // Pass user's access token dynamically
+    const topTracks = {{ top_tracks|safe }}; // Pass the list of tracks as a JSON-safe array
+    let currentTrackIndex = 0; // Index of the currently playing track
 
-            // Log player state
-            player.addListener('player_state_changed', state => {
-                console.log('Player State:', state);
-            });
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        player = new Spotify.Player({
+            name: 'Web Playback SDK Player',
+            getOAuthToken: cb => { cb(token); },
+            volume: 0.5
+        });
 
-            // Handle player errors
-            player.addListener('initialization_error', ({ message }) => console.error(message));
-            player.addListener('authentication_error', ({ message }) => console.error(message));
-            player.addListener('account_error', ({ message }) => console.error(message));
-            player.addListener('playback_error', ({ message }) => console.error(message));
-        };
+        // Connect the player
+        player.connect();
 
-        // Function to play a track
-        function playTrack(trackUri) {
-            fetch('https://api.spotify.com/v1/me/player/play', {
+        // Get the device ID
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+            deviceId = device_id; // Save the device ID for playback
+
+            // Play the first track automatically
+            playTrack(topTracks[currentTrackIndex].uri);
+        });
+
+        // Log player state
+        player.addListener('player_state_changed', state => {
+            if (!state) return;
+
+            // Detect when the track ends
+            if (state.paused && state.position === 0) {
+                playNextTrack();
+            }
+        });
+
+        // Handle player errors
+        player.addListener('initialization_error', ({ message }) => console.error(message));
+        player.addListener('authentication_error', ({ message }) => console.error(message));
+        player.addListener('account_error', ({ message }) => console.error(message));
+        player.addListener('playback_error', ({ message }) => console.error(message));
+    };
+
+    // Function to play a track
+    function playTrack(trackUri) {
+        player.activateElement().then(() => { // Activate playback
+            fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -57,12 +136,23 @@
                 })
             }).then(response => {
                 if (response.status === 204) {
-                    console.log('Track playing successfully');
+                    console.log(`Now playing: ${trackUri}`);
                 } else {
                     console.error('Error playing track:', response);
                 }
             });
+        }).catch(err => console.error('Error activating playback:', err));
+    }
+
+    // Function to play the next track
+    function playNextTrack() {
+        currentTrackIndex++; // Increment the track index
+        if (currentTrackIndex < topTracks.length) {
+            playTrack(topTracks[currentTrackIndex].uri); // Play the next track
+        } else {
+            console.log('End of playlist. No more tracks to play.');
         }
-    </script>
+    }
+<!/script>
 </body>
 </html>

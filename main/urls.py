@@ -23,6 +23,7 @@ urlpatterns = [
 	path('stellar-hits/<int:page>/', views.stellar_hits, name='stellar-hits'),
 
 	path('game/', views.game, name='game'),
+	path('newwrapper/', views.newwrapper, name='game'),
 	path('accountpage/', views.account, name='game'),
 	path('welcome/', views.welcome, name='welcome'),
 	path('library/', views.library, name='library'),

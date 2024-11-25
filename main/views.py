@@ -65,6 +65,8 @@ def StellarHits(request):
 
 def StellarHits2(request):
 	return render(request, 'Spotify_Wrapper/StellarHits2.html')
+def newwrapper(request):
+	return render(request, 'Spotify_Wrapper/newwrapper.html')
 def ConstellationArtists(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
 def ConstellationArtists2(request):

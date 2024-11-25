@@ -2,7 +2,7 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <form method = "POST" id="forget-form" class="form">
+    <form method = "POST" id="login-form" class="form">
         {% csrf_token %}
         {{ form.username }}
         {{ form.password }}

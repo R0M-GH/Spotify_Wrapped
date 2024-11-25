@@ -1,10 +1,86 @@
 /* General page background */
 body {
-     background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
     background-color: #0a0c1a; /* Deep space blue */
     color: #ffffff;
     font-family: 'Arial', sans-serif;
+    position: relative;
+    overflow: hidden; /* Prevents stars from spilling out */
 }
+
+/* Star container */
+/* Stars styling */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1; /* Ensure stars are behind other content */
+}
+
+.star {
+  position: absolute;
+  width: 8px;  /* Larger size */
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  animation: moveStar linear infinite;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5); /* Trail effect */
+}
+
+/* Keyframes to animate the stars */
+@keyframes moveStar {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(50vw, 50vh); /* Change movement path */
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(100vw, 100vh); /* Final position */
+    opacity: 0;
+  }
+}
+
+/* Ensure random star positions and delays for each one */
+.star:nth-child(1) {
+  top: 30%;
+  left: 10%;
+  animation-duration: 12s;
+  animation-delay: 0s;
+}
+
+.star:nth-child(2) {
+  top: 50%;
+  left: 20%;
+  animation-duration: 15s;
+  animation-delay: 1s;
+}
+
+.star:nth-child(3) {
+  top: 70%;
+  left: 40%;
+  animation-duration: 20s;
+  animation-delay: 3s;
+}
+
+.star:nth-child(4) {
+  top: 10%;
+  left: 80%;
+  animation-duration: 18s;
+  animation-delay: 5s;
+}
+
+.star:nth-child(5) {
+  top: 40%;
+  left: 60%;
+  animation-duration: 25s;
+  animation-delay: 2s;
+}
+
 
 /* Main container */
 #all {
@@ -19,21 +95,18 @@ body {
     gap: 20px; /* Space between high score and play button */
 }
 
-
 /* Header styling */
 .header {
     display: flex;
     justify-content: center; /* Centers items horizontally */
     align-items: center;     /* Centers items vertically */
     background-color: #1e1f35; /* Dark space gray */
-    flex-direction:column;
+    flex-direction: column;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px 2px #3d3d5c, 0px 0px 20px #000; /* Faint outer glow */
     transition: box-shadow 0.3s ease;
 }
-
-
 
 /* Title styling */
 #title {
@@ -70,7 +143,7 @@ body {
 
 /* Score display styling */
 .scores {
-    justify-content:left;
+    justify-content: left;
     position: absolute;
     top: 20px;
     left: 20px;
@@ -138,53 +211,287 @@ body {
     color: #8a2be2;
     text-shadow: 0px 0px 5px #8a2be2;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .instructions p {
     font-size: 16px;
-    margin-bottom: 15px;
     color: #d1d1e0;
+    text-align: center;
 }
 
 /* Game mode options styling */
-.game-options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.game-mode-option {
+/* General style for the custom planet icons */
+.planet-icon {
+    display: inline-block;
+    width: 30px; /* Slightly larger for better visibility */
+    height: 30px;
+    border-radius: 50%;
     margin-right: 10px;
-    accent-color: #4a00e0; /* Matches main button color */
-    cursor: pointer;
+    position: relative; /* For adding rings or other decorations */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Subtle outer glow */
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
+/* Classic mode planet */
+.classic {
+    background: radial-gradient(circle, #8a2be2 30%, #4a00e0 80%);
+}
+
+/* Bouncing mode planet */
+.bouncing {
+    background: radial-gradient(circle, #ff477e 30%, #b8004c 80%);
+    border: 2px solid #ff477e; /* Adds a faint outline */
+}
+
+/* Shooting mode planet */
+.shooting {
+    background: radial-gradient(circle, #ff9900 30%, #e25822 80%);
+    box-shadow: 0px 0px 10px 4px rgba(255, 153, 0, 0.5); /* Glow effect */
+}
+
+.gliding {
+    background: radial-gradient(circle, #ff0000 30%, #008000 80%); /* Red to Green gradient */
+    box-shadow: 0px 0px 15px 4px rgba(255, 0, 0, 0.7), 0px 0px 15px 4px rgba(0, 128, 0, 0.7); /* Red and Green glow effect */
+}
+
+
+/* Adding a ring to planets */
+.planet-icon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    background: transparent;
+}
+
+/* Change the planet icon style when selected */
+input[type="radio"]:checked + .planet-icon {
+    border: 3px solid #ff9900; /* Highlight when selected */
+    transform: scale(1.1); /* Slightly enlarge */
+    transition: transform 0.3s ease;
+}
+
+/* Game option labels */
 .game-options label {
     font-size: 16px;
     color: #5de5e7; /* Light cyan */
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
+/* Game options hover effect */
 .game-options label:hover {
-    color: #8a2be2; /* Change color on hover */
+    color: #8a2be2; /* Change text color on hover */
+    transform: scale(1.05); /* Slightly enlarge */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+/* Christmas-themed label container */
+#christmas-switch-container {
+    display: flex;
+    align-items: center;
+    gap: 0; /* Remove default spacing */
+    margin-top: 20px;
+    justify-content: center; /* Center the switch and label */
+    position: relative; /* For precise control */
 }
 
-.chi{
-    display: flex;
-    justify-content: center; /* Centers items horizontally */
-    align-items: center;     /* Centers items vertically */
-    background-color: #1e1f35; /* Dark space gray */
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px 2px #3d3d5c, 0px 0px 20px #000; /* Faint outer glow */
+/* Christmas-themed label */
+#christmas-switch-container label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff0000; /* Festive red */
+    font-family: 'Comic Sans MS', 'Brush Script MT', cursive; /* Playful font */
+    text-shadow: 1px 1px 2px #ffffff, 0 0 5px #ff9900; /* Snowy and glowing effect */
+    position: relative;
+}
+
+/* Add decorative elements like holly leaves */
+#christmas-switch-container label::before {
+    content: '❄️'; /* Snowflake emoji */
+    position: absolute;
+    top: -10px;
+    left: -20px;
+    font-size: 14px;
+}
+
+#christmas-switch-container label::after {
+    content: '🎄'; /* Christmas tree emoji */
+    position: absolute;
+    top: -10px;
+    right: -20px;
+    font-size: 14px;
+}
+
+/* Toggle switch styling */
+#christmas-switch {
+    appearance: none; /* Removes default styling */
+    position: relative;
+    width: 50px;
+    height: 25px;
+    background: #ccc; /* Default background color */
+    border-radius: 15px;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.3s ease;
+    margin-left: 25px; /* Move switch 25px right of the label */
+}
+
+#christmas-switch::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: #fff; /* Default toggle color */
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+#christmas-switch:checked {
+    background: #ff477e; /* Active background color */
+}
+
+#christmas-switch:checked::before {
+    transform: translateX(25px); /* Moves toggle to the right */
+}
+
+/* General page background for Christmas theme */
+body.christmas-theme {
+    background: #4f753b;
+    background-color: #4f753b;
+    color: #ff0000; /* Red text */
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* Header for Christmas theme */
+body.christmas-theme .header {
+    background-color: #d1ffd1; /* Light green */
+    color: #ff0000; /* Red text */
+    box-shadow: none; /* No box shadow */
+    border: none; /* No border */
+}
+
+/* Title styling for Christmas theme */
+body.christmas-theme #title {
+    color: #ff0000; /* Red text */
+    text-shadow: 0px 0px 10px #ff6347, 0px 0px 20px #32cd32; /* Red and green glow */
+    font-weight: bold; /* Bold red text */
+}
+
+/* Instructions section for Christmas theme */
+body.christmas-theme .instructions {
+    background-color: #d1ffd1; /* light green background */
+    color: #32cd32; /* Green text */
+    font-weight: bold; /* Bold green text */
+    text-align: center; /* Centered text */
+    padding: 15px;
+    box-shadow: none; /* No shadow */
+    border: none; /* No border */
+}
+
+/* Instructions title and text styling */
+body.christmas-theme .instructions h2,
+body.christmas-theme .instructions h3,
+body.christmas-theme .instructions p {
+    color: #4f753b; /* Green text */
+    text-shadow: 0px 0px 10px #ff6347; /* Red glow */
+    font-weight: normal; /* Normal weight for description */
+}
+
+/* Button styles for Christmas theme */
+body.christmas-theme .button-styles {
+    background-color: #ff0000; /* Bright red */
+    color: #ffffff; /* White text */
+    border: none; /* No border */
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+body.christmas-theme .button-styles:hover {
+    background-color: #32cd32; /* Bright green */
+}
+
+/* Game options menu for Christmas theme */
+body.christmas-theme .game-options {
+    background-color: #FAF9F6; /* Soft white background */
+    color: #008000; /* Green text */
+    padding: 10px;
+    border: none; /* No border */
+    box-shadow: none; /* No shadow */
+}
+
+/* Option labels for game options */
+body.christmas-theme .game-options label {
+    color: #ff0000; /* Red text */
+    font-weight: bold;
+}
+
+body.christmas-theme .game-options label:hover {
+    color: #32cd32; /* Green text on hover */
+}
+
+/* Circle button styling for Christmas theme */
+body.christmas-theme .circle {
+    background-color: #ff6347; /* Tomato red */
+    box-shadow: 0px 0px 10px 3px #32cd32; /* Green glow */
+    border: none; /* No border */
+    padding: 10px;
     transition: box-shadow 0.3s ease;
 }
 
-
-/* Christmas switch styling */
-#christmas-switch {
-    position: relative;
-    top: 10px;
-    margin: 0 10px;
-    accent-color: #ff477e; /* Same as circle color */
+body.christmas-theme .circle:active {
+    box-shadow: none; /* No highlight on click */
 }
+
+/* Score headings and text styling */
+body.christmas-theme .scores h2 {
+    color: #32cd32; /* Green text */
+    text-shadow: 0px 0px 5px #ff0000; /* Red glow */
+    font-weight: bold;
+}
+
+body.christmas-theme .scores p {
+    color: #ff0000; /* Red text */
+    text-shadow: 0px 0px 5px #32cd32; /* Green glow */
+}
+
+/* Christmas planet icons */
+body.christmas-theme .planet-icon {
+    box-shadow: 0 0 15px #ff0000, 0 0 15px #32cd32; /* Red and green glow */
+}
+
+/* No borders for all elements in Christmas theme */
+body.christmas-theme * {
+    border: none !important; /* Ensures no borders for all elements */
+}
+
+/* Toggle switch for Christmas theme */
+body.christmas-theme #christmas-switch {
+    background: #32cd32; /* Green background */
+}
+
+body.christmas-theme #christmas-switch::before {
+    background: #ff0000; /* Red toggle */
+}
+
+/* Main container and other elements */
+body.christmas-theme #all,
+body.christmas-theme .pb {
+    border: none; /* No border */
+}
+
+#chio {
+  display: none; /* Make it invisible by default */
+}
+

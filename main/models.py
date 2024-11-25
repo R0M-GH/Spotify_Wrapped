@@ -1,8 +1,9 @@
+from datetime import datetime
+
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.db.models import JSONField
-from django.utils import timezone
 
 
 # Create your models here.
@@ -32,9 +33,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 	is_superuser = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)
 
-	date_joined = models.DateTimeField(default=timezone.now)
+	date_joined = models.DateTimeField(default=datetime.now(tz=None))
 
-	birthday = models.DateField(default=timezone.now)
+	birthday = models.DateField(default=datetime.now(tz=None))
 
 	spotify_access_token = models.CharField(max_length=255, default='')
 	spotify_refresh_token = models.CharField(max_length=255, default='')
@@ -53,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Wraps(models.Model):
 	username = models.CharField(max_length=50, unique=False)
-	creation_date = models.DateTimeField(default=timezone.now)
+	creation_date = models.DateTimeField(default=datetime.now(tz=None))
 	wrap_json = JSONField()
 
 	def __str__(self):

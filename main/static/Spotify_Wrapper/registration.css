@@ -2,16 +2,16 @@ body {
     background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
     margin: 0;
     padding: 0;
-    overflow: hidden;
     height: 100%;
     font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 .create {
      color: #faf6e7;
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 180px;
-    left: 15%;
+    font-size: 1000%;
+    left: 19%;
     top: 10%;
     width: 100%;
 }
@@ -38,6 +38,9 @@ body {
     position: absolute;
     left:35%;
     top: 50%;
+}
+.u2 {
+    width: 31%;
 }
 
 .p1 input {

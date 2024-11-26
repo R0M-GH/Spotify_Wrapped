@@ -6,32 +6,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/newwrapper.css'%}">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/newwrapper.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
 
 </head>
 <body>
-    <header>
-        <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
- <div class="hamburger-menu">
-    <div class="hamburger" id="hamburger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-    </div>
+<header>
+    <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+    <div class="hamburger-menu">
+        <div class="hamburger" id="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <nav class="menu" id="menu">
-      <ul>
+<nav class="menu" id="menu">
+    <ul>
         <li><a href="/library">Library</a></li>
         <li><a href="/game">Game</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/accountpage">Account</a></li>
         <li><a href="/login">Logout</a></li>
-      </ul>
-    </nav>
-  </div>
-<div class="Cosmic-Song-Count" style="user-select: none;"> New Wrapper! </div>
+    </ul>
+</nav>
+</div>
+<div class="Cosmic-Song-Count" style="user-select: none;"> New Wrapper!</div>
+<script>
+	function makeWrapped(term) {
+		const response = fetch(`api/make_wrapped/${term}>/5/`, {method: 'POST'})
+		if (response.ok) {
+			const data = response.json;
+			alert('Wrapped created successfully');
+			localStorage.setItem('wrap_dt', data.creationTime);
+			localStorage.setItem('wrap_term', data.term)
+		} else {
+			console.error('Error creating wrapped');
+		}
+	}
+</script>
 </body>
 </html>

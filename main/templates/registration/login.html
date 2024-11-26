@@ -1,15 +1,37 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Cosmic Tunes Login Page">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - Cosmic Tunes</title>
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/login.css' %}">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="Cosmic Tunes Login Page">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {#    <title>Login - Cosmic Tunes</title>#}
+        <link rel="stylesheet" href="{% static 'Spotify_Wrapper/login.css' %}">
+            <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+    </head>
+    <body>
+        <header>
+            <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+            <div class="hamburger-menu">
+                <div class="hamburger" id="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </header>
+        <nav class="menu" id="menu">
+        <ul>
+            <li><a href="/library">Library</a></li>
+            <li><a href="/game">Game</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/accountpage">Account</a></li>
+            <li><a href="/login">Logout</a></li>
+        </ul>
+        </nav>
+
+    <script src="script.js"></script>
     <header>
         <a class="CosmicTunes" href="/">Cosmic Tunes</a>
     </header>
@@ -24,6 +46,11 @@
             <div class="form-group2">
                 {{ form.password }}
             </div>
+
+            {% if error %}
+                <p id = "loginErrorMessage" class = "errorMessage">The username or password is incorrect! If you don't have an account create one below!</p>
+            {% endif %}
+
             <a href="/signup" class="create">Create</a>
             <button type="submit" class="btn-success">Login</button>
             <o>h</o>

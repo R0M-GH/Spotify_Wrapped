@@ -125,9 +125,31 @@ def stellar_hits(request):
 	return render(request, f'Spotify_Wrapper/StellarHits{request.session.get("page"), ""}.html')
 
 
+# def register(request):
+# 	if request.method == 'POST':
+# 		form = RegistrationForm(request.POST)
+# 		if form.is_valid():
+# 			username = form.cleaned_data['username']
+# 			password1 = form.cleaned_data['password1']
+# 			birthday = form.cleaned_data['birthday']
+#
+# 			# Check if username already exists in User model
+# 			if User.objects.filter(username=username).exists():
+# 				return render(request, 'registration/registration.html', {"form": form, 'error': True})
+#
+# 			# Creates users
+# 			user = User.objects.create_user(username=username, password=password1)
+# 			user.birthday = birthday
+# 			user.save()
+# 			return redirect("user_login")
+# 	else:
+# 		form = RegistrationForm()
+# 	return render(request, 'registration/registration.html', {"form": form})
 def register(request):
 	if request.method == 'POST':
 		form = RegistrationForm(request.POST)
+
+		# Check if form is valid
 		if form.is_valid():
 			username = form.cleaned_data['username']
 			password1 = form.cleaned_data['password1']
@@ -135,15 +157,23 @@ def register(request):
 
 			# Check if username already exists in User model
 			if User.objects.filter(username=username).exists():
-				return render(request, 'registration/registration.html', {"form": form, 'error': True})
+				return render(request, 'registration/registration.html', {
+					"form": form,
+					'error': 'An account with this username already exists.',
+				})
 
-			# Creates users
+			# Create the new user
 			user = User.objects.create_user(username=username, password=password1)
 			user.birthday = birthday
 			user.save()
 			return redirect("user_login")
+
+		else:
+			return render(request, 'registration/registration.html', {"form": form})
+
 	else:
 		form = RegistrationForm()
+
 	return render(request, 'registration/registration.html', {"form": form})
 
 

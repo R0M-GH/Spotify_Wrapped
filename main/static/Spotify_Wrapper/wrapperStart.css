@@ -22,45 +22,24 @@ header {
   left: 70px;
   z-index: 9999;
 }
-.mainplanet444 {
-    user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  top: 20%;
-  left: -20%;
-  position: absolute;
-    height: calc(100vh - 60px);
-  img {
-    width: 120%; /
-    height: auto;
-  }
-}
-.mainplanet444:hover {
-    user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  top: 15%;
-  left: -20%;
-  position: absolute;
-    height: calc(100vh - 60px);
-  img {
-    width: 130%; /
-    height: auto;
-  }
-}
-.Cosmic-Song-Count {
-color: #faf6e7;
-right: -45%;
-font-family: 'ChakraPetch-Regular', sans-serif;
-font-size: 4vw;
-font-weight: 400;
-position: relative;
-margin-bottom: -5%;
-margin-top: 4%;
+.start {
+    height: 100%;
+    width: 100%;
+    z-index: 0;
 }
 
+
+@keyframes blinkBackground {
+    0% {
+        background: #334AA8;
+    }
+    50% {
+        background: #0E152F;
+    }
+    100% {
+        background: #334AA8;
+    }
+}
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;
   top: 10px;
@@ -139,46 +118,4 @@ margin-top: 4%;
 .menu li a:hover {
       color: white;
 }
-.two {
-  position: absolute;
-  right: -5%;
-  top: 65%;
-  transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 40%;
-  object-fit: cover;
-  z-index: 5000;
-}
-.two:hover {
-  position: absolute;
-  right: -5%;
-  top: 65%;
-  transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 55%;
-  object-fit: cover;
-  z-index: 5000;
-}
-.Genre-Breakdown {
-  color: #faf6e7;
-  font-family: 'ChakraPetch-Regular', sans-serif;
-  position: absolute;
-  right: 10%;
-  top: 62.5%;
-  font-size: 200%;
-  animation: blinkColor 2s infinite;
-  user-select: none;
-  text-decoration: none;
-  z-index: 5000;
-}
-@keyframes blinkColor {
-    0% {
-        color: #faf6e7; /* Initial color (lighter) */
-    }
-    50% {
-        color: #9C9A91; /* Darker shade of the initial color */
-    }
-    100% {
-        color: #faf6e7; /* Return to the original color */
-    }
-}
+

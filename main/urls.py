@@ -21,7 +21,7 @@ urlpatterns = [
 	path('artists-constellation/<int:page>/', views.artist_constellation, name='artist-constellation'),
 	path('genre-nebula/<int:page>/', views.genre_nebula, name='genre-nebula'),
 	path('stellar-hits/<int:page>/', views.stellar_hits, name='stellar-hits'),
-
+	path('wrapperStart/', views.wrapperStart, name='game'),
 	path('game/', views.game, name='game'),
 	path('newwrapper/', views.newwrapper, name='game'),
 	path('accountpage/', views.account, name='game'),
@@ -35,17 +35,15 @@ urlpatterns = [
 	path('GenreNebulas2/', views.GenreNebulas2, name='welcome'),
 	path('StellarHits/', views.StellarHits, name='welcome'),
 	path('StellarHits2/', views.StellarHits2, name='welcome'),
-path('ConstellationArtists/', views.ConstellationArtists, name='welcome'),
-path('ConstellationArtists2/', views.ConstellationArtists2, name='welcome'),
+	path('ConstellationArtists/', views.ConstellationArtists, name='welcome'),
+	path('ConstellationArtists2/', views.ConstellationArtists2, name='welcome'),
 	path('wrapper2/', views.wrapper2, name='welcome'),
 	path('contact/', views.contact, name='contact'),
 	path('summary/', views.summary, name='summary'),
-path('summary2/', views.summary2, name='summary2'),
+	path('summary2/', views.summary2, name='summary2'),
 
 	path('api/make-wrapped/<str:time_range>/<int:limit>/', views.make_wrapped, name='make-wrapped'),
-	path('api/make-wrapped/<str:dt>/', views.get_wrapped, name='get-wrapped'),
-	path('api/<str:msg>/<str:data>/', views.llama_request, name='llama_request'),
-
+	path('api/get-wrapped/<str:dt>/<str:time_range>', views.get_wrapped, name='get-wrapped'),
 
 	# TEMPORARY (for testing)
 	path('api/make-wrapped/', views.make_wrapped, name='make_wrapped'),

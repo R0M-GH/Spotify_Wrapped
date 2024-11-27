@@ -133,7 +133,7 @@
     <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Cosmic Tunes Login Page">
+    <meta name="description" content="Cosmic Tunes Register Page">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>create - Cosmic Tunes</title>
         <link rel="stylesheet" href="{% static 'Spotify_Wrapper/registration.css' %}">
@@ -141,39 +141,38 @@
     <body>
     <div class="form-container">
         <div class="create">Create Account</div>
-        {% if error %}
-          <div class="error-message" style="color: red; font-weight: bold; margin-bottom: 20px;">
-            {{ error }}
-          </div>
-        {% endif %}
         <form method="POST" id="register-form" class="form">
             {% csrf_token %}
+
             <!-- Display general form errors -->
             <div class="error">
                 {{ form.non_field_errors }}
             </div>
-            <!-- Display specific error if account already exists -->
-            {% if form.username.errors %}
-                <div class="error" id="account-exists-error" style="color: red;">
-                    Account already exists. Please choose a different username.
-                </div>
-            {% endif %}
+
+            <!-- Username and password fields -->
             <div class="u">
-            <!-- Add placeholder for username -->
                 {{ form.username }}
             </div>
             <div class="u2">
-                {{form.birthday}}
+                {{ form.birthday }}
             </div>
             <div class="p1">
-            <!-- Add placeholder for password -->
                 {{ form.password1 }}
             </div>
             <div class="p2">
-            <!-- Add placeholder for confirm password -->
                 {{ form.password2 }}
             </div>
+
+            <!-- Submit button -->
             <button type="submit" id="register-button" class="btn-success create-account-button" disabled>Create Account</button>
+
+            <!-- Show error message only if an error occurs (like account already exists) -->
+            {% if error %}
+                <div class="error-message" style="color: red; font-weight: bold; text-align: center;
+                    position: fixed; bottom: 10%; left: 50%; transform: translateX(-50%);">
+                    {{ error }}
+                </div>
+            {% endif %}
         </form>
     </div>
 
@@ -267,5 +266,3 @@
     </script>
     </body>
 {% endblock %}
-
-

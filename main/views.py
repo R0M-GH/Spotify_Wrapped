@@ -146,35 +146,44 @@ def stellar_hits(request):
 # 		form = RegistrationForm()
 # 	return render(request, 'registration/registration.html', {"form": form})
 def register(request):
-	if request.method == 'POST':
-		form = RegistrationForm(request.POST)
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
 
-		# Check if form is valid
-		if form.is_valid():
-			username = form.cleaned_data['username']
-			password1 = form.cleaned_data['password1']
-			birthday = form.cleaned_data['birthday']
+        # Check if form is valid
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password1 = form.cleaned_data['password1']
+            birthday = form.cleaned_data['birthday']
 
-			# Check if username already exists in User model
-			if User.objects.filter(username=username).exists():
-				return render(request, 'registration/registration.html', {
-					"form": form,
-					'error': 'An account with this username already exists.',
-				})
+            # Check if username already exists in User model
+            if User.objects.filter(username=username).exists():
+                # If the username exists, show an error message
+                return render(request, 'registration/registration.html', {
+                    "form": form,
+                    'error': 'An account with this username already exists.',
+                })
 
-			# Create the new user
-			user = User.objects.create_user(username=username, password=password1)
-			user.birthday = birthday
-			user.save()
-			return redirect("user_login")
+            # Create the new user
+            user = User.objects.create_user(username=username, password=password1)
+            user.birthday = birthday
+            user.save()
 
-		else:
-			return render(request, 'registration/registration.html', {"form": form})
+            # Redirect to the login page
+            return redirect("user_login")
 
-	else:
-		form = RegistrationForm()
+        else:
+            # If form is invalid, re-render the registration page with form errors
+            return render(request, 'registration/registration.html', {
+                "form": form,
+            })
 
-	return render(request, 'registration/registration.html', {"form": form})
+    else:
+        # GET request: render the empty registration form
+        form = RegistrationForm()
+
+    return render(request, 'registration/registration.html', {
+        "form": form,
+    })
 
 
 # def user_login(request):

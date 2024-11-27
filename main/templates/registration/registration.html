@@ -1,10 +1,139 @@
+{#{% block title %}Register{% endblock %}#}
+{#{% load static %}#}
+{#{% block content %}#}
+{#    <head>#}
+{#    <meta charset="UTF-8">#}
+{#    <meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+{#    <meta name="description" content="Cosmic Tunes Login Page">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
+{#    <title>create - Cosmic Tunes</title>#}
+{#        <link rel="stylesheet" href="{% static 'Spotify_Wrapper/registration.css' %}">#}
+{#    </head>#}
+{#    <body>#}
+{#    <div class="form-container">#}
+{#        <div class="create">Create Account</div>#}
+{#        <form method="POST" id="register-form" class="form">#}
+{#            {% csrf_token %}#}
+{#            <div class="error">#}
+{#                {{ form.non_field_errors }}#}
+{#            </div> <!-- Display form errors -->#}
+{#            <div class="u">#}
+{#            <!-- Add placeholder for username -->#}
+{#                {{ form.username }}#}
+{#            </div>#}
+{#            <div class="u2">#}
+{#                {{form.birthday}}#}
+{#            </div>#}
+{#            <div class="p1">#}
+{#            <!-- Add placeholder for password -->#}
+{#                {{ form.password1 }}#}
+{#            </div>#}
+{#            <div class="p2">#}
+{#            <!-- Add placeholder for confirm password -->#}
+{#                {{ form.password2 }}#}
+{#            </div>#}
+{#            <button type="submit" id="register-button" class="btn-success create-account-button" disabled>Create Account</button>#}
+{#        </form>#}
+{#    </div>#}
+{##}
+{#    <!-- Password requirements list, centered and placed at the bottom -->#}
+{#    <ul class="password-requirements" id="password-requirements">#}
+{#        <li id="length-requirement">At least 8 characters</li>#}
+{#        <li id="uppercase-requirement">At least one uppercase letter</li>#}
+{#        <li id="number-requirement">At least one number</li>#}
+{#        <li id="special-char-requirement">At least one special character (e.g., !@#$%^&*)</li>#}
+{#        <li id="not-common-password-requirement">Not a common password</li>#}
+{#        <li id="not-numeric-requirement">Not entirely numeric</li>#}
+{#        <li id="match-password-requirement">Passwords must match</li>#}
+{#    </ul>#}
+{##}
+{#    <img class="one" src="{% static "Spotify_Wrapper/image/login.png" %}">#}
+{##}
+{#    <script>#}
+{#        // Function for password validation#}
+{#        function validatePassword() {#}
+{#            const password = document.getElementById('id_password1').value;#}
+{#            const confirmPassword = document.getElementById('id_password2').value;#}
+{##}
+{#            const lengthRequirement = document.getElementById('length-requirement');#}
+{#            const uppercaseRequirement = document.getElementById('uppercase-requirement');#}
+{#            const numberRequirement = document.getElementById('number-requirement');#}
+{#            const specialCharRequirement = document.getElementById('special-char-requirement');#}
+{#            const notCommonPasswordRequirement = document.getElementById('not-common-password-requirement');#}
+{#            const notNumericRequirement = document.getElementById('not-numeric-requirement');#}
+{#            const matchPasswordRequirement = document.getElementById('match-password-requirement');#}
+{##}
+{#            let isValid = true; // Track overall validity#}
+{##}
+{#            // Check if password is at least 8 characters long#}
+{#            if (password.length >= 8) {#}
+{#                lengthRequirement.classList.add('valid');#}
+{#            } else {#}
+{#                lengthRequirement.classList.remove('valid');#}
+{#                isValid = false;#}
+{#            }#}
+{##}
+{#            // Check if password contains an uppercase letter#}
+{#            if (/[A-Z]/.test(password)) {#}
+{#                uppercaseRequirement.classList.add('valid');#}
+{#            } else {#}
+{#                uppercaseRequirement.classList.remove('valid');#}
+{#                isValid = false;#}
+{#            }#}
+{##}
+{#            // Check if password contains a number#}
+{#            if (/\d/.test(password)) {#}
+{#                numberRequirement.classList.add('valid');#}
+{#            } else {#}
+{#                numberRequirement.classList.remove('valid');#}
+{#                isValid = false;#}
+{#            }#}
+{##}
+{#            // Check if password contains a special character#}
+{#            if (/[^A-Za-z0-9]/.test(password)) {#}
+{#                specialCharRequirement.classList.add('valid');#}
+{#            } else {#}
+{#                specialCharRequirement.classList.remove('valid');#}
+{#                isValid = false;#}
+{#            }#}
+{##}
+{#            // Check if password is not entirely numeric#}
+{#            if (!/^\d+$/.test(password)) {#}
+{#                notNumericRequirement.classList.add('valid');#}
+{#            } else {#}
+{#                notNumericRequirement.classList.remove('valid');#}
+{#                isValid = false;#}
+{#            }#}
+{##}
+{#            // Check if passwords match#}
+{#            if (password && confirmPassword && password === confirmPassword) {#}
+{#                matchPasswordRequirement.classList.add('valid');#}
+{#            } else {#}
+{#                matchPasswordRequirement.classList.remove('valid');#}
+{#                isValid = false;#}
+{#            }#}
+{##}
+{#            // Mark common password as valid for now (server-side check)#}
+{#            notCommonPasswordRequirement.classList.add('valid');#}
+{##}
+{#            // Enable or disable the submit button based on validity#}
+{#            document.getElementById('register-button').disabled = !isValid;#}
+{#        }#}
+{##}
+{#        // Listen for changes in both password fields#}
+{#        document.getElementById('id_password1').addEventListener('input', validatePassword);#}
+{#        document.getElementById('id_password2').addEventListener('input', validatePassword);#}
+{#    </script>#}
+{#    </body>#}
+{#{% endblock %}#}
+
 {% block title %}Register{% endblock %}
 {% load static %}
 {% block content %}
     <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Cosmic Tunes Login Page">
+    <meta name="description" content="Cosmic Tunes Register Page">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>create - Cosmic Tunes</title>
         <link rel="stylesheet" href="{% static 'Spotify_Wrapper/registration.css' %}">
@@ -14,27 +143,126 @@
         <div class="create">Create Account</div>
         <form method="POST" id="register-form" class="form">
             {% csrf_token %}
+
+            <!-- Display general form errors -->
             <div class="error">
                 {{ form.non_field_errors }}
-            </div> <!-- Display form errors -->
+            </div>
+
+            <!-- Username and password fields -->
             <div class="u">
-            <!-- Add placeholder for username -->
                 {{ form.username }}
             </div>
             <div class="u2">
-                {{form.birthday}}
+                {{ form.birthday }}
             </div>
             <div class="p1">
-            <!-- Add placeholder for password -->
                 {{ form.password1 }}
             </div>
             <div class="p2">
-            <!-- Add placeholder for confirm password -->
                 {{ form.password2 }}
             </div>
-            <button type = "submit" class = "btn-success">Create</button>
+
+            <!-- Submit button -->
+            <button type="submit" id="register-button" class="btn-success create-account-button" disabled>Create Account</button>
+
+            <!-- Show error message only if an error occurs (like account already exists) -->
+            {% if error %}
+                <div class="error-message" style="color: red; font-weight: bold; text-align: center;
+                    position: fixed; bottom: 10%; left: 50%; transform: translateX(-50%);">
+                    {{ error }}
+                </div>
+            {% endif %}
         </form>
     </div>
-                <img class="one" src="{% static "Spotify_Wrapper/image/login.png" %}">
+
+    <!-- Password requirements list, centered and placed at the bottom -->
+    <ul class="password-requirements" id="password-requirements">
+        <li id="length-requirement">At least 8 characters</li>
+        <li id="uppercase-requirement">At least one uppercase letter</li>
+        <li id="number-requirement">At least one number</li>
+        <li id="special-char-requirement">At least one special character (e.g., !@#$%^&*)</li>
+        <li id="not-common-password-requirement">Not a common password</li>
+        <li id="not-numeric-requirement">Not entirely numeric</li>
+        <li id="match-password-requirement">Passwords must match</li>
+    </ul>
+
+    <img class="one" src="{% static "Spotify_Wrapper/image/login.png" %}">
+
+    <script>
+        // Function for password validation
+        function validatePassword() {
+            const password = document.getElementById('id_password1').value;
+            const confirmPassword = document.getElementById('id_password2').value;
+
+            const lengthRequirement = document.getElementById('length-requirement');
+            const uppercaseRequirement = document.getElementById('uppercase-requirement');
+            const numberRequirement = document.getElementById('number-requirement');
+            const specialCharRequirement = document.getElementById('special-char-requirement');
+            const notCommonPasswordRequirement = document.getElementById('not-common-password-requirement');
+            const notNumericRequirement = document.getElementById('not-numeric-requirement');
+            const matchPasswordRequirement = document.getElementById('match-password-requirement');
+
+            let isValid = true; // Track overall validity
+
+            // Check if password is at least 8 characters long
+            if (password.length >= 8) {
+                lengthRequirement.classList.add('valid');
+            } else {
+                lengthRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if password contains an uppercase letter
+            if (/[A-Z]/.test(password)) {
+                uppercaseRequirement.classList.add('valid');
+            } else {
+                uppercaseRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if password contains a number
+            if (/\d/.test(password)) {
+                numberRequirement.classList.add('valid');
+            } else {
+                numberRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if password contains a special character
+            if (/[^A-Za-z0-9]/.test(password)) {
+                specialCharRequirement.classList.add('valid');
+            } else {
+                specialCharRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if password is not entirely numeric
+            if (!/^\d+$/.test(password)) {
+                notNumericRequirement.classList.add('valid');
+            } else {
+                notNumericRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if passwords match
+            if (password && confirmPassword && password === confirmPassword) {
+                matchPasswordRequirement.classList.add('valid');
+            } else {
+                matchPasswordRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Mark common password as valid for now (server-side check)
+            notCommonPasswordRequirement.classList.add('valid');
+
+            // Enable or disable the submit button based on validity
+            document.getElementById('register-button').disabled = !isValid;
+        }
+
+        // Listen for changes in both password fields
+        document.getElementById('id_password1').addEventListener('input', validatePassword);
+        document.getElementById('id_password2').addEventListener('input', validatePassword);
+    </script>
     </body>
 {% endblock %}

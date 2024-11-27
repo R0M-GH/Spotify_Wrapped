@@ -88,11 +88,11 @@ class UserModelTest(TestCase):
 class UrlTests(SimpleTestCase):
 
     def test_login_url_resolves(self):
-        url = reverse('login')
+        url = reverse('user_login')
         self.assertEqual(resolve(url).func, login)
 
     def test_home_url_resolves(self):
-        url = reverse('home-page')
+        url = reverse('home')
         self.assertEqual(resolve(url).func, home)
 
     def test_registration_url_resolves(self):

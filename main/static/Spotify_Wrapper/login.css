@@ -195,3 +195,15 @@ body {
 .menu li a:hover {
       color: white;
 }
+
+.error-message {
+    color: red;
+    font-size: 2vw; /* Using viewport width for responsive font size */
+    text-align: center; /* Horizontally center the text */
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    position: absolute; /* Position it absolutely */
+    bottom: 25%; /* Position at the lower quarter of the page */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%); /* Adjust for perfect centering */
+    width: 100%; /* Ensure it takes full width of its container */
+}

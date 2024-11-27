@@ -24,6 +24,14 @@ header {
   left: 70px;
   z-index: 9999;
 }
+
+.CosmicTunes:hover {
+    color: #fff; /* Change the text color for contrast */
+    background-color: #4313ca; /* Add a background color */
+    padding: 3px 5px; /* Add some padding for better appearance */
+    border-radius: 25px; /* Optional: round the edges */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 .Cosmic-Song-Count {
     color: #faf6e7;
     text-align: center;
@@ -212,4 +220,25 @@ header {
     width: 50%; /
     height: auto;
   }
+}
+
+.description {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: #ece9e9; /* Neutral text color */
+    font-size: 2rem; /* Base font size */
+    line-height: 1.5; /* Comfortable line spacing */
+    margin: 10% 10% 10% 10%;/* Spacing around the text */
+    text-align: center;
+    padding: 2px 5px;
+    /*padding-left: 10%;*/
+    /*padding-right: 10%;*/
+    /* Justifies the text for a clean look */
+}
+
+.description:hover {
+    color: #fff; /* Change the text color for contrast */
+    background-color: #4313ca; /* Add a background color */
+    padding: 2px 5px; /* Add some padding for better appearance */
+    border-radius: 50px; /* Optional: round the edges */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Darker green on hover for contrast */
 }

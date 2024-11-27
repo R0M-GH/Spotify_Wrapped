@@ -11,41 +11,42 @@
 
 </head>
 <body>
-    <header>
-        <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
- <div class="hamburger-menu">
-    <div class="hamburger" id="hamburger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-    </div>
+<header>
+    <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+    <div class="hamburger-menu">
+        <div class="hamburger" id="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <nav class="menu" id="menu">
-      <ul>
+<nav class="menu" id="menu">
+    <ul>
+
         <li><a href="/library">Library</a></li>
         <li><a href="/game">Game</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/accountpage">Account</a></li>
         <li><a href="/login">Logout</a></li>
-      </ul>
-    </nav>
-  </div>
-     <div class="Cosmic-Song-Count" style="user-select: none;"> Cosmic Song Count </div>
-    <a class="mainplanet" href="/wrapper2">
-        <img src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet.png" %}" alt="Centered Image">
+    </ul>
+</nav>
+</div>
+<div class="Cosmic-Song-Count" style="user-select: none;"> Cosmic Song Count</div>
+<a class="mainplanet" href="/wrapper2">
+    <img src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet.png" %}" alt="Centered Image">
+</a>
+<div class="secondPlanet">
+    <a class="Genre-Breakdown" href="/GenreNebulas"> Genre Nebula's</a>
+    <a class="TopArtists" href="/ConstellationArtists/"> Constellation of Artists</a>
+    <a href="/ConstellationArtists">
+        <img class="one" src="{% static "Spotify_Wrapper/image/CSC-BluePlanet.png" %}">
     </a>
-    <div class="secondPlanet">
-        <a class="Genre-Breakdown" href="/GenreNebulas">  Genre Nebula's</a>
-        <a class="TopArtists" href="/ConstellationArtists/"> Constellation of Artists</a>
-        <a href="/ConstellationArtists">
-            <img class="one" src="{% static "Spotify_Wrapper/image/CSC-BluePlanet.png" %}">
-        </a>
-        <a href="/GenreNebulas">
-            <img class="two" src="{% static "Spotify_Wrapper/image/CSC-YellowPlanet.png" %}">
-        </a>
-        <img class="space" src="{% static "Spotify_Wrapper/image/Space.png" %}">
-    </div>
+    <a href="/GenreNebulas">
+        <img class="two" src="{% static "Spotify_Wrapper/image/CSC-YellowPlanet.png" %}">
+    </a>
+    <img class="space" src="{% static "Spotify_Wrapper/image/Space.png" %}">
+</div>
 </body>
 </html>

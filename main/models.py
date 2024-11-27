@@ -54,6 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Wraps(models.Model):
 	username = models.CharField(max_length=50, unique=False)
+	term = models.CharField(max_length=15)
 	creation_date = models.DateTimeField(default=datetime.now(tz=None))
 	wrap_json = JSONField()
 

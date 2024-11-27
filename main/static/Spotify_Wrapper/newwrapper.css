@@ -24,6 +24,14 @@ header {
     left: 70px;
     z-index: 9999;
 }
+.CosmicTunes:hover {
+    color: #fff; /* Change the text color for contrast */
+    background-color: #4313ca; /* Add a background color */
+    padding: 3px 5px; /* Add some padding for better appearance */
+    border-radius: 25px; /* Optional: round the edges */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;
@@ -116,5 +124,154 @@ position: relative;
 margin-bottom: -5%;
 margin-top: 4%;
     z-index: 5000;
+}
+.s {
 
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  top: 35%;
+  left: 5%;
+  rotate: 180deg;
+  position: absolute;
+    height: calc(55vh - 60px);
+  img {
+    width: 100%;
+    height: auto;
+  }
+    transition: transform 0.5s ease;
+}
+.s:hover {
+
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  top: 35%;
+  left: 5%;
+  rotate: 180deg;
+  position: absolute;
+      animation: spin 30s linear infinite;
+transform: scale(1.2);
+    height: calc(55vh - 60px);
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+.st {
+width: 20%;
+top:60%;
+left: 10%;
+color: #faf6e7;
+text-align: center;
+font-family: 'ChakraPetch-Regular', sans-serif;
+font-size: 2vw;
+font-weight: 400;
+position: absolute;
+margin-bottom: -5%;
+margin-top: 4%;
+    z-index: 5000;
+}
+
+.m {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  top: 30%;
+  left: 32%;
+  rotate: 180deg;
+  position: absolute;
+    height: calc(60vh - 60px);
+  img {
+    width: 70%; /
+    height: auto;
+  }
+}
+.m:hover {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  top: 30%;
+  left: 32%;
+  rotate: 180deg;
+  position: absolute;
+      animation: spin 30s linear infinite;
+
+    height: calc(60vh - 60px);
+  img {
+    width: 70%; /
+    height: auto;
+  }
+}
+.ttt {
+width: 20%;
+top:68%;
+left: 36%;
+color: #faf6e7;
+text-align: center;
+font-family: 'ChakraPetch-Regular', sans-serif;
+font-size: 2vw;
+font-weight: 400;
+position: absolute;
+margin-bottom: -5%;
+margin-top: 4%;
+    z-index: 5000;
+}
+.l {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  top: 20%;
+  left: 60%;
+  rotate: 180deg;
+  position: absolute;
+    height: calc(80vh - 60px);
+  img {
+    width: 100%; /
+    height: auto;
+  }
+}
+.l:hover {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  top: 20%;
+  left: 60%;
+  rotate: 180deg;
+  position: absolute;
+      animation: spin 30s linear infinite;
+
+    height: calc(80vh - 60px);
+  img {
+    width: 100%; /
+    height: auto;
+  }
+}
+.lt {
+width: 20%;
+top:72%;
+left: 70%;
+color: #faf6e7;
+text-align: center;
+font-family: 'ChakraPetch-Regular', sans-serif;
+font-size: 2vw;
+font-weight: 400;
+position: absolute;
+margin-bottom: -5%;
+margin-top: 4%;
+    z-index: 5000;
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

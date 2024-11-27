@@ -1,16 +1,46 @@
-{% extends 'mainTemplates/base.html' %}
-{% block title %}Forget Password Screen{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Cosmic Tunes Login Page">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Cosmic Tunes</title>
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/forget.css' %}">
+</head>
+<body>
+    <header>
+        <a class="CosmicTunes" href="/">Cosmic Tunes</a>
+    </header>
+    {% block content %}
+    <div class="header-container">
+        <span class="forgot">Forgot Password</span>
+    </div>
+    <div class="login-container">
+        <form method="post" id="login-form" class="form">
+            {% csrf_token %}
 
-{% block content %}
-    <form method = "POST" id="forget-form" class="form">
-        {% csrf_token %}
-        {{ form.username }}
-        {{ form.security_answer }}
-        {{ form.new_password1 }}
-        {{ form.new_password2 }}
+            <div class="form-user">
+                {{ form.username }}
+            </div>
+            <div class="form-security">
+                Enter your Birthday below:
+                {{ form.security_answer }}
+            </div>
+            <div class="form-pass1">
+                {{ form.new_password1 }}
+            </div>
+            <div class="form-pass2">
+                {{ form.new_password2 }}
+            </div>
 
-        <p>Don't have an account! Create one <a href = '/signup'>here</a>!</p>
-        <button type = "submit" class = "btn btn-success">Submit</button>
-    </form>
-
-{% endblock %}
+            <a href="/signup" class="create">Create</a>
+            <button type="submit" class="btn-success">Login</button>
+            <o>h</o>
+        </form>
+    </div>
+        <img class="one" src="{% static "Spotify_Wrapper/image/login2.png" %}">
+    {% endblock %}
+</body>
+</html>

@@ -50,7 +50,7 @@ header {
   flex-direction: column;
   background-color: transparent;
   top: 15%;
-  left: -20%;
+  left: -25%;
   position: absolute;
     height: calc(100vh - 60px);
   img {
@@ -151,7 +151,7 @@ margin-top: 4%;
 .two {
   position: absolute;
   right: -5%;
-  top: 65%;
+  top: 75%;
   transform: translate(-50%, -50%);
   width: 10%; /* Adjust the value as needed */
   height: 40%;
@@ -161,31 +161,79 @@ margin-top: 4%;
 .two:hover {
   position: absolute;
   right: -5%;
-  top: 65%;
+  top: 75%;
   transform: translate(-50%, -50%);
   width: 10%; /* Adjust the value as needed */
   height: 55%;
   object-fit: cover;
   z-index: 5000;
-}@keyframes spin {
+}
+.back {
+  position: absolute;
+  right: -5%;
+  top: 35%;
+  transform: translate(-50%, -50%);
+  width: 10%; /* Adjust the value as needed */
+  height: 40%;
+  object-fit: cover;
+  z-index: 5000;
+}
+.back:hover {
+  position: absolute;
+  right: -5%;
+  top: 35%;
+  transform: translate(-50%, -50%);
+  width: 10%; /* Adjust the value as needed */
+  height: 55%;
+  object-fit: cover;
+  z-index: 5000;
+}
+@keyframes spin {
     from {
         transform: rotate(0deg);
     }
     to {
         transform: rotate(360deg);
     }
-}.Genre-Breakdown {
+}
+.Genre-Breakdown {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
   right: 7%;
-  top: 62.5%;
+  top: 72.5%;
   font-size: 200%;
   animation: blinkColor 2s infinite;
   user-select: none;
   text-decoration: none;
   z-index: 5000;
 }
+.Genre-Breakdown2 {
+  color: #faf6e7;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  position: absolute;
+  right: 7%;
+  top: 32.5%;
+  font-size: 200%;
+  animation: blinkColor 2s infinite;
+  user-select: none;
+  text-decoration: none;
+  z-index: 5000;
+}
+.Genre-Breakdown3 {
+  color: #faf6e7;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  position: absolute;
+  left: 15%;
+  top: 50%;
+  font-size: 200%;
+  animation: blinkColor 2s infinite;
+  user-select: none;
+  text-decoration: none;
+  z-index: 5000;
+    text-align: center;
+}
+
  @keyframes blinkColor {
     0% {
         color: #faf6e7; /* Initial color (lighter) */

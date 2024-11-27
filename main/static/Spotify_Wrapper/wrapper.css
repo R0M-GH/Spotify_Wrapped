@@ -28,6 +28,7 @@ header {
     height: auto;
   }
   animation: spin 50s linear infinite;
+  transform-origin: center;
   z-index: 5000;
 }
 .mainplanet444 {

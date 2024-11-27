@@ -147,26 +147,41 @@ def register(request):
 	return render(request, 'registration/registration.html', {"form": form})
 
 
+# def user_login(request):
+# 	request.session.flush()
+#
+# 	if request.method == 'POST':
+# 		username = request.POST['username']
+# 		password = request.POST['password']
+#
+# 		user = authenticate(request, username=username, password=password)
+# 		if user is not None:
+# 			request.session['username'] = username
+# 			login(request, user)
+# 			return redirect("spotify_login")
+# 		else:
+# 			form = LoginForm()
+# 			return render(request, 'registration/login.html', {'form': form, 'error': True})
+# 	else:
+# 		form = LoginForm()
+# 	return render(request, 'registration/login.html', {'form': form})
+
 def user_login(request):
 	request.session.flush()
 	if request.method == 'POST':
-		username = request.POST['username']
-		password = request.POST['password']
-
+		username = request.POST.get('username')
+		password = request.POST.get('password')
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			request.session['username'] = username
-
 			login(request, user)
 			return redirect("spotify_login")
-
 		else:
 			form = LoginForm()
-			return render(request, 'registration/login.html', {'form': form, 'error': True})
+			return render(request, 'registration/login.html', {'form': form, 'error':True})
 	else:
 		form = LoginForm()
-	return render(request, 'registration/login.html', {'form': form})
-
+		return render(request, 'registration/login.html', {'form': form, 'error': False})
 
 def forgot_password(request):
 	if request.method == 'POST':

@@ -143,7 +143,6 @@ margin-top: 4%;
     transition: transform 0.5s ease;
 }
 .s:hover {
-
     user-select: none;
   display: flex;
   flex-direction: column;
@@ -152,8 +151,7 @@ margin-top: 4%;
   left: 5%;
   rotate: 180deg;
   position: absolute;
-      animation: spin 30s linear infinite;
-transform: scale(1.2);
+    transform: scale(1.2);
     height: calc(55vh - 60px);
   img {
     width: 100%;
@@ -162,7 +160,7 @@ transform: scale(1.2);
 }
 .st {
 width: 20%;
-top:60%;
+top:72%;
 left: 10%;
 color: #faf6e7;
 text-align: center;
@@ -184,6 +182,7 @@ margin-top: 4%;
   left: 32%;
   rotate: 180deg;
   position: absolute;
+  transition: transform 0.5s ease;
     height: calc(60vh - 60px);
   img {
     width: 70%; /
@@ -199,17 +198,16 @@ margin-top: 4%;
   left: 32%;
   rotate: 180deg;
   position: absolute;
-      animation: spin 30s linear infinite;
-
+    transform: scale(1.2);
     height: calc(60vh - 60px);
   img {
-    width: 70%; /
+    width: 80%; /
     height: auto;
   }
 }
 .ttt {
 width: 20%;
-top:68%;
+top:72%;
 left: 36%;
 color: #faf6e7;
 text-align: center;
@@ -226,10 +224,11 @@ margin-top: 4%;
   display: flex;
   flex-direction: column;
   background-color: transparent;
-  top: 20%;
+  top: 19%;
   left: 60%;
   rotate: 180deg;
   position: absolute;
+  transition: transform 0.5s ease;
     height: calc(80vh - 60px);
   img {
     width: 100%; /
@@ -241,12 +240,11 @@ margin-top: 4%;
   display: flex;
   flex-direction: column;
   background-color: transparent;
-  top: 20%;
+  top: 19%;
   left: 60%;
   rotate: 180deg;
   position: absolute;
-      animation: spin 30s linear infinite;
-
+    transform: scale(1.1);
     height: calc(80vh - 60px);
   img {
     width: 100%; /

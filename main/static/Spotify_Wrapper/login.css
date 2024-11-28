@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    height: 100%;
+    height: 100vh;
     font-family: Arial, sans-serif;
 }
 .form {
@@ -15,11 +15,11 @@ body {
     color: #faf6e7;
     font-family: 'ChakraPetch-Regular', sans-serif;
     position: absolute;
-    font-size: 2.5rem;
+    font-size: 2.5vw;
     user-select: none;
     text-decoration: none;
-    left: 70px;
-    top: 20px;
+    left: 4%;
+    top: 1.5%;
     z-index: 9999;
 }
 
@@ -36,7 +36,7 @@ body {
     color: #faf6e7;
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 1000%;
+    font-size: 8vw;
     left: 38%;
     top: 10%;
 }
@@ -44,8 +44,9 @@ body {
     width: 30%;
     margin-bottom: 20px;
     position: absolute;
-    left:35%;
-    top: 40%;
+    left:48%;
+    top: 33%;
+    transform: translateX(-50%);
 }
 
 .form-group input {
@@ -62,8 +63,9 @@ body {
     width: 30%;
     margin-bottom: 20px;
     position: absolute;
-    left:35%;
-    top: 50%;
+    left:48%;
+    top: 45%;
+    transform: translateX(-50%);
 }
 
 .form-group2 input {
@@ -80,13 +82,13 @@ body {
   background-color: #334AA8;
   position: fixed;
   border: none;
-  left: 51%;
+  left: 49%;
   bottom: 33.5%;
   color: white;
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
-  font-size: 32px;
+  font-size: 3vw;
   margin: 4px 2px;
   border-radius: 5px;
   z-index: 9999;
@@ -96,18 +98,20 @@ body {
 }
 .btn-success{
      font-family: 'ChakraPetch-Regular', sans-serif;
-  background-color: #334AA8;
-  position: absolute;
-  border: none;
-  left: 43%;
-  bottom: 33.5%;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  font-size: 32px;
-  margin: 4px 2px;
-  border-radius: 5px;
+      background-color: #334AA8;
+      position: fixed;
+      border: none;
+      left: 42%;
+      bottom: 33.5%;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 3vw;
+      margin: 4px 2px;
+      border-radius: 5px;
+    transform: translateX(-50%);
 }
+
 .btn-success:hover {
     background-color: #1B285E;
 }
@@ -119,7 +123,7 @@ body {
 
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;
-  top: 10px;
+  top: 1%;
   position: absolute;
     z-index: 9999;
 
@@ -155,7 +159,7 @@ body {
   border-radius: 3%;
   top: 60px;
   left: 0;
-  width: 15%;
+  width: 25%;
   background-color: #ffffffcc;
 }
 
@@ -179,7 +183,7 @@ body {
       z-index: 9999;
   font-family: 'ChakraPetch-Regular', sans-serif;
 
-  font-size: 230%;
+  font-size: 2.5vw;
   text-decoration: none;
   color: black;
   display: block;
@@ -198,7 +202,7 @@ body {
 
 .error-message {
     color: red;
-    font-size: 2vw; /* Using viewport width for responsive font size */
+    font-size: 2.5vw; /* Using viewport width for responsive font size */
     text-align: center; /* Horizontally center the text */
     font-family: 'ChakraPetch-Regular', sans-serif;
     position: absolute; /* Position it absolutely */

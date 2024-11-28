@@ -27,76 +27,59 @@ def index(request):
 def welcome(request):
 	return render(request, 'Spotify_Wrapper/welcome.html')
 
-@login_required
 def summary(request):
 	return render(request, 'Spotify_Wrapper/summary.html')
 
-@login_required
 def summary2(request):
 	return render(request, 'Spotify_Wrapper/summary2.html')
 
-@login_required
 def accountpage(request):
 	user = User.objects.get(username=request.user)
 	return render(request, 'Spotify_Wrapper/accountpage.html')
 
-@login_required
 def contact(request):
 	return render(request, 'Spotify_Wrapper/contact.html')
 
-@login_required
 def newwrapper(request):
 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
 
-@login_required
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
 
-@login_required
 def game(request):
 	return render(request, 'Spotify_Wrapper/game.html')
 
-@login_required
 def wrapper(request):
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 
-@login_required
 def wrapper2(request):
 	return render(request, 'Spotify_Wrapper/wrapper2.html')
 
-@login_required
+
 def GenreNebulas(request):
 	return render(request, 'Spotify_Wrapper/GenreNebulas.html')
 
-@login_required
 def GenreNebulas2(request):
 	return render(request, 'Spotify_Wrapper/GenreNebulas2.html')
 
-@login_required
 def StellarHits(request):
 	return render(request, 'Spotify_Wrapper/StellarHits.html')
 
-@login_required
 def StellarHits2(request):
 	return render(request, 'Spotify_Wrapper/StellarHits2.html')
 
-@login_required
 def newwrapper(request):
 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
-@login_required
 def wrapperStart(request):
 	return render(request, 'Spotify_Wrapper/wrapperStart.html')
-@login_required()
 def ConstellationArtists(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
 
-@login_required
 def ConstellationArtists2(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
 
-@login_required
 def account(request):
 	username = request.session.get('username')
 	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
@@ -110,7 +93,6 @@ def account(request):
 	}
 	return render(request, 'Spotify_Wrapper/accountpage.html', context)
 
-@login_required
 def library(request):
 	username = request.session.get('username')
 	wrap_set = Wraps.objects.filter(username=username)
@@ -121,25 +103,22 @@ def library(request):
 	# add library display logic here
 	return render(request, 'Spotify_Wrapper/library.html', context)
 
-@login_required
 def wrapped_page(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 
-@login_required
 def wrapper2(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper2.html')
 
-@login_required
 def artist_constellation(request):
 	return render(request, f'Spotify_Wrapper/ConstellationArtists{request.session.get("page", "")}.html')
 
-@login_required
+
 def genre_nebula(request):
 	return render(request, f'Spotify_Wrapper/GenreNebulas{request.session.get("page", "")}.html')
 
-@login_required
+
 def stellar_hits(request):
 	# Load users most recent wrapper info here
 	return render(request, f'Spotify_Wrapper/StellarHits{request.session.get("page"), ""}.html')

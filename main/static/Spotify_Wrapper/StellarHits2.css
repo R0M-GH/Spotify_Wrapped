@@ -159,12 +159,11 @@ margin-top: 4%;
 }
 .two {
   position: absolute;
-  right: -5%;
+  right: 0%;
   top: 65%;
   transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 40%;
-  object-fit: cover;
+  width: 5%; /* Adjust the value as needed */
+  height: 5%;
   z-index: 5000;
 }
 .two:hover {
@@ -173,28 +172,25 @@ margin-top: 4%;
   top: 65%;
   transform: translate(-50%, -50%);
   width: 10%; /* Adjust the value as needed */
-  height: 55%;
-  object-fit: cover;
+  height: 10%;
   z-index: 5000;
 }
 .back {
   position: absolute;
-  left: 3%;
-  top: 70%;
+  left: 5%;
+  top: 65%;
   transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 40%;
-  object-fit: cover;
+  width: 5%; /* Adjust the value as needed */
+  height: 5%;
   z-index: 5000;
 }
 .back:hover {
   position: absolute;
-  left: 3%;
-  top: 70%;
+  left: 5%;
+  top: 65%;
   transform: translate(-50%, -50%);
   width: 10%; /* Adjust the value as needed */
-  height: 55%;
-  object-fit: cover;
+  height: 10%;
   z-index: 5000;
 }
 .Genre-Breakdown {

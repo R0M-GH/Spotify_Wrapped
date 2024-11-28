@@ -30,28 +30,36 @@
         <li><a href="/accountpage">Account</a></li>
         <li><a href="/login">Logout</a></li>
 
-      </ul>
-    </nav>
-  </div>
-<div class="Cosmic-Song-Count" style="user-select: none;"> New Wrapper! </div>
-    <a href="/wrapper">
+    </ul>
+</nav>
+</div>
+<div class="Cosmic-Song-Count" style="user-select: none;"> New Wrapper!</div>
+<a href="/wrapper" onclick="return makeWrapped('short_term')">
     <img class="s" src="{% static "Spotify_Wrapper/image/GN-YellowPlanet.png" %}" alt="Centered Image">
+</a>
+<a href="/wrapper" onclick="return makeWrapped('medium_term')">
     <img class="m" src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet.png" %}" alt="Centered Image">
+</a>
+<a href="/wrapper" onclick="return makeWrapped('long_term')">
     <img class="l" src="{% static "Spotify_Wrapper/image/CA-BluePlanet.png" %}" alt="Centered Image">
-    </a>
-    <div class="st">Make a small size wrapper!</div>
-    <div class="ttt">Make a medium size wrapper!</div>
-    <div class="lt">Make a large size wrapper!</div>
+</a>
+<img class="l" src="{% static "Spotify_Wrapper/image/CA-BluePlanet.png" %}" alt="Centered Image">
+<div class="st">Make a small size wrapper!</div>
+<div class="ttt">Make a small size wrapper!</div>
+<div class="lt">Make a large size wrapper!</div>
 <script>
-	function makeWrapped(term) {
-		const response = fetch(`api/make_wrapped/${term}>/5/`, {method: 'POST'})
-		if (response.ok) {
-			const data = response.json;
-			alert('Wrapped created successfully');
-			localStorage.setItem('wrap_dt', data.creationTime);
-			localStorage.setItem('wrap_term', data.term)
-		} else {
-			console.error('Error creating wrapped');
+	async function makeWrapped(term) {
+		try {
+			const response = await fetch(`/api/make-wrapped/${term}/5/`, {method: 'POST'});
+			if (!response.ok) {
+				console.error('Error creating wrapped: ', response.json());
+			}
+			const data = await response.json();
+			localStorage.setItem('wrap_dt', data);
+			localStorage.setItem('wrap_term', data.term);
+			window.location.href = '/wrapper';
+		} catch (e) {
+			console.error('Error creating wrapped: ', e);
 		}
 	}
 </script>

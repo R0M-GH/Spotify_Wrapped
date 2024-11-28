@@ -27,23 +27,24 @@ def index(request):
 def welcome(request):
 	return render(request, 'Spotify_Wrapper/welcome.html')
 
-
+@login_required
 def summary(request):
 	return render(request, 'Spotify_Wrapper/summary.html')
 
-
+@login_required
 def summary2(request):
 	return render(request, 'Spotify_Wrapper/summary2.html')
 
-
+@login_required
 def accountpage(request):
+	user = User.objects.get(username=request.user)
 	return render(request, 'Spotify_Wrapper/accountpage.html')
 
-
+@login_required
 def contact(request):
 	return render(request, 'Spotify_Wrapper/contact.html')
 
-
+@login_required
 def newwrapper(request):
 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
@@ -52,75 +53,93 @@ def newwrapper(request):
 def home(request):
 	return render(request, 'mainTemplates/index.html', {})
 
-
+@login_required
 def game(request):
 	return render(request, 'Spotify_Wrapper/game.html')
 
-
+@login_required
 def wrapper(request):
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 
-
+@login_required
 def wrapper2(request):
 	return render(request, 'Spotify_Wrapper/wrapper2.html')
 
-
+@login_required
 def GenreNebulas(request):
 	return render(request, 'Spotify_Wrapper/GenreNebulas.html')
 
-
+@login_required
 def GenreNebulas2(request):
 	return render(request, 'Spotify_Wrapper/GenreNebulas2.html')
 
-
+@login_required
 def StellarHits(request):
 	return render(request, 'Spotify_Wrapper/StellarHits.html')
 
-
+@login_required
 def StellarHits2(request):
 	return render(request, 'Spotify_Wrapper/StellarHits2.html')
 
-
+@login_required
 def newwrapper(request):
 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
+@login_required
 def wrapperStart(request):
 	return render(request, 'Spotify_Wrapper/wrapperStart.html')
+@login_required()
 def ConstellationArtists(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
 
-
+@login_required
 def ConstellationArtists2(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
 
-
+@login_required
 def account(request):
-	return render(request, 'Spotify_Wrapper/accountpage.html')
+	username = request.session.get('username')
+	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
+	wrap_count = wrap_set.count()
+	most_recent_wrap = wrap_set.first()
+	most_recent_wrap_date = most_recent_wrap.creation_date
+	context = {
+		"username": username,
+		"wrap_count": wrap_count,
+		"most_recent_wrap_date": most_recent_wrap_date,
+	}
+	return render(request, 'Spotify_Wrapper/accountpage.html', context)
 
-
+@login_required
 def library(request):
+	username = request.session.get('username')
+	wrap_set = Wraps.objects.filter(username=username)
+	context = {
+		"wrap_set": wrap_set,
+	}
+
 	# add library display logic here
-	return render(request, 'Spotify_Wrapper/library.html')
+	return render(request, 'Spotify_Wrapper/library.html', context)
 
-
+@login_required
 def wrapped_page(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 
-
+@login_required
 def wrapper2(request):
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper2.html')
 
-
+@login_required
 def artist_constellation(request):
 	return render(request, f'Spotify_Wrapper/ConstellationArtists{request.session.get("page", "")}.html')
 
-
+@login_required
 def genre_nebula(request):
 	return render(request, f'Spotify_Wrapper/GenreNebulas{request.session.get("page", "")}.html')
 
-
+@login_required
 def stellar_hits(request):
 	# Load users most recent wrapper info here
 	return render(request, f'Spotify_Wrapper/StellarHits{request.session.get("page"), ""}.html')
@@ -251,6 +270,14 @@ def forgot_password(request):
 		form = ForgetForm()
 	return render(request, 'registration/forget.html', {'form': form})
 
+def relink_spotify_account(request):
+	return redirect("spotify_login")
+
+def delete_account(request):
+	username = request.session.get('username')
+	user = User.objects.get(username = username)
+	user.delete_with_wraps()
+	return redirect("user_login")
 
 def generate_random_state(length):
 	return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
@@ -260,7 +287,6 @@ def spotify_login(request):
 	state = generate_random_state(16)
 	scope = 'user-read-private user-read-email user-top-read streaming user-modify-playback-state'
 	auth_url = 'https://accounts.spotify.com/authorize?'
-
 	query_params = {
 		'response_type': 'code',
 
@@ -277,7 +303,6 @@ def spotify_login(request):
 	url = auth_url + urllib.parse.urlencode(query_params)
 
 	return redirect(url)
-
 
 def spotify_callback(request):
 	code = request.GET.get('code')
@@ -366,6 +391,7 @@ def make_wrapped(request, time_range='medium_term', limit=5):
 
 	headers = {'Authorization': f'Bearer {user.spotify_access_token}'}
 	response = requests.get(endpoint, headers=headers)
+	display_name = response.json()['display_name']
 
 	if response.status_code == 401:
 		access_token = refresh_spotify_token(user)
@@ -416,16 +442,14 @@ def make_wrapped(request, time_range='medium_term', limit=5):
 		'top_artists': top_artist_data,
 		'top_genres': sorted(top_genres, key=top_genres.get),
 	}
-	data['llama_description'] = llama_description(data)
+	# data['llama_description'] = llama_description(data)
 
-	wrap = Wraps.objects.create(username=user.username, term=time_range, wrap_json=json.dumps(data))
+	wrap = Wraps.objects.create(username=user.username, term=time_range, spotify_display_name=display_name, wrap_json=json.dumps(data))
 	wrap.save()
 
 	return get_wrapped(request, wrap.creation_date.isoformat(), wrap.term)
 
 
-@csrf_exempt
-@login_required
 @csrf_exempt
 @login_required
 def get_wrapped(request, dt, time_range):

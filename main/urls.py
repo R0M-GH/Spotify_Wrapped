@@ -43,7 +43,8 @@ urlpatterns = [
 	path('summary2/', views.summary2, name='summary2'),
 
 	path('api/make-wrapped/<str:time_range>/<int:limit>/', views.make_wrapped, name='make-wrapped'),
-	path('api/get-wrapped/<str:dt>/<str:time_range>', views.get_wrapped, name='get-wrapped'),
+	path('api/get-wrapped/<str:dt>/<str:time_range>/', views.get_wrapped, name='get-wrapped'),
+	path('api/get-wrapped/<str:dt>/<str:time_range>/', views.get_wrapped, name='get-wrapped'),
 
 	# TEMPORARY (for testing)
 	path('api/make-wrapped/', views.make_wrapped, name='make_wrapped'),

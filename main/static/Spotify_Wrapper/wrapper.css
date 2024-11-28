@@ -22,12 +22,29 @@ header {
   background-color: transparent;
   align-items: center;
   position: relative;
+    transition: transform 0.5s ease;
+border-radius: 30%;
     height: calc(100vh - 60px);
   img {
     width: 50%; /
     height: auto;
   }
-  animation: spin 50s linear infinite;
+  transform-origin: center;
+  z-index: 5000;
+}
+.mainplanet:hover {
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  position: relative;
+    height: calc(100vh - 60px);
+    transform: scale(1.2);
+  img {
+    width: 50%; /
+    height: auto;
+  }
   transform-origin: center;
   z-index: 5000;
 }

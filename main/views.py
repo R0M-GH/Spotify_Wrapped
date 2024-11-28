@@ -416,7 +416,7 @@ def make_wrapped(request, time_range='medium_term', limit=5):
 		'top_artists': top_artist_data,
 		'top_genres': sorted(top_genres, key=top_genres.get),
 	}
-	data['llama_description'] = llama_description(data)
+	# data['llama_description'] = llama_description(data)
 
 	wrap = Wraps.objects.create(username=user.username, term=time_range, wrap_json=json.dumps(data))
 	wrap.save()

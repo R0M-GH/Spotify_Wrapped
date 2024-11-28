@@ -23,6 +23,9 @@ header {
     text-decoration: none;
     left: 70px;
     z-index: 9999;
+    display: block; /* Ensures that each <p> takes the full width */
+    margin: 0; /* Reset margin if applying unwanted spacing */
+    padding: 0; /* Reset padding if needed */
 }
 
 .CosmicTunes:hover {
@@ -122,4 +125,103 @@ margin-bottom: -5%;
 margin-top: 4%;
     z-index: 5000;
 
+}
+/* Container for the buttons - position them at the bottom */
+.account-buttons {
+    position: absolute;
+    bottom: 25%;  /* Position at the bottom quarter of the page */
+    left: 50%;
+    transform: translateX(-50%); /* Center the buttons horizontally */
+    display: flex;
+    gap: 20px;  /* Add space between the buttons */
+}
+
+.account-buttons form {
+    margin: 0;
+}
+
+.account-buttons button {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    background-color: #334AA8;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 5px;
+    width: 180px;  /* Make button width consistent */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.account-buttons button:hover {
+    background-color: #1B285E;
+}
+
+.btn-danger {
+    background-color: #FF4C4C; /* Red for delete account */
+}
+
+.btn-warning {
+    background-color: #FFB84C; /* Yellow for logout */
+}
+
+.btn-info {
+    background-color: #4C90FF; /* Blue for relink */
+}
+
+/* Hover effects for each button */
+.btn-danger:hover {
+    background-color: #E60000;
+}
+
+.btn-warning:hover {
+    background-color: #FF9900;
+}
+
+.btn-info:hover {
+    background-color: #0066FF;
+}
+.account-info {
+    position: absolute;
+    top: 40%;     /* Position it vertically centered */
+    left: 5%;     /* Adjust the left position to be responsive */
+    transform: translateY(-50%);  /* Center the text vertically */
+    color: white;  /* White text color */
+    font-family: 'Arial', sans-serif;
+    font-size: 3vw; /* Font size relative to viewport width */
+    line-height: 1.5;  /* Line height to space the text */
+    max-width: 80%;  /* Ensure the text doesn't stretch too far */
+}
+
+/* Style for individual lines of text */
+.info-text {
+    margin-bottom: 2vh;  /* Spacing between lines relative to viewport height */
+}
+
+/* Media Queries to adapt layout for different screen sizes */
+@media (max-width: 768px) {
+    /* For smaller screens like tablets and mobile phones */
+    .account-info {
+        font-size: 4.5vw;  /* Adjust font size for smaller screens */
+        left: 10%;         /* Adjust left margin for smaller screens */
+        max-width: 90%;    /* Increase width usage for smaller screens */
+    }
+
+    .info-text {
+        margin-bottom: 4vh;  /* Adjust margin for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    /* For very small screens like mobile phones */
+    .account-info {
+        font-size: 6vw;  /* Make the font even larger for mobile */
+        left: 10%;       /* Ensure the text stays left-aligned */
+        max-width: 95%;  /* Maximize width usage on mobile */
+    }
+
+    .info-text {
+        margin-bottom: 6vh;  /* Increase spacing between text on mobile */
+    }
 }

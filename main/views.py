@@ -86,6 +86,9 @@ def newwrapper(request):
 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
 @login_required
+def wrapperStart(request):
+	return render(request, 'Spotify_Wrapper/wrapperStart.html')
+@login_required()
 def ConstellationArtists(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists.html')
 
@@ -105,7 +108,6 @@ def account(request):
 		"wrap_count": wrap_count,
 		"most_recent_wrap_date": most_recent_wrap_date,
 	}
-
 	return render(request, 'Spotify_Wrapper/accountpage.html', context)
 
 @login_required
@@ -142,48 +144,103 @@ def stellar_hits(request):
 	# Load users most recent wrapper info here
 	return render(request, f'Spotify_Wrapper/StellarHits{request.session.get("page"), ""}.html')
 
+
+# def register(request):
+# 	if request.method == 'POST':
+# 		form = RegistrationForm(request.POST)
+# 		if form.is_valid():
+# 			username = form.cleaned_data['username']
+# 			password1 = form.cleaned_data['password1']
+# 			birthday = form.cleaned_data['birthday']
+#
+# 			# Check if username already exists in User model
+# 			if User.objects.filter(username=username).exists():
+# 				return render(request, 'registration/registration.html', {"form": form, 'error': True})
+#
+# 			# Creates users
+# 			user = User.objects.create_user(username=username, password=password1)
+# 			user.birthday = birthday
+# 			user.save()
+# 			return redirect("user_login")
+# 	else:
+# 		form = RegistrationForm()
+# 	return render(request, 'registration/registration.html', {"form": form})
 def register(request):
-	if request.method == 'POST':
-		form = RegistrationForm(request.POST)
-		if form.is_valid():
-			username = form.cleaned_data['username']
-			password1 = form.cleaned_data['password1']
-			birthday = form.cleaned_data['birthday']
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
 
-			# Check if username already exists in User model
-			if User.objects.filter(username=username).exists():
-				return render(request, 'registration/registration.html', {"form": form, 'error': True})
+        # Check if form is valid
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password1 = form.cleaned_data['password1']
+            birthday = form.cleaned_data['birthday']
 
-			# Creates users
-			user = User.objects.create_user(username=username, password=password1)
-			user.birthday = birthday
-			user.save()
-			return redirect("user_login")
-	else:
-		form = RegistrationForm()
-	return render(request, 'registration/registration.html', {"form": form})
+            # Check if username already exists in User model
+            if User.objects.filter(username=username).exists():
+                # If the username exists, show an error message
+                return render(request, 'registration/registration.html', {
+                    "form": form,
+                    'error': 'An account with this username already exists.',
+                })
 
+            # Create the new user
+            user = User.objects.create_user(username=username, password=password1)
+            user.birthday = birthday
+            user.save()
+
+            # Redirect to the login page
+            return redirect("user_login")
+
+        else:
+            # If form is invalid, re-render the registration page with form errors
+            return render(request, 'registration/registration.html', {
+                "form": form,
+            })
+
+    else:
+        # GET request: render the empty registration form
+        form = RegistrationForm()
+
+    return render(request, 'registration/registration.html', {
+        "form": form,
+    })
+
+
+# def user_login(request):
+# 	request.session.flush()
+#
+# 	if request.method == 'POST':
+# 		username = request.POST['username']
+# 		password = request.POST['password']
+#
+# 		user = authenticate(request, username=username, password=password)
+# 		if user is not None:
+# 			request.session['username'] = username
+# 			login(request, user)
+# 			return redirect("spotify_login")
+# 		else:
+# 			form = LoginForm()
+# 			return render(request, 'registration/login.html', {'form': form, 'error': True})
+# 	else:
+# 		form = LoginForm()
+# 	return render(request, 'registration/login.html', {'form': form})
 
 def user_login(request):
 	request.session.flush()
 	if request.method == 'POST':
-		username = request.POST['username']
-		password = request.POST['password']
-
+		username = request.POST.get('username')
+		password = request.POST.get('password')
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			request.session['username'] = username
-
 			login(request, user)
 			return redirect("spotify_login")
-
 		else:
 			form = LoginForm()
-			return render(request, 'registration/login.html', {'form': form, 'error': True})
+			return render(request, 'registration/login.html', {'form': form, 'error':True})
 	else:
 		form = LoginForm()
-	return render(request, 'registration/login.html', {'form': form})
-
+		return render(request, 'registration/login.html', {'form': form, 'error': False})
 
 def forgot_password(request):
 	if request.method == 'POST':
@@ -385,7 +442,7 @@ def make_wrapped(request, time_range='medium_term', limit=5):
 		'top_artists': top_artist_data,
 		'top_genres': sorted(top_genres, key=top_genres.get),
 	}
-	data['llama_description'] = llama_description(data)
+	# data['llama_description'] = llama_description(data)
 
 	wrap = Wraps.objects.create(username=user.username, term=time_range, spotify_display_name=display_name, wrap_json=json.dumps(data))
 	wrap.save()
@@ -393,8 +450,6 @@ def make_wrapped(request, time_range='medium_term', limit=5):
 	return get_wrapped(request, wrap.creation_date.isoformat(), wrap.term)
 
 
-@csrf_exempt
-@login_required
 @csrf_exempt
 @login_required
 def get_wrapped(request, dt, time_range):

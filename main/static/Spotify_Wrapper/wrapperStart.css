@@ -1,0 +1,121 @@
+body {
+    background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+header {
+    background-color: transparent;
+    padding: 20px 0;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+.CosmicTunes {
+  color: #faf6e7;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  position: absolute;
+  font-size: 200%;
+  text-decoration: none;
+  left: 70px;
+  z-index: 9999;
+}
+.start {
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+}
+
+
+@keyframes blinkBackground {
+    0% {
+        background: #334AA8;
+    }
+    50% {
+        background: #0E152F;
+    }
+    100% {
+        background: #334AA8;
+    }
+}
+.hamburger-menu {
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  top: 10px;
+  position: absolute;
+    z-index: 9999;
+
+}
+
+.hamburger {
+      z-index: 9999;
+
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 20px;
+  margin: 20px;
+}
+
+.hamburger .line {
+      z-index: 9999;
+
+  background-color: #FFFFFF;
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  transition: 0.3s ease;
+}
+
+.menu {
+      z-index: 9999;
+
+  display: none;
+  position: absolute;
+  border-radius: 3%;
+  top: 60px;
+  left: 0;
+  width: 15%;
+  background-color: #ffffffcc;
+}
+
+.menu ul {
+      z-index: 9999;
+
+  list-style: none;
+  margin: 0;
+  padding: 5%;
+}
+
+.menu li {
+      z-index: 9999;
+
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+
+}
+
+.menu li a {
+      z-index: 9999;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+
+  font-size: 230%;
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+
+.menu li:hover {
+      z-index: 9999;
+
+    border-radius: 5%;
+  color: #FFFFFF;
+  background-color: #334AA8;
+}
+.menu li a:hover {
+      color: white;
+}
+

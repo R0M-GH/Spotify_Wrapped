@@ -4,34 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
+    <meta name="description" content="Your Account Page">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'Spotify_Wrapper/accountpage.css'%}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
-
 </head>
 <body>
     <header>
-        <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
- <div class="hamburger-menu">
-    <div class="hamburger" id="hamburger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-    </div>
+        <a class="CosmicTunes" href="/library">Cosmic Tunes</a>
+        <div class="hamburger-menu">
+            <div class="hamburger" id="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
         </div>
     </header>
 
     <nav class="menu" id="menu">
-      <ul>
-        <li><a href="/library">Library</a></li>
-        <li><a href="/game">Game</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="/accountpage">Account</a></li>
-        <li><a href="/login">Logout</a></li>
-      </ul>
+        <ul>
+            <li><a href="/library">Library</a></li>
+            <li><a href="/game">Game</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/accountpage">Account</a></li>
+            <li><a href="/login">Logout</a></li>
+        </ul>
     </nav>
-  </div>
-<div class="Cosmic-Song-Count" style="user-select: none;"> Your Account  </div>
+
+    <div class="Cosmic-Song-Count" style="user-select: none;"> Your Account </div>
+    <!-- Add user information text here -->
+    <div class="account-info">
+        <p class="info-text">Username: {{ username }}</p>
+        <p class="info-text">No. of wraps created: {{ wrap_count }}</p>
+        <p class="info-text">Last time wrap was created: {{ last_wrap_time }}</p>
+    </div>
+    <!-- Add the buttons here -->
+    <div class="account-buttons">
+        <form method="POST" action="/delete_account">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete Account</button>
+        </form>
+
+        <form method="POST" action="/logout">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning">Logout</button>
+        </form>
+
+        <form method="POST" action="/relink_account">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-info">Relink Account</button>
+        </form>
+    </div>
 </body>
 </html>

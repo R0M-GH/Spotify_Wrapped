@@ -35,8 +35,9 @@ header {
   display: flex;
   flex-direction: column;
   background-color: transparent;
-  top: 20%;
-  left: -20%;
+  top: 65%;
+  left: 32.5%;
+  rotate: -90deg;
   position: absolute;
     height: calc(100vh - 60px);
   img {
@@ -49,8 +50,8 @@ header {
   display: flex;
   flex-direction: column;
   background-color: transparent;
-  top: 15%;
-  left: -25%;
+  top: 70%;
+  left: 30%;
   position: absolute;
     height: calc(100vh - 60px);
   img {
@@ -60,7 +61,7 @@ header {
 }
 .Cosmic-Song-Count {
 color: #faf6e7;
-right: -45%;
+right: -35%;
 font-family: 'ChakraPetch-Regular', sans-serif;
 font-size: 4vw;
 font-weight: 400;
@@ -170,8 +171,8 @@ margin-top: 4%;
 }
 .back {
   position: absolute;
-  right: -5%;
-  top: 35%;
+  left: 3%;
+  top: 70%;
   transform: translate(-50%, -50%);
   width: 10%; /* Adjust the value as needed */
   height: 40%;
@@ -180,8 +181,8 @@ margin-top: 4%;
 }
 .back:hover {
   position: absolute;
-  right: -5%;
-  top: 35%;
+  left: 3%;
+  top: 70%;
   transform: translate(-50%, -50%);
   width: 10%; /* Adjust the value as needed */
   height: 55%;
@@ -212,8 +213,8 @@ margin-top: 4%;
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  right: 7%;
-  top: 32.5%;
+  left: 7%;
+  top: 67%;
   font-size: 200%;
   animation: blinkColor 2s infinite;
   user-select: none;
@@ -224,8 +225,8 @@ margin-top: 4%;
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  left: 15%;
-  top: 50%;
+  left: 41%;
+  top: 80%;
   font-size: 200%;
   animation: blinkColor 2s infinite;
   user-select: none;

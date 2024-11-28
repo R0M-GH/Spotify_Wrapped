@@ -13,6 +13,16 @@ header {
     top: 0;
     left: 0;
 }
+.Cosmic-Song-Count {
+color: #faf6e7;
+left: 40%;
+font-family: 'ChakraPetch-Regular', sans-serif;
+font-size: 4vw;
+font-weight: 400;
+position: relative;
+margin-bottom: -5%;
+margin-top: 4%;
+}
 .CosmicTunes {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
@@ -35,8 +45,8 @@ header {
   display: flex;
   flex-direction: column;
   background-color: transparent;
-  top: -5%;
-  left: -20%;
+  top: 65%;
+  left: 32.5%;
   rotate: -90deg;
   position: absolute;
     height: calc(100vh - 60px);
@@ -50,9 +60,8 @@ header {
   display: flex;
   flex-direction: column;
   background-color: transparent;
-  top: -5%;
-  left: -20%;
-  rotate: -90deg;
+  top: 70%;
+  left: 30%;
   position: absolute;
     height: calc(100vh - 60px);
   img {
@@ -168,6 +177,26 @@ margin-top: 4%;
   object-fit: cover;
   z-index: 5000;
 }
+.back {
+  position: absolute;
+  left: 3%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  width: 10%; /* Adjust the value as needed */
+  height: 40%;
+  object-fit: cover;
+  z-index: 5000;
+}
+.back:hover {
+  position: absolute;
+  left: 3%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  width: 10%; /* Adjust the value as needed */
+  height: 55%;
+  object-fit: cover;
+  z-index: 5000;
+}
 .Genre-Breakdown {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
@@ -179,6 +208,31 @@ margin-top: 4%;
   user-select: none;
   text-decoration: none;
   z-index: 5000;
+}
+.Genre-Breakdown2 {
+  color: #faf6e7;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  position: absolute;
+  left: 7%;
+  top: 67%;
+  font-size: 200%;
+  animation: blinkColor 2s infinite;
+  user-select: none;
+  text-decoration: none;
+  z-index: 5000;
+}
+.Genre-Breakdown3 {
+  color: #faf6e7;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  position: absolute;
+  left: 41%;
+  top: 80%;
+  font-size: 200%;
+  animation: blinkColor 2s infinite;
+  user-select: none;
+  text-decoration: none;
+  z-index: 5000;
+    text-align: center;
 }
 @keyframes blinkColor {
     0% {

@@ -51,10 +51,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 	def get_username(self):
 		return self.username
 
+	def delete_with_wraps(self):
+		# Delete all associated Wraps first
+		Wraps.objects.filter(username=self.username).delete()
+		# Delete the user
+		self.delete()
+
 
 class Wraps(models.Model):
 	username = models.CharField(max_length=50, unique=False)
-	term = models.CharField(max_length=15)
+	term = models.CharField(max_length=15, null=True, blank=True)
+	spotify_display_name = models.CharField(max_length=255, default='')
 	creation_date = models.DateTimeField(default=datetime.now(tz=None))
 	wrap_json = JSONField()
 

@@ -40,6 +40,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 	spotify_access_token = models.CharField(max_length=255, blank=True, null=True, default=None)
 	spotify_refresh_token = models.CharField(max_length=255, blank=True, null=True, default=None)
 
+	current_display_name = models.CharField(max_length=255, blank=True, null=True, default=None)
+
 	objects = CustomUserManager()
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = []

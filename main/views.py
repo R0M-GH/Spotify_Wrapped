@@ -41,12 +41,14 @@ def accountpage(request):
 	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
 	wrap_count = wrap_set.count()
 	most_recent_wrap = wrap_set.first()
+	display_name = User.objects.get(username=username).current_display_name
 	if most_recent_wrap:
 		most_recent_wrap_date = most_recent_wrap.creation_date
 	else:
 		most_recent_wrap_date = None
 	context = {
 		"username": username,
+		"display_name": display_name,
 		"wrap_count": wrap_count,
 		"most_recent_wrap_date": most_recent_wrap_date,
 	}
@@ -156,27 +158,6 @@ def stellar_hits(request):
 	# Load users most recent wrapper info here
 	return render(request, f'Spotify_Wrapper/StellarHits{request.session.get("page"), ""}.html')
 
-
-# def register(request):
-# 	if request.method == 'POST':
-# 		form = RegistrationForm(request.POST)
-# 		if form.is_valid():
-# 			username = form.cleaned_data['username']
-# 			password1 = form.cleaned_data['password1']
-# 			birthday = form.cleaned_data['birthday']
-#
-# 			# Check if username already exists in User model
-# 			if User.objects.filter(username=username).exists():
-# 				return render(request, 'registration/registration.html', {"form": form, 'error': True})
-#
-# 			# Creates users
-# 			user = User.objects.create_user(username=username, password=password1)
-# 			user.birthday = birthday
-# 			user.save()
-# 			return redirect("user_login")
-# 	else:
-# 		form = RegistrationForm()
-# 	return render(request, 'registration/registration.html', {"form": form})
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -216,26 +197,6 @@ def register(request):
     return render(request, 'registration/registration.html', {
         "form": form,
     })
-
-
-# def user_login(request):
-# 	request.session.flush()
-#
-# 	if request.method == 'POST':
-# 		username = request.POST['username']
-# 		password = request.POST['password']
-#
-# 		user = authenticate(request, username=username, password=password)
-# 		if user is not None:
-# 			request.session['username'] = username
-# 			login(request, user)
-# 			return redirect("spotify_login")
-# 		else:
-# 			form = LoginForm()
-# 			return render(request, 'registration/login.html', {'form': form, 'error': True})
-# 	else:
-# 		form = LoginForm()
-# 	return render(request, 'registration/login.html', {'form': form})
 
 def user_login(request):
 	request.session.flush()
@@ -353,6 +314,8 @@ def spotify_callback(request):
 		'Content-Type': 'application/x-www-form-urlencoded',
 	}
 
+
+
 	response = requests.post(token_url, data=body, headers=header)
 	response_data = response.json()
 
@@ -360,12 +323,23 @@ def spotify_callback(request):
 		access_token = response_data['access_token']
 		refresh_token = response_data['refresh_token']
 
+
 		# Assuming user session has 'username' set from login view
 		username = request.session.get('username')
 		if username:
 			user = User.objects.get(username=username)
 			user.spotify_access_token = access_token
 			user.spotify_refresh_token = refresh_token
+
+			headers = {'Authorization': f'Bearer {access_token}'}
+			response = requests.get('https://api.spotify.com/v1/me', headers=headers)
+			if response.status_code == 200:
+				# Extract the user's display name from the JSON response
+				user_data = response.json()
+				user.current_display_name = user_data.get('display_name', 'Unknown User')  # Default value in case the field is missing
+			else:
+				user.current_display_name = 'Unknown User'
+
 			user.save()  # Save tokens to the user model
 
 		return redirect("library")

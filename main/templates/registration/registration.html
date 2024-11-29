@@ -137,8 +137,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>create - Cosmic Tunes</title>
         <link rel="stylesheet" href="{% static 'Spotify_Wrapper/registration.css' %}">
+        <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
     </head>
     <body>
+    <header>
+            <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+            <div class="hamburger-menu">
+                <div class="hamburger" id="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </header>
+        <nav class="menu" id="menu">
+      <ul>
+        <li><a href="/library">Library</a></li>
+        <li><a href="/game">Game</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/accountpage">Account</a></li>
+        <li><a href="/login">Logout</a></li>
+      </ul>
+    </nav>
     <div class="form-container">
         <div class="create">Create Account</div>
         <form method="POST" id="register-form" class="form">

@@ -10,7 +10,7 @@ import requests
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from openai import OpenAI
@@ -37,8 +37,20 @@ def summary2(request):
 
 @login_required
 def accountpage(request):
-	user = User.objects.get(username=request.user)
-	return render(request, 'Spotify_Wrapper/accountpage.html')
+	username = request.session.get('username')
+	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
+	wrap_count = wrap_set.count()
+	most_recent_wrap = wrap_set.first()
+	if most_recent_wrap:
+		most_recent_wrap_date = most_recent_wrap.creation_date
+	else:
+		most_recent_wrap_date = None
+	context = {
+		"username": username,
+		"wrap_count": wrap_count,
+		"most_recent_wrap_date": most_recent_wrap_date,
+	}
+	return render(request, 'Spotify_Wrapper/accountpage.html', context)
 
 @login_required
 def contact(request):
@@ -96,19 +108,19 @@ def ConstellationArtists(request):
 def ConstellationArtists2(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
 
-@login_required
-def account(request):
-	username = request.session.get('username')
-	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
-	wrap_count = wrap_set.count()
-	most_recent_wrap = wrap_set.first()
-	most_recent_wrap_date = most_recent_wrap.creation_date
-	context = {
-		"username": username,
-		"wrap_count": wrap_count,
-		"most_recent_wrap_date": most_recent_wrap_date,
-	}
-	return render(request, 'Spotify_Wrapper/accountpage.html', context)
+# @login_required
+# def account(request):
+# 	username = request.session.get('username')
+# 	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
+# 	wrap_count = wrap_set.count()
+# 	most_recent_wrap = wrap_set.first()
+# 	most_recent_wrap_date = most_recent_wrap.creation_date
+# 	context = {
+# 		"username": username,
+# 		"wrap_count": wrap_count,
+# 		"most_recent_wrap_date": most_recent_wrap_date,
+# 	}
+# 	return render(request, 'Spotify_Wrapper/accountpage.html', context)
 
 @login_required
 def library(request):
@@ -271,7 +283,9 @@ def forgot_password(request):
 	return render(request, 'registration/forget.html', {'form': form})
 
 def relink_spotify_account(request):
-	return redirect("spotify_login")
+	return render(request, 'Spotify_Wrapper/relink_spotify_account.html', {
+        'redirect_url': "http://localhost:8000/spotify/login"  # URL to redirect to after logout
+    })
 
 def delete_account(request):
 	username = request.session.get('username')
@@ -301,7 +315,6 @@ def spotify_login(request):
 	}
 
 	url = auth_url + urllib.parse.urlencode(query_params)
-
 	return redirect(url)
 
 def spotify_callback(request):

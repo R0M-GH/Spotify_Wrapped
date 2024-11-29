@@ -34,22 +34,6 @@
         <a class="CosmicTunes" href="/">Cosmic Tunes</a>
     </header>
     {% block content %}
-{#    <div class="login-container">#}
-{#        <form method="post" id="login-form" class="form">#}
-{#            <div class="login">Login</div>#}
-{#            {% csrf_token %}#}
-{#            <div class="form-group">#}
-{#                {{ form.username }}#}
-{#            </div>#}
-{#            <div class="form-group2">#}
-{#                {{ form.password }}#}
-{#            </div>#}
-{#            <a href="/signup" class="create">Create</a>#}
-{#            <button type="submit" class="btn-success">Login</button>#}
-{#            <o>h</o>#}
-{#        </form>#}
-{#    </div>#}
-{#        <img class="one" src="{% static "Spotify_Wrapper/image/login2.png" %}">#}
     <div class="login-container">
         <form method="post" id="login-form" class="form">
             <div class="login">Login</div>
@@ -60,7 +44,8 @@
             <div class="form-group2">
                 {{ form.password }}
             </div>
-            <a href="/signup" class="create">Create</a>
+            <a href="/signup" class="create">Create Account</a>
+            <a href="/forgot-password" class="forgot">Forgot Password</a>
             <button type="submit" class="btn-success">Login</button>
 
             {% if error %}

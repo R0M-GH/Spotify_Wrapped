@@ -24,20 +24,26 @@ sleigh.style.display = 'none';
 document.body.appendChild(sleigh);
 sleigh.style.top = '-50px'; // Always at the top of the screen
 
+const screenHeight = window.innerHeight;
+const screenWidth = window.innerWidth;
+
 leftC = 50;
 
 let circles = []; // Array to store references to circles
 const shrinkAmount = 15; // Define how much each circle shrinks per interval
 const shrinkIntervalDuration = 100; // Time between shrink intervals in milliseconds
 
+// Function to generate a random percentage value between 10% and 90%
 function getRandomPercentage() {
     return 10 + (Math.random() * 80) + '%';
 }
 
+// Function to generate a random vertical position value (top) between 10% and 30% of the viewport height
 function getRandomTop() {
     return 10 + (Math.random() * 20) + '%';
 }
 
+// Function to update the high score if the current points exceed the high score
 function updateHighScore() {
     if (points > highScore) {
         highScore = points;
@@ -45,6 +51,7 @@ function updateHighScore() {
     }
 }
 
+// Function to generate a random position for an element, either 'top' or 'left' based on the axis passed as argument
 function getRandomPosition(axis) {
     if (axis === 'top') {
         return Math.floor(Math.random() * window.innerHeight) + 'px'; // Vertical position based on viewport height
@@ -53,14 +60,16 @@ function getRandomPosition(axis) {
     }
 }
 
+// Function to update the left position of a circle, ensuring it stays within the viewport width
 function getLeftC() {
-    leftC += 20 + (Math.random() * 200); // Increment by a random value between 0 and 49
+    leftC += 20 + (Math.random() * 200); // Increment by a random value between 0 and 200
     if (leftC + 80 > window.innerWidth) { // If the circle goes out of bounds
         leftC = 50; // Reset left position to 50px
     }
     return leftC + 'px'; // Return the position in 'px' format
 }
 
+// Function to update the score display, including accuracy, hits, and points, and update the high score
 function updateScoreDisplay() {
     const accuracyElement = document.querySelector('.accuracy');
     const hitElement = document.querySelector('.hit');
@@ -70,48 +79,50 @@ function updateScoreDisplay() {
     accuracyElement.textContent = `${accuracy}%`; // Display accuracy as percentage
     hitElement.textContent = `${hits} Hits`; // Display updated hits count
     scoreElement.textContent = `${points} Points`; // Display points
-    updateHighScore();
+    updateHighScore(); // Call the function to update the high score
 }
 
-
+// Function to hide a circle when clicked, update the score, and play a sound effect.
+// It increments points for successful clicks and decrements for misses
 function killButtons(isReal) {
     if (isReal) {
-        points += 2;
+        points += 2; // Increment points for successful click
     } else {
-        points -= 1;
+        points -= 1; // Decrement points for miss
     }
     this.style.display = 'none'; // Hide the clicked circle
     hits += 1; // Increment hits count on successful click
     const sound = new Audio('/static/Images/laser-zap-90575.mp3');
-    sound.play();// Play sound effect
+    sound.play(); // Play sound effect
     updateScoreDisplay(); // Update the score display
 }
-
-
+// Function to generate a random item (either a fake or real artist/song) and return it along with a flag indicating if it is fake
 function getRandomItem() {
-    const realFake = Math.random();
+    const realFake = Math.random(); // Random value to determine if item is fake or real
     let arr;
-    let fake = true;
+    let fake = true; // Default to fake item
 
+    // Determine whether to use fake or real data based on the random value
     if (realFake < 0.25) {
         arr = fake_artist_names;
     } else if (realFake < 0.5) {
         arr = fake_song_titles;
     } else if (realFake < 0.75) {
         arr = real_artist_names;
-        fake = false;
+        fake = false; // Mark as real
     } else {
         arr = real_song_titles;
-        fake = false;
+        fake = false; // Mark as real
     }
 
-    const randomIndex = Math.floor(Math.random() * arr.length);
+    const randomIndex = Math.floor(Math.random() * arr.length); // Get random index from the chosen array
     return {
-        name: arr[randomIndex],
-        isFake: fake // Indicates whether the name is fake or real
+        name: arr[randomIndex], // Return the item name
+        isFake: fake // Indicates whether the item is fake or real
     };
 }
 
+// Function to generate a random position for an element on either 'top' or 'left' axis, based on the viewport size
 function getRandomPosition(axis) {
     if (axis === 'top') {
         return Math.floor(Math.random() * window.innerHeight) + 'px'; // Vertical position based on viewport height
@@ -120,6 +131,7 @@ function getRandomPosition(axis) {
     }
 }
 
+// Function to create and manage circles on the screen, including game setup, timer, and handling different modes
 function makeCircles() {
     // Reset game variables and UI elements
     points = 0;        // Tracks successful clicks
@@ -135,15 +147,14 @@ function makeCircles() {
     circles = []; // Reset the circles array
     container.innerHTML = ""; // Clear previous circles from the container
 
-
     // Set up interval for creating circles
     setTimeout(function() {
-        isOver = true;
+        isOver = true; // Mark game as over after the duration
     }, duration);
 
     const interval = setInterval(function() {
         if (isOver) {
-            clearInterval(interval);
+            clearInterval(interval); // Stop the interval when game is over
             header.style.display = 'flex';
             fullplay.style.display = 'none';
             options.style.display = 'flex';
@@ -152,8 +163,8 @@ function makeCircles() {
 
             circles = []; // Reset the circles array
             container.innerHTML = ""; // Clear previous circles from the container
-            createSleigh(10000);
-            updateHighScore();
+            createSleigh(10000); // Reset sleigh creation
+            updateHighScore(); // Update high score
             sleigh.style.display = 'none';
             return;
         }
@@ -164,18 +175,20 @@ function makeCircles() {
         circle.style.width = `${size}px`;
         circle.style.height = `${size}px`;
         circle.style.position = 'absolute';
-        const itemName = getRandomItem();
-        circle.textContent = itemName.name;
+        const itemName = getRandomItem(); // Get a random item (artist or song)
+        circle.textContent = itemName.name; // Set the text to the item name
         circle.style.color = 'white';
         circle.style.borderRadius = '50%'; // Make it circular
         circle.style.transition = 'width 0.1s, height 0.1s'; // Smooth transition for shrinking
-        circle.style.fontSize = `${20}px`
+        circle.style.fontSize = `${20}px`;
 
+        // Add click event to the circle, which kills the button and shrinks it
         circle.addEventListener('click', function() {
-                killButtons.call(this, true);
-                shrinkCircle(this);
+                killButtons.call(this, itemName.isFake); // Call killButtons on click
+                shrinkCircle(this); // Shrink the clicked circle
             });
-        // Set behavior based on mode
+
+        // Set behavior based on selected mode
         if (selectedMode === 'classic') {
             applyClassicMode(circle);
         } else if (selectedMode === 'bouncing') {
@@ -185,56 +198,59 @@ function makeCircles() {
         } else if (selectedMode === 'gliding') {
             applyGlidingMode(circle);
         }
-        circles.push(circle);
-        container.appendChild(circle);
-        totalCircles += 1;
-    }, frequency);
+
+        circles.push(circle); // Add the circle to the circles array
+        container.appendChild(circle); // Add the circle to the container
+        totalCircles += 1; // Increment the total circles counter
+    }, frequency); // Create a circle every 'frequency' milliseconds
 }
 
+// Function to apply 'classic' mode behavior to the circle (random position and shrink)
 function applyClassicMode(circle) {
-    sleigh.style.display = 'none';
-    shrinkCircles();
-    circle.style.top = getRandomPosition('top');
-    circle.style.left = getRandomPosition('left');
+    sleigh.style.display = 'none'; // Hide sleigh in classic mode
+    shrinkCircles(); // Shrink circles in classic mode
+    circle.style.top = getRandomPosition('top'); // Random vertical position
+    circle.style.left = getRandomPosition('left'); // Random horizontal position
 }
 
+// Function to apply 'bouncing' mode behavior to the circle (enable bouncing)
 function applyBouncingMode(circle) {
-    sleigh.style.display = 'none';
-    enableBouncing(circle);
-    circle.style.top = getRandomPosition('top');
-    circle.style.left = getRandomPosition('left');
+    sleigh.style.display = 'none'; // Hide sleigh in bouncing mode
+    enableBouncing(circle); // Enable bouncing for the circle
+    circle.style.top = getRandomPosition('top'); // Random vertical position
+    circle.style.left = getRandomPosition('left'); // Random horizontal position
 }
 
+// Function to apply 'shooting' mode behavior to the circle (position and enable shooting)
 function applyShootingMode(circle) {
-    sleigh.style.display = 'none';
-    circle.style.top = getRandomTop();
-    circle.style.left = getRandomTop();
-    enableShooting(circle);
+    sleigh.style.display = 'none'; // Hide sleigh in shooting mode
+    circle.style.top = getRandomTop(); // Random vertical position
+    circle.style.left = getRandomTop(); // Random horizontal position
+    enableShooting(circle); // Enable shooting behavior
 }
 
+// Function to apply 'gliding' mode behavior to the circle (create gliding effect)
 function applyGlidingMode(circle) {
-    sleigh.style.display = 'flex';
-    createGlidingBall(circle);
-    circle.style.left = getLeftC();
-    circle.style.top = '130px'; // Example top position for the circle
-
-
+    sleigh.style.display = 'flex'; // Show sleigh in gliding mode
+    createGlidingBall(circle); // Create a gliding ball effect
+    circle.style.left = getLeftC(); // Set the left position with a gliding offset
+    circle.style.top = '130px'; // Set a fixed top position for gliding
 }
 
-
+// Shrinks the circle by reducing its width, height, and font size
 function shrinkCircle(circle) {
     let currentWidth = parseInt(circle.style.width);
     let currentHeight = parseInt(circle.style.height);
     let currentFontSize = parseInt(window.getComputedStyle(circle).fontSize);
 
-    // Decrease the width, height by 30 and font size by 4 each time
+    // Decrease the width, height by 30 and font size by 5 each time
     currentWidth -= 30;
     currentHeight -= 30;
     currentFontSize -= 5;
 
-    // Ensure the width and height do not go below zero
-    if (currentWidth <= 0 || currentHeight <= 0 || currentFontSize <= 0) {
-        circle.style.display = 'none';  // Hide the circle if it shrinks to 0
+    // Hide the circle if it shrinks to zero, and update the missed count
+    if ((currentWidth <= 0 || currentHeight <= 0 || currentFontSize <= 0) && circle.style.display !== "none") {
+        circle.style.display = 'none';  // Hide the circle
         missed += 1;  // Increment missed count
         updateScoreDisplay();  // Update score display
     } else {
@@ -245,19 +261,21 @@ function shrinkCircle(circle) {
     }
 }
 
+// Shrinks all the circles in the array
 function shrinkCircles() {
     circles.forEach(circle => {
         shrinkCircle(circle);
     });
 }
 
-
+// Starts the game by resetting scores and creating circles
 function startPlay() {
     console.log("start play!");
     points = 0;
     missed = 0;
     hits = 0;
 
+    // Update the accuracy, hit, and score elements on the page
     const accuracyElement = document.querySelector('.accuracy');
     const hitElement = document.querySelector('.hit');
     const scoreElement = document.querySelector('.score');
@@ -269,14 +287,12 @@ function startPlay() {
     makeCircles(); // Start making circles
 }
 
+// Event listener for the "play" button to start the game
 play.addEventListener("click", function() {
     startPlay();
 });
 
-
-
-
-
+// Handles the game mode selection
 document.querySelectorAll('.game-mode-option').forEach(option => {
     option.addEventListener('click', () => {
         // Uncheck all other options except the one that was clicked
@@ -286,9 +302,10 @@ document.querySelectorAll('.game-mode-option').forEach(option => {
         // Set the clicked option to true
         option.checked = true;
 
+        // Get the selected game mode
         selectedMode = document.querySelector('.game-mode-option:checked').value;
 
-        // Make decisions based on the selected mode
+        // Perform actions based on the selected game mode
         if (selectedMode === 'classic') {
             console.log("Classic Mode selected - Regular speed, unlimited time");
             // Add code for Classic Mode here
@@ -305,30 +322,47 @@ document.querySelectorAll('.game-mode-option').forEach(option => {
     });
 });
 
+// Enables the shooting behavior for a circle by moving it randomly on the screen
 function enableShooting(circle) {
     let dx = (Math.random() + 0.2) * 3; // Random horizontal speed
     let dy = (Math.random() + 0.2) * 3; // Random vertical speed
 
+    // Moves the circle continuously across the screen
     function moveCircle() {
         const rect = fullplay.getBoundingClientRect();
         const circleRect = circle.getBoundingClientRect();
 
-        // Update position
+        // Update position of the circle
         circle.style.left = `${circle.offsetLeft + dx}px`;
         circle.style.top = `${circle.offsetTop + dy}px`;
 
-          requestAnimationFrame(moveCircle);
+        // Continue moving the circle by calling moveCircle on the next frame
+        requestAnimationFrame(moveCircle);
+
+        // Hide the circle if it moves off-screen
+        if ((circleRect.top > screenHeight * 1.2 || // Below the screen
+            circleRect.left > screenWidth * 1.2 || // Right of the screen
+            circleRect.right < -screenWidth * 0.2 || // Left of the screen
+            circleRect.bottom < -screenHeight * 0.2) // Above the screen
+            && circle.style.display !== "none" // Make sure the circle is not already hidden
+        ) {
+            circle.style.display = "none"; // Hide the circle
+            missed++; // Increment the missed counter
+            console.log(missed); // Log the missed count
+            updateScoreDisplay(); // Update the score display
+        }
     }
 
+    // Start the movement animation
     requestAnimationFrame(moveCircle);
 }
 
 let balls = [];  // To store all the balls on screen
-
+// Function to enable bouncing behavior for the circle
 function enableBouncing(circle) {
     let dx, dy;
 
-    // Generate initial random speeds with a wider range and avoid values between -1 and 1
+    // Generate initial random speeds for the ball, avoiding values between -1 and 1
     do {
         dx = (Math.random() - 0.5) * 6; // Speed range [-3, 3]
     } while (Math.abs(dx) < 1); // Ensure dx is not between -1 and 1
@@ -356,7 +390,7 @@ function enableBouncing(circle) {
     // Detect collision between two balls
     function checkCollisions() {
         balls.forEach((otherBall) => {
-            if (otherBall === circle) return; // Skip self collision
+            if (circle === circle) return; // Got rid of bouncing functionality
 
             const otherRect = otherBall.circle.getBoundingClientRect();
             const circleRect = circle.getBoundingClientRect();
@@ -400,6 +434,7 @@ function enableBouncing(circle) {
         });
     }
 
+    // Function to move the circle
     function moveCircle() {
         const circleRect = circle.getBoundingClientRect(); // Get circle boundaries
 
@@ -464,6 +499,8 @@ function enableBouncing(circle) {
     setTimeout(() => {
         circle.remove(); // Remove ball after random time
         cancelAnimationFrame(moveCircle); // Stop the animation
+        missed++; // Increment missing counter
+        updateScoreDisplay();
     }, timeoutDuration);
 
     // Start the animation
@@ -491,6 +528,19 @@ function createGlidingBall(circle) {
         if (!isOver) {
             requestAnimationFrame(moveCircle);
         }
+
+
+        if ((circleRect.top > screenHeight * 1.2 || // Below the screen
+            circleRect.left > screenWidth * 1.2 || // Right of the screen
+            circleRect.right < -screenWidth * 0.2 || // Left of the screen
+            circleRect.bottom < -screenHeight * 0.2) // Above the screen
+            && circle.style.display !== "none" // Make sure the circle is not already hidden
+        ) {
+            circle.style.display = "none"; // Hide the circle
+            missed++; // Increment the missed counter
+            console.log(missed); // Log the missed count
+            updateScoreDisplay(); // Update the score display
+        }
     }
 
     // Start the motion
@@ -500,6 +550,7 @@ function createGlidingBall(circle) {
     }
 
 }
+
 
 
 
@@ -525,8 +576,8 @@ christmasSwitch.addEventListener('change', () => {
 
         fake_artist_names = original_fake_artist_names;
         fake_song_titles = original_fake_song_titles;
-        real_artist_names = original_real_artist_names;
-        real_song_titles = original_real_song_titles;
+        real_artist_names = real_artist_names;
+        real_song_titles = real_song_titles;
     }
 });
 

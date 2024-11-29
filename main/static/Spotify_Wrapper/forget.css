@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    height: 100%;
+    height: 100vh;
     font-family: Arial, sans-serif;
 }
 
@@ -17,11 +17,11 @@ body {
     color: #faf6e7;
     font-family: 'ChakraPetch-Regular', sans-serif;
     position: absolute;
-    font-size: 2.5rem;
+    font-size: 2.5vw;
     user-select: none;
     text-decoration: none;
-    left: 10px;
-    top: 20px;
+    left: 1%;
+    top: 1%;
     z-index: 9999;
 }
 .CosmicTunes:hover {
@@ -43,77 +43,46 @@ body {
     user-select: none;
     color: #faf6e7;
     font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 7rem; /* Adjust font size */
+    font-size: 5vw; /* Adjust font size */
+    margin-top: 2%;
+}
+
+.form-user,
+.form-security,
+.form-pass1,
+.form-pass2 {
+    width: 30%; /* Adjust width for responsiveness */
+    margin-bottom: 20px;
+    position: absolute;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center it correctly */
 }
 
 .form-user {
-    width: 30%;
-    margin-bottom: 20px;
-    position: absolute;
-    left:35%;
-    top: 40%;
+    top: 20%; /* Use percentage for vertical spacing */
 }
 
-.form-user input {
-    font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 30px;
-    width: 100%;
-    padding: 10px;
-    font-size: 2rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.form-security{
-    width: 30%;
-    margin-bottom: 20px;
-    position: absolute;
-    left:35%;
-    top: 50%;
-}
-
-.form-security input {
-    font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 30px;
-    width: 100%;
-    padding: 10px;
-    font-size: 2rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.form-security {
+    top: 52%; /* Use percentage for vertical spacing */
 }
 
 .form-pass1 {
-    width: 30%;
-    margin-bottom: 20px;
-    position: absolute;
-    left:35%;
-    top: 60%;
-}
-
-.form-pass1 input {
-    font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 30px;
-    width: 100%;
-    padding: 10px;
-    font-size: 2rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    top: 30%; /* Use percentage for vertical spacing */
 }
 
 .form-pass2 {
-    width: 30%;
-    margin-bottom: 20px;
-    position: absolute;
-    left:35%;
-    top: 70%;
+    top: 40%; /* Use percentage for vertical spacing */
 }
 
+.form-user input,
+.form-security input,
+.form-pass1 input,
 .form-pass2 input {
     font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 30px;
-    width: 100%;
+    height: 30px; /* Keep fixed height */
+    width: 100%; /* Full width of the container */
     padding: 10px;
-    font-size: 2rem;
+    font-size: 2rem; /* Responsive font size */
     border: 1px solid #ccc;
     border-radius: 4px;
 }
@@ -129,7 +98,7 @@ body {
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
-  font-size: 32px;
+  font-size: 3vw;
   margin: 4px 2px;
   border-radius: 5px;
   z-index: 9999;
@@ -137,25 +106,87 @@ body {
 .create:hover {
     background: #1B285E;
 }
-.btn-success{
-     font-family: 'ChakraPetch-Regular', sans-serif;
-  background-color: #334AA8;
-  position: absolute;
-  border: none;
-  left: 43%;
-  bottom: 15%;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  font-size: 32px;
-  margin: 4px 2px;
-  border-radius: 5px;
+.btn-success {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    background-color: #334AA8;
+    position: absolute;                       /* Absolute positioning */
+    border: none;
+    left: 50%;                                /* Center horizontally */
+    bottom: 2.5%;                              /* Position above the bottom */
+    transform: translateX(-50%);             /* Center it perfectly */
+    color: white;
+    padding: 1.5vh 3vw;                       /* Responsive padding based on viewport height and width */
+    text-align: center;
+    font-size: 2.5vw;                         /* Responsive font size */
+    margin: 4px 2px;                          /* Margin for spacing */
+    border-radius: 5px;
 }
+
 .btn-success:hover {
-    background-color: #1B285E;
+    background-color: #1B285E;               /* Change background color on hover */
 }
+.btn-success:disabled {
+    color: rgba(150, 150, 150, 1);                    /* Greyed-out color for disabled state */
+    cursor: not-allowed;                              /* Indicate non-clickable */
+    opacity: 0.6;                                     /* Slightly transparent when disabled */
+}
+
 .one {
     height: 100%;
     width: 100%;
     z-index: -1;
+}
+
+.birthday {
+     color: #faf6e7;
+    position: absolute;
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 2.5vw;
+    text-align: center;
+    top: 46%;
+    width: 100%;
+}
+
+.password-requirements {
+    list-style: none;
+    padding: 15px;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    color: black;
+    font-size: 0.9em;                             /* Base font size */
+    width: 90%;                                   /* Set width as a percentage of the viewport */
+    max-width: 500px;                             /* Set a max-width for larger screens */
+    margin-left: auto;
+    margin-right: auto;
+    position: fixed;                              /* Position fixed to keep it at the bottom of the screen */
+    bottom: 13%;                                  /* Adjust the distance from the bottom of the screen */
+    left: 50%;                                   /* Center the box horizontally */
+    transform: translateX(-50%);                  /* Center it correctly */
+    z-index: 1000;                               /* Ensure it's above other content */
+}
+
+/*!* Additional responsive adjustments *!*/
+/*@media screen and (max-width: 768px) {*/
+/*    .password-requirements {*/
+/*        width: 95%; !* Wider for smaller screens *!*/
+/*        font-size: 0.8em; !* Slightly smaller font for smaller screens *!*/
+/*    }*/
+/*}*/
+
+/* Style for each item in the list */
+.password-requirements li {
+    margin-bottom: 10px;
+}
+
+/* Style for valid requirements (green color) */
+.password-requirements li.valid {
+    color: green;
+}
+
+
+.password-requirements li:not(.valid) {
+    color: red;
 }

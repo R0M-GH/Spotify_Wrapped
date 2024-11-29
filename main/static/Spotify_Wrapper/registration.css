@@ -274,9 +274,9 @@ body {
   position: absolute;
   font-size: 200%;
   text-decoration: none;
-  left: 70px;
+  left: 4%;
   z-index: 9999;
-
+    top: 1.9%;
 }
 .CosmicTunes:hover {
     color: #fff; /* Change the text color for contrast */

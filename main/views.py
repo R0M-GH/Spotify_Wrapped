@@ -10,7 +10,7 @@ import requests
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from openai import OpenAI
@@ -34,8 +34,22 @@ def summary2(request):
 	return render(request, 'Spotify_Wrapper/summary2.html')
 
 def accountpage(request):
-	user = User.objects.get(username=request.user)
-	return render(request, 'Spotify_Wrapper/accountpage.html')
+	username = request.session.get('username')
+	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
+	wrap_count = wrap_set.count()
+	most_recent_wrap = wrap_set.first()
+	display_name = User.objects.get(username=username).current_display_name
+	if most_recent_wrap:
+		most_recent_wrap_date = most_recent_wrap.creation_date
+	else:
+		most_recent_wrap_date = None
+	context = {
+		"username": username,
+		"display_name": display_name,
+		"wrap_count": wrap_count,
+		"most_recent_wrap_date": most_recent_wrap_date,
+	}
+	return render(request, 'Spotify_Wrapper/accountpage.html', context)
 
 def contact(request):
 	return render(request, 'Spotify_Wrapper/contact.html')
@@ -80,6 +94,7 @@ def ConstellationArtists(request):
 def ConstellationArtists2(request):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html')
 
+
 def account(request):
 	username = request.session.get('username')
 	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
@@ -92,6 +107,21 @@ def account(request):
 		"most_recent_wrap_date": most_recent_wrap_date,
 	}
 	return render(request, 'Spotify_Wrapper/accountpage.html', context)
+
+# @login_required
+# def account(request):
+# 	username = request.session.get('username')
+# 	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
+# 	wrap_count = wrap_set.count()
+# 	most_recent_wrap = wrap_set.first()
+# 	most_recent_wrap_date = most_recent_wrap.creation_date
+# 	context = {
+# 		"username": username,
+# 		"wrap_count": wrap_count,
+# 		"most_recent_wrap_date": most_recent_wrap_date,
+# 	}
+# 	return render(request, 'Spotify_Wrapper/accountpage.html', context)
+
 
 def library(request):
 	username = request.session.get('username')
@@ -123,27 +153,6 @@ def stellar_hits(request):
 	# Load users most recent wrapper info here
 	return render(request, f'Spotify_Wrapper/StellarHits{request.session.get("page"), ""}.html')
 
-
-# def register(request):
-# 	if request.method == 'POST':
-# 		form = RegistrationForm(request.POST)
-# 		if form.is_valid():
-# 			username = form.cleaned_data['username']
-# 			password1 = form.cleaned_data['password1']
-# 			birthday = form.cleaned_data['birthday']
-#
-# 			# Check if username already exists in User model
-# 			if User.objects.filter(username=username).exists():
-# 				return render(request, 'registration/registration.html', {"form": form, 'error': True})
-#
-# 			# Creates users
-# 			user = User.objects.create_user(username=username, password=password1)
-# 			user.birthday = birthday
-# 			user.save()
-# 			return redirect("user_login")
-# 	else:
-# 		form = RegistrationForm()
-# 	return render(request, 'registration/registration.html', {"form": form})
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -183,26 +192,6 @@ def register(request):
     return render(request, 'registration/registration.html', {
         "form": form,
     })
-
-
-# def user_login(request):
-# 	request.session.flush()
-#
-# 	if request.method == 'POST':
-# 		username = request.POST['username']
-# 		password = request.POST['password']
-#
-# 		user = authenticate(request, username=username, password=password)
-# 		if user is not None:
-# 			request.session['username'] = username
-# 			login(request, user)
-# 			return redirect("spotify_login")
-# 		else:
-# 			form = LoginForm()
-# 			return render(request, 'registration/login.html', {'form': form, 'error': True})
-# 	else:
-# 		form = LoginForm()
-# 	return render(request, 'registration/login.html', {'form': form})
 
 def user_login(request):
 	request.session.flush()
@@ -250,7 +239,9 @@ def forgot_password(request):
 	return render(request, 'registration/forget.html', {'form': form})
 
 def relink_spotify_account(request):
-	return redirect("spotify_login")
+	return render(request, 'Spotify_Wrapper/relink_spotify_account.html', {
+        'redirect_url': "http://localhost:8000/spotify/login"  # URL to redirect to after logout
+    })
 
 def delete_account(request):
 	username = request.session.get('username')
@@ -280,7 +271,6 @@ def spotify_login(request):
 	}
 
 	url = auth_url + urllib.parse.urlencode(query_params)
-
 	return redirect(url)
 
 def spotify_callback(request):
@@ -319,6 +309,8 @@ def spotify_callback(request):
 		'Content-Type': 'application/x-www-form-urlencoded',
 	}
 
+
+
 	response = requests.post(token_url, data=body, headers=header)
 	response_data = response.json()
 
@@ -326,12 +318,23 @@ def spotify_callback(request):
 		access_token = response_data['access_token']
 		refresh_token = response_data['refresh_token']
 
+
 		# Assuming user session has 'username' set from login view
 		username = request.session.get('username')
 		if username:
 			user = User.objects.get(username=username)
 			user.spotify_access_token = access_token
 			user.spotify_refresh_token = refresh_token
+
+			headers = {'Authorization': f'Bearer {access_token}'}
+			response = requests.get('https://api.spotify.com/v1/me', headers=headers)
+			if response.status_code == 200:
+				# Extract the user's display name from the JSON response
+				user_data = response.json()
+				user.current_display_name = user_data.get('display_name', 'Unknown User')  # Default value in case the field is missing
+			else:
+				user.current_display_name = 'Unknown User'
+
 			user.save()  # Save tokens to the user model
 
 		return redirect("library")

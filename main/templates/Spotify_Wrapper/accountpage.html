@@ -35,24 +35,29 @@
     <!-- Add user information text here -->
     <div class="account-info">
         <p class="info-text">Username: {{ username }}</p>
-        <p class="info-text">No. of wraps created: {{ wrap_count }}</p>
-        <p class="info-text">Last time wrap was created: {{ last_wrap_time }}</p>
+        <p class="info-text">Current Spotify Account Connected: {{ display_name }}</p>
+        <p class="info-text">Number of Wraps created: {{ wrap_count }}</p>
+        {% if most_recent_wrap_date %}
+            <p class="info-text">Last Wrap Creation Date: {{ most_recent_wrap_date|date:"m-d-Y" }}</p>
+        {% else %}
+            <p class="info-text">Last Wrap Creation Date: No Wraps created :(</p>
+        {% endif %}
     </div>
     <!-- Add the buttons here -->
     <div class="account-buttons">
-        <form method="POST" action="/delete_account">
+        <form method="POST" action="/delete_account/">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Delete Account</button>
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your account? This will delete all the data and Wraps associated with the account')">Delete Account</button>
         </form>
 
-        <form method="POST" action="/logout">
+        <form method="POST" action="/login/">
             {% csrf_token %}
             <button type="submit" class="btn btn-warning">Logout</button>
         </form>
 
-        <form method="POST" action="/relink_account">
+        <form method="POST" action="/spotify_logout/">
             {% csrf_token %}
-            <button type="submit" class="btn btn-info">Relink Account</button>
+            <button type="submit" class="btn btn-info" onclick="return confirm('This will log you out of your Spotify account in another tab. Depending on your browser you may have to exit out of the tab manually and then log in with another Spotify account.')">Link Another Spotify Account</button>
         </form>
     </div>
 </body>

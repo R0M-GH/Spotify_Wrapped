@@ -191,4 +191,98 @@ body {
     opacity: 0.6;                                     /* Slightly transparent when disabled */
 }
 
+.hamburger-menu {
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  top: 1%;
+  position: absolute;
+    z-index: 9999;
+
+}
+
+.hamburger {
+      z-index: 9999;
+
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 20px;
+  margin: 20px;
+}
+
+.hamburger .line {
+      z-index: 9999;
+
+  background-color: #FFFFFF;
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  transition: 0.3s ease;
+}
+
+.menu {
+      z-index: 9999;
+
+  display: none;
+  position: absolute;
+  border-radius: 3%;
+  top: 60px;
+  left: 0;
+  width: 25%;
+  background-color: #ffffffcc;
+}
+
+.menu ul {
+      z-index: 9999;
+
+  list-style: none;
+  margin: 0;
+  padding: 5%;
+}
+
+.menu li {
+      z-index: 9999;
+
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+
+}
+
+.menu li a {
+      z-index: 9999;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+
+  font-size: 2.5vw;
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+
+.menu li:hover {
+      z-index: 9999;
+
+    border-radius: 5%;
+  color: #FFFFFF;
+  background-color: #334AA8;
+}
+.menu li a:hover {
+      color: white;
+}.CosmicTunes {
+  color: #faf6e7;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  position: absolute;
+  font-size: 200%;
+  text-decoration: none;
+  left: 4%;
+  z-index: 9999;
+    top: 1.9%;
+}
+.CosmicTunes:hover {
+    color: #fff; /* Change the text color for contrast */
+    background-color: #4313ca; /* Add a background color */
+    padding: 3px 5px; /* Add some padding for better appearance */
+    border-radius: 25px; /* Optional: round the edges */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 

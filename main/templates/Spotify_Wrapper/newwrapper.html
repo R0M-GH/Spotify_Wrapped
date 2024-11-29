@@ -33,7 +33,7 @@
     </ul>
 </nav>
 </div>
-<div class="Cosmic-Song-Count" style="user-select: none;"> New Wrapper!</div>
+<div class="Cosmic-Song-Count" style="user-select: none;">Choose a Term!</div>
 <a href="/wrapper" onclick="return makeWrapped('short_term')">
     <img class="s" src="{% static "Spotify_Wrapper/image/GN-YellowPlanet.png" %}" alt="Centered Image">
 </a>
@@ -44,9 +44,11 @@
     <img class="l" src="{% static "Spotify_Wrapper/image/CA-BluePlanet.png" %}" alt="Centered Image">
 </a>
 <img class="l" src="{% static "Spotify_Wrapper/image/CA-BluePlanet.png" %}" alt="Centered Image">
-<div class="st">Make a small size wrapper!</div>
-<div class="ttt">Make a medium size wrapper!</div>
-<div class="lt">Make a large size wrapper!</div>
+
+<div class="st">Short Term Wrap (~4 Weeks)</div>
+<div class="ttt">Medium Term Wrap (~6 Months)</div>
+<div class="lt">Long Term Wrap (~1 Year)</div>
+
 <script>
 	async function makeWrapped(term) {
 		try {

@@ -8,8 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login - Cosmic Tunes</title>
     <link rel="stylesheet" href="{% static 'Spotify_Wrapper/forget.css' %}">
+     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
 </head>
 <body>
+<header>
+        <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+ <div class="hamburger-menu">
+    <div class="hamburger" id="hamburger">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+        </div>
+    </header>
+
+    <nav class="menu" id="menu">
+      <ul>
+        <li><a href="/library">Library</a></li>
+        <li><a href="/game">Game</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/accountpage">Account</a></li>
+        <li><a href="/login">Logout</a></li>
+      </ul>
+    </nav>
     <header>
         <a class="CosmicTunes" href="/">Cosmic Tunes</a>
     </header>
@@ -18,15 +39,17 @@
         <span class="forgot">Forgot Password</span>
     </div>
     <div class="login-container">
-        <form method="post" id="login-form" class="form">
+        <form method="post" id="forgot-password-form" class="form">
             {% csrf_token %}
 
             <div class="form-user">
                 {{ form.username }}
             </div>
+            <div class="birthday">
+                Enter Your Birthday:
+            </div>
             <div class="form-security">
-                Enter your Birthday below:
-                {{ form.security_answer }}
+                {{ form.security_answer}}
             </div>
             <div class="form-pass1">
                 {{ form.new_password1 }}
@@ -35,12 +58,109 @@
                 {{ form.new_password2 }}
             </div>
 
-            <a href="/signup" class="create">Create</a>
-            <button type="submit" class="btn-success">Login</button>
-            <o>h</o>
+{#            <a href="/signup" class="create">Create</a>#}
+            <button type="submit" id="forgot-password-button" class="btn-success" disabled>Submit</button>
         </form>
     </div>
-        <img class="one" src="{% static "Spotify_Wrapper/image/login2.png" %}">
+    <ul class="password-requirements" id="password-requirements">
+        <li id="length-requirement">At least 8 characters</li>
+        <li id="uppercase-requirement">At least one uppercase letter</li>
+        <li id="number-requirement">At least one number</li>
+        <li id="special-char-requirement">At least one special character (e.g., !@#$%^&*)</li>
+        <li id="not-common-password-requirement">Not a common password</li>
+        <li id="not-numeric-requirement">Not entirely numeric</li>
+        <li id="match-password-requirement">Passwords must match</li>
+    </ul>
+    <img class="one" src="{% static "Spotify_Wrapper/image/login2.png" %}">
+    <script>
+        // Function for password validation
+        function validatePassword() {
+            const password = document.getElementById('id_new_password1').value;
+            const confirmPassword = document.getElementById('id_new_password2').value;
+
+            const lengthRequirement = document.getElementById('length-requirement');
+            const uppercaseRequirement = document.getElementById('uppercase-requirement');
+            const numberRequirement = document.getElementById('number-requirement');
+            const specialCharRequirement = document.getElementById('special-char-requirement');
+            const notCommonPasswordRequirement = document.getElementById('not-common-password-requirement');
+            const notNumericRequirement = document.getElementById('not-numeric-requirement');
+            const matchPasswordRequirement = document.getElementById('match-password-requirement');
+
+            let isValid = true; // Track overall validity
+
+            // Check if password is at least 8 characters long
+            if (password.length >= 8) {
+                lengthRequirement.classList.add('valid');
+            } else {
+                lengthRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if password contains an uppercase letter
+            if (/[A-Z]/.test(password)) {
+                uppercaseRequirement.classList.add('valid');
+            } else {
+                uppercaseRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if password contains a number
+            if (/\d/.test(password)) {
+                numberRequirement.classList.add('valid');
+            } else {
+                numberRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if password contains a special character
+            if (/[^A-Za-z0-9]/.test(password)) {
+                specialCharRequirement.classList.add('valid');
+            } else {
+                specialCharRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if password is not entirely numeric
+            if (!/^\d+$/.test(password)) {
+                notNumericRequirement.classList.add('valid');
+            } else {
+                notNumericRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Check if passwords match
+            if (password && confirmPassword && password === confirmPassword) {
+                matchPasswordRequirement.classList.add('valid');
+            } else {
+                matchPasswordRequirement.classList.remove('valid');
+                isValid = false;
+            }
+
+            // Mark common password as valid for now (server-side check)
+            notCommonPasswordRequirement.classList.add('valid');
+
+            // Enable or disable the submit button based on validity
+            document.getElementById('forgot-password-button').disabled = !isValid;
+        }
+
+        // Listen for changes in both password fields
+        document.getElementById('id_new_password1').addEventListener('input', validatePassword);
+        document.getElementById('id_new_password2').addEventListener('input', validatePassword);
+        // Validate username field
+        function validateForm() {
+            const username = document.getElementById('id_username').value;
+            const usernameError = document.getElementById('username-error');
+
+            // Simulate validation: Replace with server-side check if possible
+            if (!username || username !== "valid_username") { // Replace "valid_username" with actual validation
+                usernameError.style.display = 'inline';
+                return false;
+            } else {
+                usernameError.style.display = 'none';
+                return true;
+            }
+        }
+    </script>
     {% endblock %}
 </body>
 </html>

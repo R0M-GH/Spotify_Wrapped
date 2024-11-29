@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logging out...</title>
+</head>
+<body>
+    <script>
+        const spotifyLogoutUrl = "https://www.spotify.com/logout/";
+        const redirectUrl = "{{ redirect_url }}"; // Replace with your redirect URL
+
+        // Open the Spotify logout page in a new tab or window
+        const logoutWindow = window.open(spotifyLogoutUrl, '_blank');
+
+        // Redirect back to your app after a short delay
+        setTimeout(() => {
+            // Close the logout tab/window if it's still open
+            try {
+                // Attempt to close the logout tab/window
+                if (logoutWindow && !logoutWindow.closed) {
+                    logoutWindow.close();
+                }
+            } catch (err) {
+                console.log("Unable to close the logout window. Browser may have blocked it.");
+            }
+            // Redirect the user back to your application
+            window.location.href = redirectUrl;
+        }, 1000); // Adjust the timeout as needed (e.g., 5 seconds)
+    </script>
+    <p>Logging out of Spotify. Please wait...</p>
+</body>
+</html>

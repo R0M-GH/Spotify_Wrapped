@@ -82,7 +82,7 @@ body {
   background-color: #334AA8;
   position: fixed;
   border: none;
-  left: 49%;
+  left: 55%;
   bottom: 33.5%;
   color: white;
   padding: 10px 20px;
@@ -100,8 +100,9 @@ body {
     font-family: 'ChakraPetch-Regular', sans-serif;
     background-color: #334AA8;
     border: none;
-    left: 49%;
-    bottom: 20%;  /* Adjusted bottom position to avoid overlap */
+    position: absolute; /* Ensure the element respects bottom positioning */
+    left: 17.5%;
+    bottom: 33.5%; /* Adjust this value to move the button lower */
     color: white;
     padding: 10px 20px;
     text-align: center;
@@ -109,7 +110,7 @@ body {
     font-size: 3vw;
     margin: 4px 2px;
     border-radius: 5px;
-    z-index: 10000;  /* Ensure it appears above other elements */
+    z-index: 10000; /* Ensure it appears above other elements */
 }
 
 .forgot:hover {
@@ -120,7 +121,7 @@ body {
       background-color: #334AA8;
       position: fixed;
       border: none;
-      left: 42%;
+      left: 49%;
       bottom: 33.5%;
       color: white;
       padding: 10px 20px;

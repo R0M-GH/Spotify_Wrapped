@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from main.views import login, home, register
-from main.forms import RegistrationForm, LoginForm
+from main.forms import RegistrationForm, LoginForm, ForgetForm
 from unittest.mock import patch
 from django.contrib.auth.hashers import make_password
 from main.backends import AuthModelBackend
@@ -83,6 +83,127 @@ class UserModelTest(TestCase):
         """Test creating a user with an invalid username."""
         with self.assertRaises(ValueError):
             User.objects.create_user(username="", password="password123")
+
+class RegistrationFormTest(TestCase):
+
+    def test_valid_form(self):
+        form_data = {
+            'username': 'testuser',
+            'password1': 'securepassword',
+            'password2': 'securepassword',
+            'birthday': '1990-01-01'
+        }
+        form = RegistrationForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_password_mismatch(self):
+        form_data = {
+            'username': 'testuser',
+            'password1': 'securepassword',
+            'password2': 'wrongpassword',
+            'birthday': '1990-01-01'
+        }
+        form = RegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['__all__'], ['Passwords do not match.'])
+
+    def test_missing_birthday(self):
+        form_data = {
+            'username': 'testuser',
+            'password1': 'securepassword',
+            'password2': 'securepassword',
+            'birthday': ''
+        }
+        form = RegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('birthday', form.errors)
+
+    def test_empty_form(self):
+        form = RegistrationForm(data={})
+        self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)
+        self.assertIn('password1', form.errors)
+        self.assertIn('password2', form.errors)
+        self.assertIn('birthday', form.errors)
+
+
+class LoginFormTest(TestCase):
+
+    def test_valid_form(self):
+        form_data = {
+            'username': 'testuser',
+            'password': 'securepassword'
+        }
+        form = LoginForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_missing_username(self):
+        form_data = {
+            'username': '',
+            'password': 'securepassword'
+        }
+        form = LoginForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)
+
+    def test_missing_password(self):
+        form_data = {
+            'username': 'testuser',
+            'password': ''
+        }
+        form = LoginForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('password', form.errors)
+
+    def test_empty_form(self):
+        form = LoginForm(data={})
+        self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)
+        self.assertIn('password', form.errors)
+
+
+class ForgetFormTest(TestCase):
+
+    def test_valid_form(self):
+        form_data = {
+            'username': 'testuser',
+            'security_answer': '1990-01-01',
+            'new_password1': 'securepassword',
+            'new_password2': 'securepassword'
+        }
+        form = ForgetForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_missing_security_answer(self):
+        form_data = {
+            'username': 'testuser',
+            'security_answer': '',
+            'new_password1': 'securepassword',
+            'new_password2': 'securepassword'
+        }
+        form = ForgetForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('security_answer', form.errors)
+
+    def test_missing_password(self):
+        form_data = {
+            'username': 'testuser',
+            'security_answer': '1990-01-01',
+            'new_password1': '',
+            'new_password2': ''
+        }
+        form = ForgetForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('new_password1', form.errors)
+        self.assertIn('new_password2', form.errors)
+
+    def test_empty_form(self):
+        form = ForgetForm(data={})
+        self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)
+        self.assertIn('security_answer', form.errors)
+        self.assertIn('new_password1', form.errors)
+        self.assertIn('new_password2', form.errors)
 
 class AuthModelBackendTest(TestCase):
     def setUp(self):

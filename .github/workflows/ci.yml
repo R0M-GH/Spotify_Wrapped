@@ -30,13 +30,8 @@ jobs:
 
       - name: Run Tests with Coverage
         run: |
-          # Run tests for the 'main' app, excluding main/tests.py from test discovery
-          python manage.py test main --ignore=main/tests.py  # Run tests excluding tests.py
-      
-          # Collect coverage data, excluding main/tests.py from the coverage calculation
-          coverage run --source=main --omit="main/tests.py" manage.py test main  # Collect coverage data
-          
-          # Report coverage and fail if it's below 80%
+          python manage.py test main  # Run tests for the 'main' app
+          coverage run --source=main manage.py test main  # Collect coverage data
           coverage report --fail-under=80  # Fail if coverage is below 80%
 
       - name: Run Pylint

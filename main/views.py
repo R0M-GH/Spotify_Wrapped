@@ -439,7 +439,11 @@ def get_wrapped(request, dt):
 @csrf_exempt
 @login_required
 def llama_description(request, data):
-	msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
+	msg = ("Based on the following list of top artists from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy "
+		   "description of the personality, behavior, and style of someone who listens to this kind of music. "
+		   "Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks. "
+		   "The response must be concise, self-contained, and exactly 50 tokens or fewer.")
+
 	client = OpenAI(
 		base_url="https://integrate.api.nvidia.com/v1",
 		api_key="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"
@@ -448,15 +452,18 @@ def llama_description(request, data):
 	completion = client.chat.completions.create(
 		model="meta/llama-3.1-405b-instruct",
 		messages=[{"role": "user", "content": f'{msg}\n\n{data}'}],
-		temperature=0.2,
+		temperature=0.01,
 		top_p=0.7,
-		max_tokens=1024,
+		max_tokens=200,
 		stream=True
 	)
-
+	response = ""  # Collect all the content here
 	for chunk in completion:
-		if chunk.choices[0].delta.content is not None:
-			return(chunk.choices[0].delta.content)
+		delta_content = chunk.choices[0].delta.content
+		if delta_content:  # Only add non-None content
+			response += delta_content
+
+	return response
 
 def get_game_info(request):
 	user = User.objects.get(username=request.session.get('username'))

@@ -445,17 +445,15 @@ def llama_description(request, data):
 		"Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks. "
 		"ENSURE THAT THE RESPONSE IS CONCISE, SELF-CONTAINED AND LESS THAN 50 TOKENS. ENSURE THERE IS NO OTHER INFORMATION ASIDE FROM HOW THE USER ACTS, THINKS AND DRESSES"
 	)
-
 	client = OpenAI(
 		base_url="https://integrate.api.nvidia.com/v1",
 		api_key="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"
 	)
-
 	completion = client.chat.completions.create(
 		model="meta/llama-3.1-405b-instruct",
 		messages=[{"role": "user", "content": f'{msg}\n\n{data}'}],
-		temperature=0.01,
-		top_p=0.7,
+		temperature=0.1,
+		top_p=0.5,
 		max_tokens=75,
 		stream=True
 	)

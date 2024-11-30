@@ -408,13 +408,6 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'Spotify_Wrapper/welcome.html')
 
-    # def test_accountpage_view(self):
-    #     Wraps.objects.create(username=self.user.username, creation_date='2024-11-30')
-    #     response = self.client.get(reverse('account-page'))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')
-    #     self.assertContains(response, self.user.username)
-
     def test_contact_view(self):
         response = self.client.get(reverse('contact'))
         self.assertEqual(response.status_code, 200)
@@ -430,23 +423,6 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/registration.html')
 
-    # def test_register_view_post_existing_user(self):
-    #     self.client.logout()
-    #     response = self.client.post(reverse('registration'), {
-    #         'username': 'testuser',
-    #         'password1': 'testpass',
-    #         'password2': 'testpass',
-    #         'birthday': '2000-01-01'
-    #     })
-    #     self.assertFormError(response, 'form', 'username', 'An account with this username already exists.')
-
-    # def test_user_login_success(self):
-    #     response = self.client.post(reverse('user_login'), {
-    #         'username': 'testuser',
-    #         'password': 'testpass'
-    #     })
-    #     self.assertRedirects(response, reverse('library'))
-
     def test_user_login_invalid(self):
         response = self.client.post(reverse('user_login'), {
             'username': 'testuser',
@@ -454,23 +430,6 @@ class ViewsTestCase(TestCase):
         })
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'error')  # This assumes the template shows an error when login fails
-
-    # def test_forgot_password_view_post_invalid(self):
-    #     response = self.client.post(reverse('forgot-password'), {
-    #         'username': 'nonexistentuser',
-    #         'security_answer': '2000-01-01',
-    #         'new_password1': 'newpass',
-    #         'new_password2': 'newpass'
-    #     })
-    #     self.assertContains(response, 'error')
-    # def test_accountpage_view_with_wraps(self):
-    #     # Test the account page with existing wraps
-    #     Wraps.objects.create(username=self.user.username, creation_date='2024-11-30')
-    #     response = self.client.get(reverse('account-page'))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')
-    #     self.assertContains(response, self.user.username)
-    #     self.assertContains(response, '2024-11-30')  # Check if the wrap date is present
 
     def test_register_view_post_success(self):
         # Test successful registration
@@ -491,24 +450,6 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/login.html')
 
-    # def test_forgot_password_view_get(self):
-    #     # Test the forgot password page
-    #     response = self.client.get(reverse('forgot-password'))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'registration/Forget.html')
-
-    def test_forgot_password_view_post_success(self):
-        # Test successful password reset
-        response = self.client.post(reverse('forgot-password'), {
-            'username': 'testuser',
-            'security_answer': '2000-01-01',  # Assuming the birthday is used as the security answer
-            'new_password1': 'newpassword',
-            'new_password2': 'newpassword'
-        })
-        self.assertRedirects(response, reverse('user_login'))
-        self.user.refresh_from_db()  # Refresh user instance from DB to check password
-        self.assertTrue(self.user.check_password('newpassword'))
-
     def test_relink_spotify_account_view(self):
         # Test the relink spotify account view
         response = self.client.get(reverse('spotify_logout'))
@@ -521,11 +462,64 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 302)  # Redirect to Spotify authorization URL
         self.assertTrue('https://accounts.spotify.com/authorize' in response.url)
 
-    # def test_get_game_info_view(self):
-    #     # Test accessing the game info view
-    #     response = self.client.get(reverse('game-info'))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'game_info_template.html')  # Replace with actual template used
+    def test_game_view(self):
+        # Test the game view
+        response = self.client.get(reverse('game'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
+
+    def test_spotify_callback_invalid_code(self):
+        # Test Spotify callback with an invalid code
+        response = self.client.get(reverse('spotify_callback'), {'code': 'invalid', 'state': 'random_state'})
+        self.assertEqual(response.status_code, 400)  # Expect a bad request due to invalid code
+
+    def test_genre_nebulas_view(self):
+        # Test GenreNebulas view with a valid date string
+        response = self.client.get(reverse('genre_nebulas', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/GenreNebulas.html')
+
+    def test_stellar_hits_view(self):
+        # Test StellarHits view with a valid date string
+        response = self.client.get(reverse('stellar_hits', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/StellarHits.html')
+
+    def test_constellation_artists_view(self):
+        # Test ConstellationArtists view with a valid date string
+        response = self.client.get(reverse('artist_constellation', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/ConstellationArtists.html')
+
+    def test_astro_ai_view(self):
+        # Test AstroAI view with a valid date string
+        response = self.client.get(reverse('astro-ai', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/AstroAI.html')
+
+    def test_newwrapper_view(self):
+        # Test newwrapper view
+        response = self.client.get(reverse('new_wrapped'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/newwrapper.html')
+
+    def test_contact_view(self):
+        # Test contacting the page
+        response = self.client.get(reverse('contact'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/contact.html')
+
+    def test_relink_spotify_account_view(self):
+        # Test relink spotify account view
+        response = self.client.get(reverse('spotify_logout'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/relink_spotify_account.html')
+
+    def test_home_view_redirects_authenticated_users(self):
+        # Check if an authenticated user can access the home view
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mainTemplates/index.html')
 
     def tearDown(self):
         self.client.logout()

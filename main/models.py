@@ -64,7 +64,7 @@ class Wraps(models.Model):
 	username = models.CharField(max_length=50, unique=False)
 	term = models.CharField(max_length=15, null=True, blank=True)
 	spotify_display_name = models.CharField(max_length=255, default='')
-	creation_date = models.DateTimeField(default=datetime.now(tz=None))
+	creation_date = models.DateTimeField(default=datetime.now)
 	wrap_json = JSONField()
 
 	def __str__(self):

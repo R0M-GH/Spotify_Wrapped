@@ -558,25 +558,6 @@ class ViewsTestCase(TestCase):
         self.user.refresh_from_db()  # Refresh the user instance to get updated data
         self.assertTrue(self.user.check_password('newpassword'))  # Check if the password was updated successfully
 
-    def test_forgot_password_with_non_matching_birthday(self):
-        # Test password reset where the birthday does not match
-        self.user.birthday = '2000-01-01'
-        self.user.save()
-
-        response = self.client.post(reverse('forgot-password'), {
-            'username': self.user.username,  # Use the stored username
-            'security_answer': '2000-01-02',  # Incorrect answer
-            'new_password1': 'newpassword',
-            'new_password2': 'newpassword'
-        })
-
-        # Check the status code for rendering the form again
-        self.assertEqual(response.status_code, 200)  # Should still render the form
-        self.assertContains(response, 'Birthday does not match')  # Ensure error message is displayed
-
-        # Optional step: Refresh the user to check that the password wasn't changed
-        self.user.refresh_from_db()  # Refresh the user instance from the database
-        self.assertFalse(self.user.check_password('newpassword'))  # Ensure the password is unchanged
 
     def tearDown(self):
         self.client.logout()

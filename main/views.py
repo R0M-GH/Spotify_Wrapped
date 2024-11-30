@@ -426,7 +426,17 @@ def get_wrapped(request, dt):
 
 @csrf_exempt
 @login_required
-def get_game_tracks(request):
+def llama_description(request, data):
+	# msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
+	# client = OpenAI(base_url="https://integrate.api.nvidia.com/v1",
+	#                 api_key='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')
+	# response = client.chat.completions.create(model="gpt-4o",
+	#                                           messages=[{'role': 'user', 'content': f'{msg}\n\n{data}'}])
+	# return response.choices[0].message
+	return 'ai stuff 1 2 3 4 5 wow this ai is really cool definitely not hardcoded huh... and your music taste is aight i guess'
+
+
+def get_game_info(request):
 	user = User.objects.get(username=request.session.get('username'))
 	endpoint = 'https://api.spotify.com/v1/me'
 
@@ -443,21 +453,11 @@ def get_game_tracks(request):
 		user.spotify_access_token = access_token
 		user.save()
 
+	top_artists = requests.get(f'{endpoint}/top/artists?limit=50&time_range=long_term', headers=headers)
 	top_tracks = requests.get(f'{endpoint}/top/tracks?limit=50&time_range=long_term', headers=headers)
-	tracks = []
-	for track in top_tracks.json()['items']:
-		tracks.append(track['name'])
+	data = {
+		'artists': [artist for artist in top_artists.json()['items']['name']],
+		'tracks': [track for track in top_tracks.json()['items']['name']]
+	}
 
-	return render(request, 'Spotify_Wrapper/wrapper.html', {'tracks': tracks})
-
-
-@csrf_exempt
-@login_required
-def llama_description(request, data):
-	# msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
-	# client = OpenAI(base_url="https://integrate.api.nvidia.com/v1",
-	#                 api_key='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')
-	# response = client.chat.completions.create(model="gpt-4o",
-	#                                           messages=[{'role': 'user', 'content': f'{msg}\n\n{data}'}])
-	# return response.choices[0].message
-	return 'ai stuff 1 2 3 4 5 wow this ai is really cool definitely not hardcoded huh... and your music taste is aight i guess'
+	return data

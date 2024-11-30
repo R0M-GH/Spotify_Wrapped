@@ -593,6 +593,12 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
         self.assertContains(response, 'Space Destroyers')  # Change this based on actual expected content
 
+    def test_summary_view_logged_in(self):
+        # Test that the summary view can be accessed when logged in with valid data
+        response = self.client.get(reverse('summary', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Check standard functionality
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/summary.html')  # Check if the correct template is used
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()

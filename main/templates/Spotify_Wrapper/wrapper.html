@@ -8,7 +8,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapper.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+    <style>
+        .carousel {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
 
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .slide:nth-child(0) {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 500px;
+            height: 500px;
+            object-fit: contain;
+            transition: transform 0.05s ease-in-out;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .slide img:hover {
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-button {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            z-index: 3;
+        }
+
+        .carousel-button:disabled {
+            background-color: rgba(0, 0, 0, 0.2);
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -24,7 +94,6 @@
 
 <nav class="menu" id="menu">
     <ul>
-
         <li><a href="/library">Library</a></li>
         <li><a href="/game">Game</a></li>
         <li><a href="/contact">Contact</a></li>
@@ -32,27 +101,77 @@
         <li><a href="/login">Logout</a></li>
     </ul>
 </nav>
-</div>
-<div class="Cosmic-Song-Count" style="user-select: none;"> Genre Nebula's</div>
-<a class="mainplanet" href="/wrapper2">
-    <img src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet.png" %}" alt="Centered Image">
-</a>
-<div class="secondPlanet">
-    <a class="Genre-Breakdown" href="/GenreNebulas"> Stellar Hits</a>
-    <a href="/ConstellationArtists">
-        <img class="one" src="{% static "Spotify_Wrapper/image/CSC-BluePlanet.png" %}">
-    </a>
-    <div class="secondPlanet">
-        <a class="Genre-Breakdown" href="/GenreNebulas">  Stellar Hits</a>
-        <a class="TopArtists" href="/summary/"> Summary</a>
-        <a href="/summary/">
-            <img class="one" src="{% static "Spotify_Wrapper/image/MARSleft.png" %}">
+
+{#<img class="space" src="{% static "Spotify_Wrapper/planets/Space.png" %}">#}
+
+<div class="carousel">
+    <div class="slide" id="slide-1">
+        <div class="Cosmic-Song-Count">Stellar Hits</div>
+        <a class="mainplanet" href="/StellarHits/{{ dt }}/">
+            <img src="{% static 'Spotify_Wrapper/planets/mercury.png' %}">
         </a>
-        <a href="/GenreNebulas">
-            <img class="two" src="{% static "Spotify_Wrapper/image/CSC-YellowPlanet.png" %}">
+    </div>
+
+    <div class="slide" id="slide-2">
+        <div class="Cosmic-Song-Count">Artist Constellation</div>
+        <a class="mainplanet" href="/ConstellationArtist/{{ dt }}/">
+            <img src="{% static 'Spotify_Wrapper/planets/neptune.png' %}">
         </a>
-        <img class="space" src="{% static "Spotify_Wrapper/image/Space.png" %}">
+    </div>
+
+    <div class="slide" id="slide-3">
+        <div class="Cosmic-Song-Count">Genre Nebula</div>
+        <a class="mainplanet" href="/GenreNebulas/{{ dt }}/">
+            <img src="{% static 'Spotify_Wrapper/planets/jupiter.png' %}">
+        </a>
+    </div>
+
+    <div class="slide" id="slide-4">
+        <div class="Cosmic-Song-Count">AstroAI</div>
+        <a class="mainplanet" href="/AstroAI/{{ dt }}/">
+            <img src="{% static 'Spotify_Wrapper/planets/ceres.png' %}">
+        </a>
+    </div>
+
+    <div class="slide" id="slide-5">
+        <div class="Cosmic-Song-Count">Summary</div>
+        <a class="mainplanet" href="/summary/{{ dt }}/">
+            <img src="{% static 'Spotify_Wrapper/planets/moon.png' %}">
+        </a>
     </div>
 </div>
+
+<div class="carousel-controls">
+    <button class="carousel-button" id="prev-button">&lt;</button>
+    <button class="carousel-button" id="next-button">&gt;</button>
+</div>
+
+<script>
+	const slides = document.querySelectorAll('.slide');
+	let currentSlideIndex = -1;
+
+	const prevButton = document.getElementById('prev-button');
+	const nextButton = document.getElementById('next-button');
+
+	function updateCarousel() {
+		slides.forEach((slide, index) => {
+			const offset = ((index - currentSlideIndex + slides.length) % slides.length);
+			slide.style.transform = `translateX(${(offset - 1) * 100}%)`;
+			slide.style.opacity = offset === 1 ? 1 : 0;
+		});
+	}
+
+	prevButton.addEventListener('click', () => {
+		currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+		updateCarousel();
+	});
+
+	nextButton.addEventListener('click', () => {
+		currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+		updateCarousel();
+	});
+
+	updateCarousel();
+</script>
 </body>
 </html>

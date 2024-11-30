@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapper.css' %}">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/StellarHits2.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
 
 </head>
@@ -32,21 +32,16 @@
     </nav>
   </div>
   <script src="script.js"></script>
-     <div class="Cosmic-Song-Count" style="user-select: none;"> Constellation of Artists </div>
-    <a class="mainplanet" href="/StellarHits2">
-        <img src="{% static "Spotify_Wrapper/image/SH-GreenPlanet.png" %}" alt="Centered Image">
+    <div class="Cosmic-Song-Count" style="user-select: none;"> Constellation of Artists </div>
+    <a class="Genre-Breakdown3" href="/StellarHits/"> Return to planet view</a>
+    <a class="mainplanet" href="/StellarHits/">
+        <img src="{% static "Spotify_Wrapper/image/SH-GreenPlanet2.png" %}" alt="Centered Image">
     </a>
-    <div class="secondPlanet">
-        <a class="Genre-Breakdown" href="/ConstellationArtists">  NebulaAI</a>
-        <a class="TopArtists" href="/GenreNebulas"> Stellar Hits</a>
-        <a href="/GenreNebulas">
-            <img class="one" src="{% static "Spotify_Wrapper/image/SH-YellowPlanet.png" %}">
-        </a>
-        <a href="/ConstellationArtists">
-            <img class="two" src="{% static "Spotify_Wrapper/image/SH-BluePlanet.png" %}">
-        </a>
-        <img class="space3" src="{% static "Spotify_Wrapper/image/Space3.png" %}">
-
-    </div>
+    <a href="/ConstellationArtists2">
+        <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
+    </a>
+    <a href="/wrapper2/">
+        <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
+    </a>
 </body>
 </html>

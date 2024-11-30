@@ -6,47 +6,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapper.css' %}">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapper2.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
 
 </head>
 <body>
-    <header>
-        <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
-         <div class="hamburger-menu">
-    <div class="hamburger" id="hamburger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-    </div>
+<header>
+    <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+
+    <div class="hamburger-menu">
+        <div class="hamburger" id="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
         </div>
-    </header>
-    <nav class="menu" id="menu">
-      <ul>
+    </div>
+
+</header>
+<nav class="menu" id="menu">
+    <ul>
         <li><a href="/library">Library</a></li>
         <li><a href="/game">Game</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/accountpage">Account</a></li>
         <li><a href="/login">Logout</a></li>
-      </ul>
-    </nav>
-  </div>
-  <script src="script.js"></script>
-     <div class="Cosmic-Song-Count" style="user-select: none;"> Stellar Hits </div>
-    <a class="mainplanet" href="/GenreNebulas2/">
-        <img src="{% static "Spotify_Wrapper/image/GN-YellowPlanet.png" %}" alt="Centered Image">
-    </a>
-    <div class="secondPlanet">
-        <a class="Genre-Breakdown" href="/StellarHits">  Constellation of Artists</a>
-        <a class="TopArtists" href="/wrapper"> Genre Nebula's</a>
-        <a href="/wrapper">
-            <img class="one" src="{% static "Spotify_Wrapper/image/GN-PurplePlanet.png" %}">
-        </a>
-        <a href="/StellarHits">
-            <img class="two" src="{% static "Spotify_Wrapper/image/GN-GreenPlanet.png" %}">
-        </a>
-        <img class="space2" src="{% static "Spotify_Wrapper/image/Space2.png" %}">
+    </ul>
+</nav>
+<div class="Cosmic-Song-Count" style="user-select: none;"> Genre Nebula's</div>
+<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}/"> Return to planet view</a>
+<a class="mainplanet" href="/wrapper/{{ dt }}/">
+    <img src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet2.png" %}" alt="Centered Image">
+</a>
+<a href="/GenreNebulas/{{ dt }}/">
+    <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
+</a>
+<a href="/summary2/{{ dt }}/">
+    <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
+</a>
+<script>
+	async function displayInfo() {
+		try {
+			const response = await fetch(`/api/get-wrapped/2024-11-29 18:09:13.640911+00:00`);
+			if (!response.ok) {
+				console.error('Error fetching wrapped: ', response.status);
+			}
+			const data = await response.json();
+			console.log(data);
 
-    </div>
+			const artistListContainer = document.getElementById('artist-list');
+			if (data.top_artists && data.top_artists.length > 0) {
+				data.top_artists.forEach(artist => {
+					const artistDiv = document.createElement('div');
+					artistDiv.classList.add('artist-item');
+					artistDiv.innerHTML = `
+                        <img src="${artist.artist_image}" alt="${artist.artist_name}" class="artist-image" />
+                        <h3>${artist.artist_name}</h3>`;
+					artistListContainer.appendChild(artistDiv);
+				});
+			} else {
+				artistListContainer.innerHTML = '<p>No artists found.</p>';
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	displayInfo();
+</script>
 </body>
 </html>

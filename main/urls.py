@@ -30,6 +30,7 @@ urlpatterns = [
 	path('GenreNebulas/<str:dt>/', views.GenreNebulas, name='genre_nebulas'),
 	path('StellarHits/<str:dt>/', views.StellarHits, name='stellar_hits'),
 	path('ConstellationArtists/<str:dt>/', views.ConstellationArtists, name='artist_constellation'),
+	path('AstroAI/<str:dt>/', views.AstroAI, name='astro-ai'),
 	path('summary/<str:dt>/', views.summary, name='summary'),
 
 	path('api/make-wrapped/<str:time_range>/<int:limit>/', views.make_wrapped, name='make-wrapped'),

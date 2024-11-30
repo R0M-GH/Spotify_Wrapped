@@ -34,7 +34,7 @@ def summary(request):
 
 @login_required
 def summary2(request):
-	return render(request, 'Spotify_Wrapper/summary2.html')
+	return render(request, 'Spotify_Wrapper/summary.html')
 
 
 @login_required
@@ -83,19 +83,8 @@ def wrapper(request, dt):
 
 
 @login_required
-def wrapper2(request, dt):
-	# Load users most recent wrapper info here
-	return render(request, 'Spotify_Wrapper/wrapper2.html', {'dt': dt})
-
-
-@login_required
 def GenreNebulas(request, dt):
 	return render(request, 'Spotify_Wrapper/GenreNebulas.html', {'dt': dt})
-
-
-@login_required
-def GenreNebulas2(request, dt):
-	return render(request, 'Spotify_Wrapper/GenreNebulas2.html', {'dt': dt})
 
 
 @login_required
@@ -103,19 +92,14 @@ def StellarHits(request, dt):
 	return render(request, 'Spotify_Wrapper/StellarHits.html', {'dt': dt})
 
 
-@login_required
-def StellarHits2(request, dt):
-	return render(request, 'Spotify_Wrapper/StellarHits2.html', {'dt': dt})
-
-
 @login_required()
 def ConstellationArtists(request, dt):
 	return render(request, 'Spotify_Wrapper/ConstellationArtists.html', {'dt': dt})
 
 
-@login_required
-def ConstellationArtists2(request, dt):
-	return render(request, 'Spotify_Wrapper/ConstellationArtists2.html', {'dt': dt})
+@login_required()
+def AstroAI(request, dt):
+	return render(request, 'Spotify_Wrapper/AstroAI.html', {'dt': dt})
 
 
 @login_required

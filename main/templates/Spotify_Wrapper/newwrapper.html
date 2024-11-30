@@ -34,16 +34,18 @@
 </nav>
 </div>
 <div class="Cosmic-Song-Count" style="user-select: none;">Choose a Term!</div>
-<a href="/wrapperStart" onclick="return makeWrapped('short_term')">
-    <img class="s" src="{% static "Spotify_Wrapper/image/GN-YellowPlanet.png" %}" alt="Centered Image">
+<a href="#" onclick="return makeWrapped('short_term')">
+    <img class="s" src="{% static "Spotify_Wrapper/planets/GN-YellowPlanet.png" %}"
+         alt="Centered Image">
 </a>
-<a href="/wrapperStart" onclick="return makeWrapped('medium_term')">
-    <img class="m" src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet.png" %}" alt="Centered Image">
+<a href="#" onclick="return makeWrapped('medium_term')">
+    <img class="m" src="{% static "Spotify_Wrapper/planets/CSC-PurplePlanet.png" %}"
+         alt="Centered Image">
 </a>
-<a href="/wrapperStart" onclick="return makeWrapped('long_term')">
-    <img class="l" src="{% static "Spotify_Wrapper/image/CA-BluePlanet.png" %}" alt="Centered Image">
+<a href="#" onclick="return makeWrapped('long_term')">
+    <img class="l" src="{% static "Spotify_Wrapper/planets/CA-BluePlanet.png" %}"
+         alt="Centered Image">
 </a>
-<img class="l" src="{% static "Spotify_Wrapper/image/CA-BluePlanet.png" %}" alt="Centered Image">
 
 <div class="st">Short Term Wrap (~4 Weeks)</div>
 <div class="ttt">Medium Term Wrap (~6 Months)</div>
@@ -54,12 +56,11 @@
 		try {
 			const response = await fetch(`/api/make-wrapped/${term}/5/`, {method: 'POST'});
 			if (!response.ok) {
-				console.error('Error creating wrapped: ', response.json());
+				console.error('Error creating wrapped: ', response.status);
 			}
+
 			const data = await response.json();
-			localStorage.setItem('wrap_dt', data);
-			localStorage.setItem('wrap_term', data.term);
-			window.location.href = '/wrapper';
+			window.location.href = `/wrapper/${data.dt}`;
 		} catch (e) {
 			console.error('Error creating wrapped: ', e);
 		}

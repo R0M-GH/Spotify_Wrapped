@@ -128,9 +128,11 @@ header {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  left: 13vw;
-  top: 10vh;
+  left: 50%;
+  top: 15%;
+    transform: translate(-50%, -50%);
   font-size: 5vw;
+    white-space: nowrap;
   animation: blinkColor 2s infinite;
   user-select: none;
   text-decoration: none;

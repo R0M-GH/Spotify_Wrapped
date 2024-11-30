@@ -16,34 +16,24 @@ header {
 
 .mainplanet {
     user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  align-items: center;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    align-items: center;
+    top: 20%;
+    position: relative;
     transition: transform 0.5s ease;
     height: calc(100vh - 60px);
-  img {
-    width: 50vw; /
-    height: auto;
-  }
-  z-index: 5000;
+    img {
+        width: 50vw;
+        height: auto;
+        pointer-events: none;
+    }
+    z-index: 5000;
 }
+
 .mainplanet:hover {
-    user-select: none;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  align-items: center;
-  position: relative;
-    height: calc(100vh - 60px);
     transform: scale(1.2);
-  img {
-    width: 50vw; /
-    height: auto;
-  }
-  transform-origin: center;
-  z-index: 5000;
 }
 .mainplanet444 {
     user-select: none;

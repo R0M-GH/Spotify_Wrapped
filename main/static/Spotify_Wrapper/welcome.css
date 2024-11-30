@@ -19,15 +19,16 @@ header {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  font-size: 200%;
+  font-size: 2vw;
   text-decoration: none;
-  left: 10px;
+  left: 4vw;
   z-index: 9999;
+
 }
 .CosmicTunes:hover {
     color: #fff; /* Change the text color for contrast */
     background-color: #4313ca; /* Add a background color */
-    padding: 3px 5px; /* Add some padding for better appearance */
+    padding: .5vw .5vw; /* Add some padding for better appearance */
     border-radius: 25px; /* Optional: round the edges */
     transition: background-color 0.3s ease, color 0.3s ease;
 }

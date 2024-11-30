@@ -6,13 +6,12 @@ body {
 }
 header {
     background-color: transparent;
-    padding: 20px 0;
+    padding: 2.5vh 0;
     text-align: center;
     position: absolute;
-    width: 100%;
+    width: 100vw;
     top: 0;
     left: 0;
-      z-index: 9999;
 }
 
 .mainplanet {
@@ -23,13 +22,11 @@ header {
   align-items: center;
   position: relative;
     transition: transform 0.5s ease;
-border-radius: 30%;
     height: calc(100vh - 60px);
   img {
-    width: 50%; /
+    width: 50vw; /
     height: auto;
   }
-  transform-origin: center;
   z-index: 5000;
 }
 .mainplanet:hover {
@@ -42,7 +39,7 @@ border-radius: 30%;
     height: calc(100vh - 60px);
     transform: scale(1.2);
   img {
-    width: 50%; /
+    width: 50vw; /
     height: auto;
   }
   transform-origin: center;
@@ -57,12 +54,12 @@ border-radius: 30%;
   position: absolute;
     height: calc(100vh - 60px);
   img {
-    width: 80%;
+    width: 35vw;
     height: auto;
   }
   z-index: 5000;
-    top: 25%;
-    right: 33%;
+    top: 25vh;
+    right: 33vw;
 }
 .mainplanet444:hover {
     user-select: none;
@@ -73,52 +70,52 @@ border-radius: 30%;
   position: absolute;
     height: calc(100vh - 60px);
   img {
-    width: 90%;
+    width: 37vw;
     height: auto;
   }
   z-index: 5000;
-    top: 25%;
-    right: 33%;
+    top: 24vh;
+    right: 32vw;
 }
 
 .one {
   position: absolute;
-  left: 5%;
-  top: 65%;
+  left: 5vw;
+  top: 65vh;
   transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 40%;
+  width: 10vw; /* Adjust the value as needed */
+  height: 40vh;
   object-fit: cover;
   z-index: 5000;
 }
 .one:hover {
     position: absolute;
-  left: 5%;
-  top: 65%;
+  left: 5vw;
+  top: 65vh;
   transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 55%;
+  width: 10vw; /* Adjust the value as needed */
+  height: 55vh;
   object-fit: cover;
   z-index: 5000;
 }
 
 .two {
   position: absolute;
-  right: -5%;
-  top: 65%;
+  right: -5vw;
+  top: 65vh;
   transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 40%;
+  width: 10vw; /* Adjust the value as needed */
+  height: 40vh;
   object-fit: cover;
   z-index: 5000;
 }
 .two:hover {
   position: absolute;
-  right: -5%;
-  top: 65%;
+  right: -5vw;
+  top: 65vh;
   transform: translate(-50%, -50%);
-  width: 10%; /* Adjust the value as needed */
-  height: 55%;
+  width: 10vw; /* Adjust the value as needed */
+  height: 55vh;
   object-fit: cover;
   z-index: 5000;
 }
@@ -128,13 +125,13 @@ border-radius: 30%;
   flex-direction: column;
   background-color: transparent;
   align-items: center;
-  bottom:0%;
+  bottom:0vh;
   position: absolute;
-  right: 13%;
+  right: 13vw;
   z-index: 1;
     height: calc(100vh - 60px);
   img {
-    width: 50%; /
+    width: 50vw; /
     height: auto;
   }
 }
@@ -144,13 +141,13 @@ border-radius: 30%;
   flex-direction: column;
   background-color: transparent;
   align-items: center;
-  bottom:0%;
+  bottom:0vh;
   position: absolute;
-  right: 10%;
+  right: 10vw;
   z-index: 1;
     height: calc(120vh - 60px);
   img {
-    width: 50%; /
+    width: 50vw; /
     height: auto;
   }
 }
@@ -160,13 +157,13 @@ border-radius: 30%;
   flex-direction: column;
   background-color: transparent;
   align-items: center;
-  bottom:0%;
+  bottom:0vh;
   position: absolute;
-  right: 10%;
+  right: 10vw;
   z-index: 1;
     height: calc(120vh - 60px);
   img {
-    width: 50%; /
+    width: 50vw; /
     height: auto;
   }
 }
@@ -176,13 +173,13 @@ border-radius: 30%;
   flex-direction: column;
   background-color: transparent;
   align-items: center;
-  bottom:0%;
+  bottom:0vh;
   position: absolute;
-  right: 10%;
+  right: 10vw;
   z-index: 1;
     height: calc(120vh - 60px);
   img {
-    width: 50%; /
+    width: 50vw; /
     height: auto;
   }
 }
@@ -193,29 +190,17 @@ border-radius: 30%;
     font-size: 5vw;
     font-weight: 400;
     position: relative;
-    margin-bottom: -5%;
-    margin-top: 4%;
+    margin-bottom: -10vh;
+    margin-top: 10vh;
     z-index: 5000;
 }
 .Genre-Breakdown {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  right: 10%;
-  top: 62.5%;
-  font-size: 200%;
-  animation: blinkColor 2s infinite;
-  user-select: none;
-  text-decoration: none;
-  z-index: 5000;
-}
-.Genre-Breakdown {
-  color: #faf6e7;
-  font-family: 'ChakraPetch-Regular', sans-serif;
-  position: absolute;
-  right: 10%;
-  top: 62.5%;
-  font-size: 200%;
+  right: 10vw;
+  top: 62.5vh;
+  font-size: 2vw;
   animation: blinkColor 2s infinite;
   user-select: none;
   text-decoration: none;
@@ -226,9 +211,9 @@ border-radius: 30%;
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  left: 10%;
-  top: 62.5%;
-  font-size: 200%;
+  left: 10vw;
+  top: 62.5vh;
+  font-size: 2vw;
   animation: blinkColor 2s infinite;
   user-select: none;
   text-decoration: none;
@@ -239,15 +224,16 @@ border-radius: 30%;
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  font-size: 200%;
+  font-size: 2vw;
   text-decoration: none;
-  left: 70px;
+  left: 4vw;
   z-index: 9999;
+
 }
 .CosmicTunes:hover {
     color: #fff; /* Change the text color for contrast */
     background-color: #4313ca; /* Add a background color */
-    padding: 3px 5px; /* Add some padding for better appearance */
+    padding: .5vw .5vw; /* Add some padding for better appearance */
     border-radius: 25px; /* Optional: round the edges */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -279,31 +265,29 @@ border-radius: 30%;
 
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;
-  top: 10px;
+  top: 1.5vh;
   position: absolute;
     z-index: 9999;
 
 }
 
 .hamburger {
-      z-index: 9999;
-
+    z-index: 9999;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 30px;
-  height: 20px;
-  margin: 20px;
+  width: 4vh;
+  height: 3vh;
+  margin: 2vh;
 }
-
 .hamburger .line {
       z-index: 9999;
 
   background-color: #FFFFFF;
-  height: 3px;
-  width: 100%;
-  border-radius: 2px;
+  height: .5vh;
+  width: 2vw;
+  border-radius: .2vw;
   transition: 0.3s ease;
 }
 
@@ -312,10 +296,10 @@ border-radius: 30%;
 
   display: none;
   position: absolute;
-  border-radius: 3%;
-  top: 60px;
-  left: 0;
-  width: 15%;
+  border-radius: .5vw;
+  top: 7vh;
+  left: 1vw;
+  width: 15vw;
   background-color: #ffffffcc;
 }
 
@@ -323,24 +307,23 @@ border-radius: 30%;
       z-index: 9999;
 
   list-style: none;
-  margin: 0;
-  padding: 5%;
+  margin: 0vw;
+  padding: .5vh;
 }
 
 .menu li {
       z-index: 9999;
 
-  padding: 10px;
+  padding: 1vh;
   border-bottom: 1px solid #ddd;
 
 }
 
 .menu li a {
       z-index: 9999;
+  font-family: 'ChakraPetch-Regular', sans-serif;
 
-  font-size: 230%;
-      font-family: 'ChakraPetch-Regular', sans-serif;
-
+  font-size: 2vw;
   text-decoration: none;
   color: black;
   display: block;
@@ -349,12 +332,11 @@ border-radius: 30%;
 .menu li:hover {
       z-index: 9999;
 
-    border-radius: 5%;
+    border-radius: .5vw;
   color: #FFFFFF;
   background-color: #334AA8;
 }
 .menu li a:hover {
       color: white;
 }
-
 

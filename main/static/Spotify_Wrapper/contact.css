@@ -6,29 +6,28 @@ body {
 }
 header {
     background-color: transparent;
-    padding: 20px 0;
+    padding: 2.5vh 0;
     text-align: center;
     position: absolute;
-    width: 100%;
+    width: 100vw;
     top: 0;
     left: 0;
-      z-index: 9999;
 }
 
 .CosmicTunes {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  font-size: 200%;
+  font-size: 2vw;
   text-decoration: none;
-  left: 70px;
+  left: 4vw;
   z-index: 9999;
-}
 
+}
 .CosmicTunes:hover {
     color: #fff; /* Change the text color for contrast */
     background-color: #4313ca; /* Add a background color */
-    padding: 3px 5px; /* Add some padding for better appearance */
+    padding: .5vw .5vw; /* Add some padding for better appearance */
     border-radius: 25px; /* Optional: round the edges */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -39,38 +38,36 @@ header {
     font-size: 5vw;
     font-weight: 400;
     position: relative;
-    margin-bottom: -5%;
-    margin-top: 4%;
+    margin-bottom: -10vh;
+    margin-top: 10vh;
     z-index: 5000;
 }
 
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;
-  top: 10px;
+  top: 1.5vh;
   position: absolute;
     z-index: 9999;
 
 }
 
 .hamburger {
-      z-index: 9999;
-
+    z-index: 9999;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 30px;
-  height: 20px;
-  margin: 20px;
+  width: 4vh;
+  height: 3vh;
+  margin: 2vh;
 }
-
 .hamburger .line {
       z-index: 9999;
 
   background-color: #FFFFFF;
-  height: 3px;
-  width: 100%;
-  border-radius: 2px;
+  height: .5vh;
+  width: 2vw;
+  border-radius: .2vw;
   transition: 0.3s ease;
 }
 
@@ -79,10 +76,10 @@ header {
 
   display: none;
   position: absolute;
-  border-radius: 3%;
-  top: 60px;
-  left: 0;
-  width: 15%;
+  border-radius: .5vw;
+  top: 7vh;
+  left: 1vw;
+  width: 15vw;
   background-color: #ffffffcc;
 }
 
@@ -90,24 +87,23 @@ header {
       z-index: 9999;
 
   list-style: none;
-  margin: 0;
-  padding: 5%;
+  margin: 0vw;
+  padding: .5vh;
 }
 
 .menu li {
       z-index: 9999;
 
-  padding: 10px;
+  padding: 1vh;
   border-bottom: 1px solid #ddd;
 
 }
 
 .menu li a {
       z-index: 9999;
+  font-family: 'ChakraPetch-Regular', sans-serif;
 
-  font-size: 230%;
-      font-family: 'ChakraPetch-Regular', sans-serif;
-
+  font-size: 2vw;
   text-decoration: none;
   color: black;
   display: block;
@@ -116,7 +112,7 @@ header {
 .menu li:hover {
       z-index: 9999;
 
-    border-radius: 5%;
+    border-radius: .5vw;
   color: #FFFFFF;
   background-color: #334AA8;
 }
@@ -129,37 +125,37 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5%;
-  gap: 2.5%;
+  margin-top: 10vh;
+  gap: 2.5vw;
 
 }
 
 .photos img {
-  width: 15%; /* Adjust the size of the images */
+  width: 15vw; /* Adjust the size of the images */
   height: auto;
-    border-radius: 5%;
+    border-radius: 2.5vw;
   user-select: none;
 
 }
 .photo p {
     font-family: 'ChakraPetch-Regular', sans-serif;
     color: #faf6e7; /* Text color */
-    margin-top: 10px; /* Space between the image and the name */
+    margin-top: 1vh; /* Space between the image and the name */
 }
 .josh {
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
     color: #faf6e7;
-    left: 8%;
-    font-size: 25px;
+    left: 8vw;
+    font-size: 1.5vw;
     text-align: center;
 }
 .Rom {
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
     color: #faf6e7;
-    left: 44%;
-    font-size: 25px;
+    left: 44vw;
+    font-size: 1.5vw;
         text-align: center;
 
 }
@@ -167,8 +163,8 @@ header {
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
     color: #faf6e7;
-    left:25%;
-    font-size: 25px;
+    left:25vw;
+    font-size: 1.5vw;
         text-align: center;
 
 }
@@ -176,8 +172,8 @@ header {
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
     color: #faf6e7;
-    left:79%;
-    font-size: 25px;
+    left:79vw;
+    font-size: 1.5vw;
         text-align: center;
 
 }
@@ -185,8 +181,8 @@ header {
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
     color: #faf6e7;
-    left:61%;
-    font-size: 25px;
+    left:61vw;
+    font-size: 1.5vw;
         text-align: center;
 }
 .one {
@@ -195,13 +191,13 @@ header {
   flex-direction: column;
   background-color: transparent;
   align-items: center;
-  bottom:0%;
+  bottom:0vh;
   position: absolute;
-  right: 0%;
+  right: 0vw;
   z-index: -1;
     height: calc(120vh - 60px);
   img {
-    width: 50%; /
+    width: 50vw; /
     height: auto;
   }
 }
@@ -211,13 +207,13 @@ header {
   flex-direction: column;
   background-color: transparent;
   align-items: center;
-  bottom:0%;
+  bottom:0vh;
   position: absolute;
-  left: 0%;
+  left: 0vw;
   z-index: -1;
     height: calc(120vh - 60px);
   img {
-    width: 50%; /
+    width: 50vw; /
     height: auto;
   }
 }
@@ -225,9 +221,9 @@ header {
 .description {
     font-family: 'ChakraPetch-Regular', sans-serif;
     color: #ece9e9; /* Neutral text color */
-    font-size: 2rem; /* Base font size */
+    font-size: 1.5vw; /* Base font size */
     line-height: 1.5; /* Comfortable line spacing */
-    margin: 10% 10% 10% 10%;/* Spacing around the text */
+    margin: 10vw 10vw 10vw 10vw;/* Spacing around the text */
     text-align: center;
     padding: 2px 5px;
     /*padding-left: 10%;*/
@@ -238,7 +234,7 @@ header {
 .description:hover {
     color: #fff; /* Change the text color for contrast */
     background-color: #4313ca; /* Add a background color */
-    padding: 2px 5px; /* Add some padding for better appearance */
-    border-radius: 50px; /* Optional: round the edges */
+    padding: 2vh 2vh; /* Add some padding for better appearance */
+    border-radius: 2.5vw; /* Optional: round the edges */
     transition: background-color 0.3s ease, color 0.3s ease; /* Darker green on hover for contrast */
 }

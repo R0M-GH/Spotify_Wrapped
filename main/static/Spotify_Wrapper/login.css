@@ -9,24 +9,30 @@ body {
 }
 .form {
     background: linear-gradient(120.56deg, rgba(29, 41, 72, 1.00) 0%, rgba(20, 29, 51, 1.00) 24.819809198379517%, rgba(15, 22, 40, 1.00) 38.076335191726685%, rgba(5, 10, 22, 1.00) 100%);
-
+}
+header {
+    background-color: transparent;
+    padding: 2.5vh 0;
+    text-align: center;
+    position: absolute;
+    width: 100vw;
+    top: 0;
+    left: 0;
 }
 .CosmicTunes {
-    color: #faf6e7;
-    font-family: 'ChakraPetch-Regular', sans-serif;
-    position: absolute;
-    font-size: 2.5vw;
-    user-select: none;
-    text-decoration: none;
-    left: 4%;
-    top: 1.5%;
-    z-index: 9999;
-}
+  color: #faf6e7;
+  font-family: 'ChakraPetch-Regular', sans-serif;
+  position: absolute;
+  font-size: 2vw;
+  text-decoration: none;
+  left: 4vw;
+  z-index: 9999;
 
+}
 .CosmicTunes:hover {
     color: #fff; /* Change the text color for contrast */
     background-color: #4313ca; /* Add a background color */
-    padding: 3px 5px; /* Add some padding for better appearance */
+    padding: .5vw .5vw; /* Add some padding for better appearance */
     border-radius: 25px; /* Optional: round the edges */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -37,60 +43,60 @@ body {
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
     font-size: 8vw;
-    left: 38%;
-    top: 10%;
+    left: 38vw;
+    top: 10vh;
 }
 .form-group {
-    width: 30%;
-    margin-bottom: 20px;
+    width: 30vw;
+    margin-bottom: 1vh;
     position: absolute;
-    left:48%;
-    top: 33%;
+    left:48vw;
+    top: 33vh;
     transform: translateX(-50%);
 }
 
 .form-group input {
     font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 30px;
-    width: 100%;
-    padding: 10px;
-    font-size: 2rem;
+    height: 3vh;
+    width: 30vw;
+    padding: 1vh;
+    font-size: 2vw;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: .5vh;
 }
 
 .form-group2 {
-    width: 30%;
-    margin-bottom: 20px;
+    width: 30vw;
+    margin-bottom: 2vh;
     position: absolute;
-    left:48%;
-    top: 45%;
+    left:48vw;
+    top: 43vh;
     transform: translateX(-50%);
 }
 
 .form-group2 input {
     font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 30px;
-    width: 100%;
-    padding: 10px;
-    font-size: 2rem;
+    height: 3vh;
+    width: 30vw;
+    padding: 1vh;
+    font-size: 2vw;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: .5vh;
 }
 .create{
     font-family: 'ChakraPetch-Regular', sans-serif;
   background-color: #334AA8;
   position: fixed;
   border: none;
-  left: 55%;
-  bottom: 33.5%;
+  left: 53.3vw;
+  bottom: 39.5vh;
   color: white;
-  padding: 10px 20px;
+  padding: 1vh 2vh;
   text-align: center;
   text-decoration: none;
-  font-size: 3vw;
-  margin: 4px 2px;
-  border-radius: 5px;
+  font-size: 2vw;
+  margin: .5vh .5vh;
+  border-radius: .5vh;
   z-index: 9999;
 }
 .create:hover {
@@ -101,15 +107,15 @@ body {
     background-color: #334AA8;
     border: none;
     position: absolute; /* Ensure the element respects bottom positioning */
-    left: 17.5%;
-    bottom: 33.5%; /* Adjust this value to move the button lower */
+    left: 27.5vw;
+    bottom: 39.5vh; /* Adjust this value to move the button lower */
     color: white;
-    padding: 10px 20px;
+    padding: 1vh 2vh;
     text-align: center;
     text-decoration: none;
-    font-size: 3vw;
-    margin: 4px 2px;
-    border-radius: 5px;
+    font-size: 2vw;
+    margin: .5vh .5vh;
+    border-radius: .5vh;
     z-index: 10000; /* Ensure it appears above other elements */
 }
 
@@ -121,14 +127,14 @@ body {
       background-color: #334AA8;
       position: fixed;
       border: none;
-      left: 49%;
-      bottom: 33.5%;
+      left: 49vw;
+      bottom: 39.5vh;
       color: white;
-      padding: 10px 20px;
+      padding: 1vh 2vh;
       text-align: center;
-      font-size: 3vw;
-      margin: 4px 2px;
-      border-radius: 5px;
+      font-size: 2vw;
+      margin: .5vh .5vh;
+      border-radius: .5vh;
     transform: translateX(-50%);
 }
 
@@ -136,38 +142,36 @@ body {
     background-color: #1B285E;
 }
 .one {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     z-index: -1;
 }
 
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;
-  top: 1%;
+  top: 1.5vh;
   position: absolute;
     z-index: 9999;
 
 }
 
 .hamburger {
-      z-index: 9999;
-
+    z-index: 9999;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 30px;
-  height: 20px;
-  margin: 20px;
+  width: 4vh;
+  height: 3vh;
+  margin: 2vh;
 }
-
 .hamburger .line {
       z-index: 9999;
 
   background-color: #FFFFFF;
-  height: 3px;
-  width: 100%;
-  border-radius: 2px;
+  height: .5vh;
+  width: 2vw;
+  border-radius: .2vw;
   transition: 0.3s ease;
 }
 
@@ -176,10 +180,10 @@ body {
 
   display: none;
   position: absolute;
-  border-radius: 3%;
-  top: 60px;
-  left: 0;
-  width: 25%;
+  border-radius: .5vw;
+  top: 7vh;
+  left: 1vw;
+  width: 15vw;
   background-color: #ffffffcc;
 }
 
@@ -187,14 +191,14 @@ body {
       z-index: 9999;
 
   list-style: none;
-  margin: 0;
-  padding: 5%;
+  margin: 0vw;
+  padding: .5vh;
 }
 
 .menu li {
       z-index: 9999;
 
-  padding: 10px;
+  padding: 1vh;
   border-bottom: 1px solid #ddd;
 
 }
@@ -203,7 +207,7 @@ body {
       z-index: 9999;
   font-family: 'ChakraPetch-Regular', sans-serif;
 
-  font-size: 2.5vw;
+  font-size: 2vw;
   text-decoration: none;
   color: black;
   display: block;
@@ -212,7 +216,7 @@ body {
 .menu li:hover {
       z-index: 9999;
 
-    border-radius: 5%;
+    border-radius: .5vw;
   color: #FFFFFF;
   background-color: #334AA8;
 }
@@ -226,8 +230,8 @@ body {
     text-align: center; /* Horizontally center the text */
     font-family: 'ChakraPetch-Regular', sans-serif;
     position: absolute; /* Position it absolutely */
-    bottom: 25%; /* Position at the lower quarter of the page */
-    left: 50%; /* Center it horizontally */
+    bottom: 25vh; /* Position at the lower quarter of the page */
+    left: 50vw; /* Center it horizontally */
     transform: translateX(-50%); /* Adjust for perfect centering */
-    width: 100%; /* Ensure it takes full width of its container */
+    width: 100vw; /* Ensure it takes full width of its container */
 }

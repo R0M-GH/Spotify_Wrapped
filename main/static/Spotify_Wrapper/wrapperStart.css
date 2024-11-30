@@ -17,10 +17,18 @@ header {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  font-size: 200%;
+  font-size: 2vw;
   text-decoration: none;
-  left: 70px;
+  left: 4vw;
   z-index: 9999;
+
+}
+.CosmicTunes:hover {
+    color: #fff; /* Change the text color for contrast */
+    background-color: #4313ca; /* Add a background color */
+    padding: .5vw .5vw; /* Add some padding for better appearance */
+    border-radius: 25px; /* Optional: round the edges */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 .start {
     height: 100vh;
@@ -42,31 +50,29 @@ header {
 }
 .hamburger-menu {
   font-family: 'ChakraPetch-Regular', sans-serif;
-  top: 10px;
+  top: 1.5vh;
   position: absolute;
     z-index: 9999;
 
 }
 
 .hamburger {
-      z-index: 9999;
-
+    z-index: 9999;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 30px;
-  height: 20px;
-  margin: 20px;
+  width: 4vh;
+  height: 3vh;
+  margin: 2vh;
 }
-
 .hamburger .line {
       z-index: 9999;
 
   background-color: #FFFFFF;
-  height: 3px;
-  width: 100%;
-  border-radius: 2px;
+  height: .5vh;
+  width: 2vw;
+  border-radius: .2vw;
   transition: 0.3s ease;
 }
 
@@ -75,10 +81,10 @@ header {
 
   display: none;
   position: absolute;
-  border-radius: 3%;
-  top: 60px;
-  left: 0;
-  width: 15%;
+  border-radius: .5vw;
+  top: 7vh;
+  left: 1vw;
+  width: 15vw;
   background-color: #ffffffcc;
 }
 
@@ -86,14 +92,14 @@ header {
       z-index: 9999;
 
   list-style: none;
-  margin: 0;
-  padding: 5%;
+  margin: 0vw;
+  padding: .5vh;
 }
 
 .menu li {
       z-index: 9999;
 
-  padding: 10px;
+  padding: 1vh;
   border-bottom: 1px solid #ddd;
 
 }
@@ -102,7 +108,7 @@ header {
       z-index: 9999;
   font-family: 'ChakraPetch-Regular', sans-serif;
 
-  font-size: 230%;
+  font-size: 2vw;
   text-decoration: none;
   color: black;
   display: block;
@@ -111,7 +117,7 @@ header {
 .menu li:hover {
       z-index: 9999;
 
-    border-radius: 5%;
+    border-radius: .5vw;
   color: #FFFFFF;
   background-color: #334AA8;
 }
@@ -161,11 +167,32 @@ header {
   z-index: 9999;
   animation: blinkBackground 3s infinite;
 }
-.start {
+.ttps {
     font-family: 'ChakraPetch-Regular', sans-serif;
-    color: white;
-    text-decoration: none;
-    z-index: 9999;
-    top: 30vh;
-    left: 0;
+  background-color: #334AA8;
+  position: fixed;
+  border: none;
+  left: 45vw;
+  bottom: 35vh;
+  color: white;
+  padding: .5vw 1vw;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.5vw;
+  margin: 2vw 1vw;
+  border-radius: 5px;
+  z-index: 9999;
+    animation: blinkBackground 3s infinite;
+}
+
+@keyframes blinkBackground {
+    0% {
+        background: #334AA8;
+    }
+    50% {
+        background: #0E152F;
+    }
+    100% {
+        background: #334AA8;
+    }
 }

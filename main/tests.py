@@ -7,6 +7,9 @@ from main.forms import RegistrationForm, LoginForm, ForgetForm
 from unittest.mock import patch
 from django.contrib.auth.hashers import make_password
 from main.backends import AuthModelBackend
+from .models import User, Wraps
+from datetime import datetime
+from django.core.exceptions import ValidationError
 
 User = get_user_model()  # Get the custom user model
 
@@ -126,6 +129,100 @@ class RegistrationFormTest(TestCase):
         self.assertIn('password2', form.errors)
         self.assertIn('birthday', form.errors)
 
+
+class CustomUserManagerTest(TestCase):
+    def test_create_user(self):
+        user = User.objects.create_user(username='testuser', password='securepassword')
+        self.assertEqual(user.username, 'testuser')
+        self.assertTrue(user.check_password('securepassword'))
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+
+    def test_create_superuser(self):
+        user = User.objects.create_superuser(username='adminuser', password='adminpassword')
+        self.assertEqual(user.username, 'adminuser')
+        self.assertTrue(user.check_password('adminpassword'))
+        self.assertTrue(user.is_staff)
+        self.assertTrue(user.is_superuser)
+
+    def test_create_user_without_username(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_user(username='', password='securepassword')
+
+    def test_create_superuser_without_username(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_superuser(username='', password='adminpassword')
+
+
+class UserModelTest(TestCase):
+    def test_user_creation(self):
+        user = User.objects.create_user(username='testuser', password='securepassword')
+        self.assertEqual(user.username, 'testuser')
+        self.assertTrue(user.check_password('securepassword'))
+
+    def test_user_get_username(self):
+        user = User.objects.create_user(username='testuser', password='securepassword')
+        self.assertEqual(user.get_username(), 'testuser')
+
+    def test_user_delete_with_wraps(self):
+        user = User.objects.create_user(username='testuser', password='securepassword')
+        wrap = Wraps.objects.create(username=user.username, term='2024', spotify_display_name='Test Display',
+                                    wrap_json={})
+
+        # Ensure Wraps record is created
+        self.assertEqual(Wraps.objects.count(), 1)
+
+        user.delete_with_wraps()
+
+        # Ensure Wraps record is deleted after user deletion
+        self.assertEqual(Wraps.objects.count(), 0)
+
+    def test_user_birthday_default(self):
+        user = User.objects.create_user(username='testuser', password='securepassword')
+        self.assertIsInstance(user.birthday, datetime)
+
+    def test_user_is_active_default(self):
+        user = User.objects.create_user(username='testuser', password='securepassword')
+        self.assertTrue(user.is_active)
+
+
+class WrapsModelTest(TestCase):
+    def test_wrap_creation(self):
+        user = User.objects.create_user(username='testuser', password='securepassword')
+        wrap = Wraps.objects.create(username=user.username, term='2024', spotify_display_name='Test Display',
+                                    wrap_json={})
+        self.assertEqual(wrap.username, 'testuser')
+        self.assertEqual(wrap.term, '2024')
+        self.assertEqual(wrap.spotify_display_name, 'Test Display')
+        self.assertIsInstance(wrap.creation_date, datetime)
+        self.assertEqual(Wraps.objects.count(), 1)
+
+    def test_wrap_str_method(self):
+        user = User.objects.create_user(username='testuser', password='securepassword')
+        wrap = Wraps.objects.create(username=user.username, term='2024', spotify_display_name='Test Display',
+                                    wrap_json={})
+        self.assertEqual(str(wrap), 'testuser' + str(wrap.creation_date))
+
+    def test_wrap_missing_username(self):
+        with self.assertRaises(ValidationError):
+            wrap = Wraps(username=None, spotify_display_name='Test Display', wrap_json={})
+            wrap.full_clean()  # Will raise ValidationError if username is None
+
+
+class UserManagerTests(TestCase):
+    def test_user_creation_manager(self):
+        user = User.objects.create_user('user1', 'password1')
+        self.assertEqual(user.username, 'user1')
+        self.assertTrue(user.check_password('password1'))
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+
+    def test_superuser_creation_manager(self):
+        user = User.objects.create_superuser('admin1', 'adminpassword')
+        self.assertEqual(user.username, 'admin1')
+        self.assertTrue(user.check_password('adminpassword'))
+        self.assertTrue(user.is_staff)
+        self.assertTrue(user.is_superuser)
 
 class LoginFormTest(TestCase):
 

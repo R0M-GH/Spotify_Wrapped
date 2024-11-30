@@ -34,17 +34,13 @@
 </nav>
 </div>
 <div class="Cosmic-Song-Count" style="user-select: none;">Choose a Term!</div>
-<a href="#" onclick="return makeWrapped('short_term')">
-    <img class="s" src="{% static "Spotify_Wrapper/planets/GN-YellowPlanet.png" %}"
-         alt="Centered Image">
-</a>
-<a href="#" onclick="return makeWrapped('medium_term')">
-    <img class="m" src="{% static "Spotify_Wrapper/planets/CSC-PurplePlanet.png" %}"
-         alt="Centered Image">
-</a>
-<a href="#" onclick="return makeWrapped('long_term')">
-    <img class="l" src="{% static "Spotify_Wrapper/planets/CA-BluePlanet.png" %}"
-         alt="Centered Image">
+<a href="#">
+    <img class="s" onclick="return makeWrapped('short_term')"
+         src="{% static "Spotify_Wrapper/planets/GN-YellowPlanet.png" %}" alt="Centered Image">
+    <img class="m" onclick="return makeWrapped('medium_term')"
+         src="{% static "Spotify_Wrapper/planets/CSC-PurplePlanet.png" %}" alt="Centered Image">
+    <img class="l" onclick="return makeWrapped('long_term')"
+         src="{% static "Spotify_Wrapper/planets/CA-BluePlanet.png" %}" alt="Centered Image">
 </a>
 
 <div class="st">Short Term Wrap (~4 Weeks)</div>
@@ -58,9 +54,8 @@
 			if (!response.ok) {
 				console.error('Error creating wrapped: ', response.status);
 			}
-
-			const data = await response.json();
-			window.location.href = `/wrapper/${data.dt}`;
+			const data = await response.json()
+			window.location.href = `/wrapperStart/${data.dt}`
 		} catch (e) {
 			console.error('Error creating wrapped: ', e);
 		}

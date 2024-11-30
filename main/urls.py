@@ -24,8 +24,7 @@ urlpatterns = [
 	path('library/', views.library, name='library'),
 
 	path('newwrapper/', views.newwrapper, name='new_wrapped'),
-	path('wrapperStart/', views.wrapperStart, name='wrappedstart'),
-
+	path('wrapperStart/<str:dt>/', views.wrapperStart, name='wrapper-start'),
 	path('wrapper/<str:dt>/', views.wrapper, name='wrapped'),
 	path('GenreNebulas/<str:dt>/', views.GenreNebulas, name='genre_nebulas'),
 	path('StellarHits/<str:dt>/', views.StellarHits, name='stellar_hits'),

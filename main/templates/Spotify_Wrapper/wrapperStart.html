@@ -1,40 +1,41 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapperStart.css' %}">
-            <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapperStart.css' %}">
+    <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
 
-    </head>
-    <body>
-        <header>
-            <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
-            <div class="hamburger-menu">
-    <div class="hamburger" id="hamburger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-    </div>
+</head>
+<body>
+<header>
+    <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+    <div class="hamburger-menu">
+        <div class="hamburger" id="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
         </div>
-        </header>
-        <nav class="menu" id="menu">
-      <ul>
+    </div>
+</header>
+<nav class="menu" id="menu">
+    <ul>
         <li><a href="/library">Library</a></li>
         <li><a href="/game">Game</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/accountpage">Account</a></li>
         <li><a href="/login">Logout</a></li>
-      </ul>
-    </nav>
-  </div>
-  <script src="script.js"></script>
-        <div class="text">Launch into Your Musical Galaxy</div>
-        <div class="instructions">Instructions<br>To access your stellar information, click the central planet. To return to the cosmic view from your information page, click the planet at the bottom. Navigate through the celestial wrapper using the planetary buttons on either side or the stellar arrows. Thank you for exploring with Cosmic Tunes!</div>
-        <a href="/wrapper" class="ttps"> start </a>
-        <img class="start" src="{% static "Spotify_Wrapper/image/wrapperStart.png" %}" alt="Centered Image">
-    </body>
+    </ul>
+</nav>
+<div class="text">Takeoff Into Your Listening Universe!</div>
+<div class="instructions">Instructions<br>To access your stellar information, click the central planet. To return to the
+    cosmic view from your information page, click the planet at the bottom. Navigate through the celestial wrapper using
+    the planetary buttons on either side or the stellar arrows. Thank you for exploring with Cosmic Tunes!
+</div>
+<a href="/wrapper/{{ dt }}" class="ttps"> start </a>
+<img class="start" src="{% static "Spotify_Wrapper/image/wrapperStart.png" %}" alt="Centered Image">
+</body>
 </html>

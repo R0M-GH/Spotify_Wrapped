@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{% static 'Spotify_Wrapper/library.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
     <style>
-        /* Container for wraps with grid layout */
         .wraps-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -87,15 +86,12 @@
 
 <div class="YourLibrary"> Your Library</div>
 
-<!-- Link to create a new wrap and other game links -->
 <a href="/newwrapper" class="newWrapper"> Create a New Wrapped </a>
 <a href="/game" class="game"> Space Destroyers </a>
-
-<!-- Displaying wraps in a grid -->
 <div class="wraps-container">
     {% if wraps %}
         {% for wrap in wraps %}
-            <a href="/wrapper/{{ wrap.creation_date.isoformat }}/" class="wrap-card">
+            <a href="/wrapperStart/{{ wrap.creation_date.isoformat }}/" class="wrap-card">
                 <h3>{{ wrap.creation_date }}</h3>
                 <p>User: {{ wrap.spotify_display_name }}</p>
                 <p>Term: {{ wrap.term }}</p>

@@ -572,6 +572,27 @@ class ViewsTestCase(TestCase):
         response = self.client.get('/non-existent-url/')
         self.assertEqual(response.status_code, 404)  # Expect to hit a 404 error for invalid URL
 
+    def test_library_view_content(self):
+        # Test the library view content
+        response = self.client.get(reverse('library'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/library.html')
+        self.assertContains(response, 'Create a New Wrapped')  # Adjust based on actual expected content
+
+    def test_summary_view_when_logged_in(self):
+        # Test summary view when user is logged in with a valid date
+        response = self.client.get(reverse('summary', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Check if the response is valid
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/summary.html')  # Ensure the correct template is used
+        self.assertContains(response, 'Your Listening Universe')  # Change according to the expected content
+
+    def test_game_view_content(self):
+        # Test the game view content
+        response = self.client.get(reverse('game'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
+        self.assertContains(response, 'Space Destroyers')  # Change this based on actual expected content
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()

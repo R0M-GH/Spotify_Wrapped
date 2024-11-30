@@ -109,26 +109,28 @@ header {
 .menu li a:hover {
       color: white;
 }
+
+
 .Cosmic-Song-Count {
 color: #faf6e7;
 text-align: center;
 font-family: 'ChakraPetch-Regular', sans-serif;
 font-size: 5vw;
 font-weight: 400;
-position: relative;
-margin-bottom: -5%;
-margin-top: 4%;
+position: absolute;
+margin-bottom: -10vh;
+margin-top: 9vh;
     z-index: 5000;
 
 }
-/* Container for the buttons - position them at the bottom */
+
 .account-buttons {
     position: absolute;
-    bottom: 25%;  /* Position at the bottom quarter of the page */
+    bottom: 25%;
     left: 50%;
-    transform: translateX(-50%); /* Center the buttons horizontally */
+    transform: translateX(-50%);
     display: flex;
-    gap: 20px;  /* Add space between the buttons */
+    gap: 20px;
 }
 
 .account-buttons form {

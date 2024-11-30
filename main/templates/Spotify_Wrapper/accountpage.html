@@ -18,6 +18,7 @@
             <div class="line"></div>
             <div class="line"></div>
         </div>
+    </div>
 </header>
 
 <nav class="menu" id="menu">
@@ -66,7 +67,7 @@
 
         <form method="POST" action="/spotify_logout/">
             {% csrf_token %}
-            <button type="submit" class="btn btn-info" onclick="return confirm('This will open log you ou of the current spotify account in another tab. Depending on your browser you may have to exit out of the tab manually!')">Link Another Spotify Account</button>
+            <button type="submit" class="btn btn-info" onclick="return confirm('This will open log you ou of the current spotify account in another tab. Depending on your browser you may have to exit out of the tab manually!')">Relink Spotify</button>
         </form>
     </div>
 {#    <div class="account-buttons">#}

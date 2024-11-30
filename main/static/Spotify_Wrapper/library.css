@@ -183,3 +183,9 @@ margin-top: 10vh;
     /*margin-bottom: -10vh;*/
     /*margin-top: 10vh;*/
 }
+.bg {
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    position: absolute;
+}

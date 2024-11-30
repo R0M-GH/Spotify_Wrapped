@@ -7,7 +7,7 @@ from main.forms import RegistrationForm, LoginForm, ForgetForm
 from unittest.mock import patch
 from django.contrib.auth.hashers import make_password
 from main.backends import AuthModelBackend
-from .models import User, Wraps
+from main.models import User, Wraps
 from datetime import datetime
 from django.core.exceptions import ValidationError
 

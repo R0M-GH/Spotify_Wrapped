@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from Spotify_Wrapped import settings
 from .forms import LoginForm, RegistrationForm, ForgetForm
 from .models import User, Wraps
+from openai import OpenAI
 
 
 def index(request):
@@ -424,17 +425,38 @@ def get_wrapped(request, dt):
 	return JsonResponse({'data': json.loads(wrap.wrap_json), 'dt': dt})
 
 
+# @csrf_exempt
+# @login_required
+# def llama_description(request, data):
+# 	# msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
+# 	# client = OpenAI(base_url="https://integrate.api.nvidia.com/v1",
+# 	#                 api_key='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')
+# 	# response = client.chat.completions.create(model="gpt-4o",
+# 	#                                           messages=[{'role': 'user', 'content': f'{msg}\n\n{data}'}])
+# 	# return response.choices[0].message
+# 	return 'ai stuff 1 2 3 4 5 wow this ai is really cool definitely not hardcoded huh... and your music taste is aight i guess'
+
 @csrf_exempt
 @login_required
 def llama_description(request, data):
-	# msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
-	# client = OpenAI(base_url="https://integrate.api.nvidia.com/v1",
-	#                 api_key='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')
-	# response = client.chat.completions.create(model="gpt-4o",
-	#                                           messages=[{'role': 'user', 'content': f'{msg}\n\n{data}'}])
-	# return response.choices[0].message
-	return 'ai stuff 1 2 3 4 5 wow this ai is really cool definitely not hardcoded huh... and your music taste is aight i guess'
+	client = OpenAI(
+		base_url="https://integrate.api.nvidia.com/v1",
+		api_key="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"
+	)
 
+	msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
+	completion = client.chat.completions.create(
+		model="meta/llama-3.1-405b-instruct",
+		messages=[{"role": "user", "content": f'{msg}\n\n{data}'}],
+		temperature=0.2,
+		top_p=0.7,
+		max_tokens=1024,
+		stream=True
+	)
+
+	for chunk in completion:
+		if chunk.choices[0].delta.content is not None:
+			return(chunk.choices[0].delta.content)
 
 def get_game_info(request):
 	user = User.objects.get(username=request.session.get('username'))

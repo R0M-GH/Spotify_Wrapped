@@ -463,15 +463,74 @@ class ViewsTestCase(TestCase):
     #         'new_password2': 'newpass'
     #     })
     #     self.assertContains(response, 'error')
+    # def test_accountpage_view_with_wraps(self):
+    #     # Test the account page with existing wraps
+    #     Wraps.objects.create(username=self.user.username, creation_date='2024-11-30')
+    #     response = self.client.get(reverse('account-page'))
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')
+    #     self.assertContains(response, self.user.username)
+    #     self.assertContains(response, '2024-11-30')  # Check if the wrap date is present
 
-    # def test_delete_account_view(self):
-    #     response = self.client.get(reverse('delete_account'))
-    #     self.assertRedirects(response, reverse('user_login'))
-    #     self.assertFalse(User.objects.filter(username='testuser').exists())
+    def test_register_view_post_success(self):
+        # Test successful registration
+        self.client.logout()
+        response = self.client.post(reverse('registration'), {
+            'username': 'newuser',
+            'password1': 'newpass',
+            'password2': 'newpass',
+            'birthday': '1995-05-01'
+        })
+        self.assertEqual(response.status_code, 302)  # Expected redirect to login page
+        self.assertTrue(User.objects.filter(username='newuser').exists())
+
+    def test_user_login_get(self):
+        # Test getting the user login page
+        self.client.logout()
+        response = self.client.get(reverse('user_login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'registration/login.html')
+
+    # def test_forgot_password_view_get(self):
+    #     # Test the forgot password page
+    #     response = self.client.get(reverse('forgot-password'))
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'registration/Forget.html')
+
+    def test_forgot_password_view_post_success(self):
+        # Test successful password reset
+        response = self.client.post(reverse('forgot-password'), {
+            'username': 'testuser',
+            'security_answer': '2000-01-01',  # Assuming the birthday is used as the security answer
+            'new_password1': 'newpassword',
+            'new_password2': 'newpassword'
+        })
+        self.assertRedirects(response, reverse('user_login'))
+        self.user.refresh_from_db()  # Refresh user instance from DB to check password
+        self.assertTrue(self.user.check_password('newpassword'))
+
+    def test_relink_spotify_account_view(self):
+        # Test the relink spotify account view
+        response = self.client.get(reverse('spotify_logout'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/relink_spotify_account.html')
+
+    def test_spotify_login_view(self):
+        # Test the Spotify login view
+        response = self.client.get(reverse('spotify_login'))
+        self.assertEqual(response.status_code, 302)  # Redirect to Spotify authorization URL
+        self.assertTrue('https://accounts.spotify.com/authorize' in response.url)
+
+    # def test_get_game_info_view(self):
+    #     # Test accessing the game info view
+    #     response = self.client.get(reverse('game-info'))
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'game_info_template.html')  # Replace with actual template used
 
     def tearDown(self):
         self.client.logout()
         self.user.delete()  # Clean up the test user
+
 
 
 

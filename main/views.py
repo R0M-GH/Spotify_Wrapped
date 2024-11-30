@@ -231,6 +231,7 @@ def relink_spotify_account(request):
 
 def delete_account(request):
 	username = request.session.get('username')
+
 	user = User.objects.get(username=username)
 	user.delete_with_wraps()
 	return redirect("user_login")

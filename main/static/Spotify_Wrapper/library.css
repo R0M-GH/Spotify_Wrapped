@@ -169,6 +169,17 @@ margin-top: 10vh;
   color: #FFFFFF;
   background-color: #334AA8;
 }
+
 .menu li a:hover {
       color: white;
+}
+
+.nowraps {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: #faf6e7;
+    text-align: center;
+    font-size: 3vw;
+    /*position: relative;*/
+    /*margin-bottom: -10vh;*/
+    /*margin-top: 10vh;*/
 }

@@ -53,14 +53,40 @@
         <li><a href="/login">Logout</a></li>
     </ul>
 </nav>
+    <div class="account-buttons">
+        <form method="POST" action="/delete_account/">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your account? This will delete all the data and Wraps associated with the account')">Delete Account</button>
+        </form>
 
-<form method="POST" action="/spotify_logout/">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-info"
-            onclick="return confirm('This will log you out of your Spotify account in another tab. Depending on your browser you may have to exit out of the tab manually and then log in with another Spotify account.')">
-        Link Another Spotify Account
-    </button>
-</form>
-</div>
+        <form method="POST" action="/login/">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning">Logout</button>
+        </form>
+
+        <form method="POST" action="/spotify_logout/">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-info" onclick="return confirm('This will open log you ou of the current spotify account in another tab. Depending on your browser you may have to exit out of the tab manually!')">Link Another Spotify Account</button>
+        </form>
+    </div>
+{#    <div class="account-buttons">#}
+{#        <a href="/delete_account" class="">Delete Account</a>#}
+{#        <a href="/login" class="">Logout</a>#}
+{#        <a href="//spotify_logout" class="">Link Another Spotify Account</a>#}
+{#        <form method="POST" action="/delete_account">#}
+{#            {% csrf_token %}#}
+{#            <button type="submit" class="btn btn-danger">Delete Account</button>#}
+{#        </form>#}
+{##}
+{#        <form method="POST" action="/logout">#}
+{#            {% csrf_token %}#}
+{#            <button type="submit" class="btn btn-warning">Logout</button>#}
+{#        </form>#}
+{##}
+{#        <form method="POST" action="/spotify_logout">#}
+{#            {% csrf_token %}#}
+{#            <button type="submit" class="btn btn-info">Relink Account</button>#}
+{#        </form>#}
+{#    </div>#}
 </body>
 </html>

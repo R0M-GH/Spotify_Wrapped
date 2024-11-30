@@ -1,115 +1,21 @@
-/**
- * Boolean flag to toggle Christmas mode.
- * @type {boolean}
- */
-let christmas = false;
-
-/**
- * The highest score achieved in the game.
- * @type {number}
- */
+let christmas = false; // Christmas mode
 let highScore = 0;
-
-/**
- * Game status flag indicating whether the game is over.
- * @type {boolean}
- */
-let isOver = false;
-
-/**
- * The current score, tracks successful clicks during the game.
- * @type {number}
- */
-let points = 0;
-
-/**
- * The count of missed clicks during the game.
- * @type {number}
- */
-let missed = 0;
-
-/**
- * The number of successful hits during the game.
- * @type {number}
- */
+let isOver = false;    // Game status
+let points = 0;        // Tracks successful clicks
+let missed = 0;        // Tracks missed clicks
 let hits = 0;
-
-/**
- * Total number of circles displayed in the game.
- * @type {number}
- */
 let totalCircles = 0;
-
-/**
- * The initial size of each circle in pixels.
- * @type {number}
- */
-const size = 150;
-
-/**
- * Duration of the game in milliseconds (20 seconds).
- * @type {number}
- */
-const duration = 20000;
-
-/**
- * The frequency at which circles appear in milliseconds (333ms = ~1 second).
- * @type {number}
- */
-const frequency = 333;
-
-/**
- * The start button element to begin the game.
- * @type {HTMLElement}
- */
-const play = document.getElementById('t-play');
-
-/**
- * The replay button element to restart the game.
- * @type {HTMLElement}
- */
-const replay = document.getElementById('r-play');
-
-/**
- * The full play button element (also serves as replay button).
- * @type {HTMLElement}
- */
-const fullplay = document.getElementById('play');
-
-/**
- * The header element to be hidden during gameplay.
- * @type {HTMLElement}
- */
-const header = document.querySelector('.header');
-
-/**
- * The container element where circles are displayed.
- * @type {HTMLElement}
- */
-const container = document.getElementById('button-array');
-
-/**
- * The Christmas mode switch element.
- * @type {HTMLElement}
- */
-const christmasSwitch = document.getElementById('christmas-switch');
-
-/**
- * The scores display element.
- * @type {HTMLElement}
- */
+const size = 150;      // Initial size of each circle in pixels
+const duration = 20000; // Duration in milliseconds (15 seconds)
+const frequency = 333; // Frequency of circle appearance (every 1 second)
+const play = document.getElementById('t-play'); // Start button element
+const replay = document.getElementById('r-play'); // Replay button element
+const fullplay = document.getElementById('play'); // Replay button element
+const header = document.querySelector('.header'); // Header element to be hidden during gameplay
+const container = document.getElementById('button-array'); // Container for the circles
+const christmasSwitch = document.getElementById('christmas-switch'); // Christmas mode switch
 const sco = document.getElementById('scores');
-
-/**
- * The options element to manage game settings.
- * @type {HTMLElement}
- */
 const options = document.getElementById('options');
-
-/**
- * The currently selected game mode (default is 'classic').
- * @type {string}
- */
 let selectedMode = 'classic';
 const sleigh = new Image(); // Create an image element
 sleigh.src = '/static/Images/sleigh.png'; // Set the image source
@@ -120,98 +26,18 @@ sleigh.style.top = '-50px'; // Always at the top of the screen
 
 leftC = 50;
 
-/**
- * Image element representing a sleigh, displayed when Christmas mode is active.
- * @type {HTMLImageElement}
- */
-const sleigh = new Image();
+let circles = []; // Array to store references to circles
+const shrinkAmount = 15; // Define how much each circle shrinks per interval
+const shrinkIntervalDuration = 100; // Time between shrink intervals in milliseconds
 
-/**
- * The image source for the sleigh.
- * @type {string}
- */
-sleigh.src = '/static/Images/sleigh.png';
-
-/**
- * Sets the position of the sleigh image.
- * @type {string}
- */
-sleigh.style.position = 'absolute';
-
-/**
- * Sets the visibility of the sleigh image.
- * @type {string}
- */
-sleigh.style.display = 'none';
-
-/**
- * Appends the sleigh image to the body of the document.
- */
-document.body.appendChild(sleigh);
-
-/**
- * The vertical position of the sleigh image, placed off-screen initially.
- * @type {string}
- */
-sleigh.style.top = '-50px';
-
-
-/**
- * The height of the browser window (viewport height).
- * @type {number}
- */
-const screenHeight = window.innerHeight;
-
-/**
- * The width of the browser window (viewport width).
- * @type {number}
- */
-const screenWidth = window.innerWidth;
-
-/**
- * The starting horizontal position for the circles.
- * @type {number}
- */
-leftC = 50;
-
-/**
- * Array to store references to the circles created during the game.
- * @type {Array<HTMLElement>}
- */
-let circles = [];
-
-/**
- * The amount by which each circle shrinks during each interval, in pixels.
- * @type {number}
- */
-const shrinkAmount = 15;
-
-/**
- * Time interval between each shrinking step of the circles, in milliseconds.
- * @type {number}
- */
-const shrinkIntervalDuration = 100;
-
-/**
- * Generates a random percentage value between 10% and 90%.
- * @returns {string} The randomly generated percentage as a string (e.g., "35%").
- */
 function getRandomPercentage() {
     return 10 + (Math.random() * 80) + '%';
 }
 
-/**
- * Generates a random vertical position value (top) between 10% and 30% of the viewport height.
- * @returns {string} The randomly generated top value as a percentage (e.g., "25%").
- */
 function getRandomTop() {
     return 10 + (Math.random() * 20) + '%';
 }
 
-/**
- * Updates the high score if the current points exceed the existing high score.
- * Updates the high score display in the DOM.
- */
 function updateHighScore() {
     if (points > highScore) {
         highScore = points;
@@ -235,37 +61,6 @@ function getLeftC() {
     return leftC + 'px'; // Return the position in 'px' format
 }
 
-/**
- * Generates a random position for an element, either 'top' or 'left' based on the axis passed as an argument.
- * @param {string} axis - The axis to generate the position for ('top' or 'left').
- * @returns {string} A random position value in pixels (e.g., "150px").
- */
-function getRandomPosition(axis) {
-    if (axis === 'top') {
-        return Math.floor(Math.random() * window.innerHeight) + 'px'; // Vertical position based on viewport height
-    } else if (axis === 'left') {
-        return Math.floor(Math.random() * window.innerWidth) + 'px'; // Horizontal position based on viewport width
-    }
-}
-
-/**
- * Updates the left position of a circle, ensuring it stays within the viewport width.
- * The position is incremented by a random value between 20px and 220px.
- * If the circle exceeds the viewport width, the position is reset to 50px.
- * @returns {string} The updated left position in 'px' format (e.g., "120px").
- */
-function getLeftC() {
-    leftC += 20 + (Math.random() * 200); // Increment by a random value between 0 and 200
-    if (leftC + 80 > window.innerWidth) { // If the circle goes out of bounds
-        leftC = 50; // Reset left position to 50px
-    }
-    return leftC + 'px'; // Return the position in 'px' format
-}
-
-/**
- * Updates the score display, including accuracy, hits, and points.
- * Also updates the high score if necessary.
- */
 function updateScoreDisplay() {
     const accuracyElement = document.querySelector('.accuracy');
     const hitElement = document.querySelector('.hit');
@@ -275,74 +70,48 @@ function updateScoreDisplay() {
     accuracyElement.textContent = `${accuracy}%`; // Display accuracy as percentage
     hitElement.textContent = `${hits} Hits`; // Display updated hits count
     scoreElement.textContent = `${points} Points`; // Display points
-    updateHighScore(); // Call the function to update the high score
+    updateHighScore();
 }
 
-/**
- * Hides a circle when clicked, updates the score, and plays a sound effect.
- * The points are incremented for successful clicks and decremented for misses.
- *
- * @param {boolean} isReal - A flag indicating whether the click was on a real circle (`true` for real, `false` for miss).
- * @this {HTMLElement} The circle element that was clicked.
- */
+
 function killButtons(isReal) {
     if (isReal) {
-        points += 2; // Increment points for successful click
+        points += 2;
     } else {
-        points -= 1; // Decrement points for miss
+        points -= 1;
     }
     this.style.display = 'none'; // Hide the clicked circle
     hits += 1; // Increment hits count on successful click
     const sound = new Audio('/static/Images/laser-zap-90575.mp3');
-    sound.play(); // Play sound effect
+    sound.play();// Play sound effect
     updateScoreDisplay(); // Update the score display
 }
 
-/**
- * Generates a random item (either a fake or real artist/song) and returns it along with a flag indicating if it is fake.
- * The function selects an item from predefined arrays of fake and real artist names or song titles.
- * The probability distribution is:
- * - 25% chance for a fake artist name
- * - 25% chance for a fake song title
- * - 25% chance for a real artist name
- * - 25% chance for a real song title
- *
- * @returns {Object} An object containing:
- *   - {string} name - The name of the selected artist or song.
- *   - {boolean} isFake - A flag indicating if the item is fake (`true` for fake, `false` for real).
- */
-function getRandomItem() {
-    const realFake = Math.random(); // Random value to determine if item is fake or real
-    let arr;
-    let fake = true; // Default to fake item
 
-    // Determine whether to use fake or real data based on the random value
+function getRandomItem() {
+    const realFake = Math.random();
+    let arr;
+    let fake = true;
+
     if (realFake < 0.25) {
         arr = fake_artist_names;
     } else if (realFake < 0.5) {
         arr = fake_song_titles;
     } else if (realFake < 0.75) {
         arr = real_artist_names;
-        fake = false; // Mark as real
+        fake = false;
     } else {
         arr = real_song_titles;
-        fake = false; // Mark as real
+        fake = false;
     }
 
-    const randomIndex = Math.floor(Math.random() * arr.length); // Get random index from the chosen array
+    const randomIndex = Math.floor(Math.random() * arr.length);
     return {
-        name: arr[randomIndex], // Return the item name
-        isFake: fake // Indicates whether the item is fake or real
+        name: arr[randomIndex],
+        isFake: fake // Indicates whether the name is fake or real
     };
 }
 
-/**
- * Generates a random position for an element on either the 'top' or 'left' axis based on the viewport size.
- *
- * @param {string} axis - The axis for which the position is generated. It can either be 'top' for vertical positioning or 'left' for horizontal positioning.
- * @returns {string} A random position value in pixels (e.g., "150px") based on the specified axis.
- * @throws {Error} Throws an error if the provided axis is not 'top' or 'left'.
- */
 function getRandomPosition(axis) {
     if (axis === 'top') {
         return Math.floor(Math.random() * window.innerHeight) + 'px'; // Vertical position based on viewport height
@@ -351,19 +120,6 @@ function getRandomPosition(axis) {
     }
 }
 
-/**
- * Creates and manages circles on the screen, including game setup, timer, and handling different modes.
- * The function sets up the game, generates circles at intervals, and handles the game duration, modes, and UI updates.
- * It also manages the game over state and updates the UI accordingly.
- *
- * The function supports various modes for the circles, including:
- * - Classic mode
- * - Bouncing mode
- * - Shooting mode
- * - Gliding mode
- *
- * When the game ends, it clears the circles, stops the interval, and updates the high score.
- */
 function makeCircles() {
     // Reset game variables and UI elements
     points = 0;        // Tracks successful clicks
@@ -379,14 +135,15 @@ function makeCircles() {
     circles = []; // Reset the circles array
     container.innerHTML = ""; // Clear previous circles from the container
 
+
     // Set up interval for creating circles
     setTimeout(function() {
-        isOver = true; // Mark game as over after the duration
+        isOver = true;
     }, duration);
 
     const interval = setInterval(function() {
         if (isOver) {
-            clearInterval(interval); // Stop the interval when game is over
+            clearInterval(interval);
             header.style.display = 'flex';
             fullplay.style.display = 'none';
             options.style.display = 'flex';
@@ -395,8 +152,8 @@ function makeCircles() {
 
             circles = []; // Reset the circles array
             container.innerHTML = ""; // Clear previous circles from the container
-            createSleigh(10000); // Reset sleigh creation
-            updateHighScore(); // Update high score
+            createSleigh(10000);
+            updateHighScore();
             sleigh.style.display = 'none';
             return;
         }
@@ -407,20 +164,18 @@ function makeCircles() {
         circle.style.width = `${size}px`;
         circle.style.height = `${size}px`;
         circle.style.position = 'absolute';
-        const itemName = getRandomItem(); // Get a random item (artist or song)
-        circle.textContent = itemName.name; // Set the text to the item name
+        const itemName = getRandomItem();
+        circle.textContent = itemName.name;
         circle.style.color = 'white';
         circle.style.borderRadius = '50%'; // Make it circular
         circle.style.transition = 'width 0.1s, height 0.1s'; // Smooth transition for shrinking
-        circle.style.fontSize = `${20}px`;
+        circle.style.fontSize = `${20}px`
 
-        // Add click event to the circle, which kills the button and shrinks it
         circle.addEventListener('click', function() {
-                killButtons.call(this, itemName.isFake); // Call killButtons on click
-                shrinkCircle(this); // Shrink the clicked circle
+                killButtons.call(this, true);
+                shrinkCircle(this);
             });
-
-        // Set behavior based on selected mode
+        // Set behavior based on mode
         if (selectedMode === 'classic') {
             applyClassicMode(circle);
         } else if (selectedMode === 'bouncing') {
@@ -430,11 +185,10 @@ function makeCircles() {
         } else if (selectedMode === 'gliding') {
             applyGlidingMode(circle);
         }
-
-        circles.push(circle); // Add the circle to the circles array
-        container.appendChild(circle); // Add the circle to the container
-        totalCircles += 1; // Increment the total circles counter
-    }, frequency); // Create a circle every 'frequency' milliseconds
+        circles.push(circle);
+        container.appendChild(circle);
+        totalCircles += 1;
+    }, frequency);
 }
 
 function applyClassicMode(circle) {
@@ -444,79 +198,43 @@ function applyClassicMode(circle) {
     circle.style.left = getRandomPosition('left');
 }
 
-/**
- * Applies 'classic' mode behavior to the circle, including setting a random position and shrinking the circle.
- * In classic mode, the circle is positioned randomly on the screen and shrunk.
- *
- * @param {HTMLElement} circle - The circle element to which the classic mode behavior will be applied.
- */
-function applyClassicMode(circle) {
-    sleigh.style.display = 'none'; // Hide sleigh in classic mode
-    shrinkCircles(); // Shrink circles in classic mode
-    circle.style.top = getRandomPosition('top'); // Random vertical position
-    circle.style.left = getRandomPosition('left'); // Random horizontal position
-}
-
-/**
- * Applies 'bouncing' mode behavior to the circle, enabling it to bounce around the screen.
- * In bouncing mode, the circle is positioned randomly and enabled to bounce.
- *
- * @param {HTMLElement} circle - The circle element to which the bouncing mode behavior will be applied.
- */
 function applyBouncingMode(circle) {
-    sleigh.style.display = 'none'; // Hide sleigh in bouncing mode
-    enableBouncing(circle); // Enable bouncing for the circle
-    circle.style.top = getRandomPosition('top'); // Random vertical position
-    circle.style.left = getRandomPosition('left'); // Random horizontal position
+    sleigh.style.display = 'none';
+    enableBouncing(circle);
+    circle.style.top = getRandomPosition('top');
+    circle.style.left = getRandomPosition('left');
 }
 
-/**
- * Applies 'shooting' mode behavior to the circle, enabling shooting functionality and setting a random position.
- * In shooting mode, the circle is positioned randomly and shooting behavior is enabled.
- *
- * @param {HTMLElement} circle - The circle element to which the shooting mode behavior will be applied.
- */
 function applyShootingMode(circle) {
-    sleigh.style.display = 'none'; // Hide sleigh in shooting mode
-    circle.style.top = getRandomTop(); // Random vertical position
-    circle.style.left = getRandomTop(); // Random horizontal position
-    enableShooting(circle); // Enable shooting behavior
+    sleigh.style.display = 'none';
+    circle.style.top = getRandomTop();
+    circle.style.left = getRandomTop();
+    enableShooting(circle);
 }
 
-
-/**
- * Applies 'gliding' mode behavior to the circle, creating a gliding effect.
- * In gliding mode, the circle is positioned with a fixed vertical position and a dynamic horizontal position.
- * A sleigh is also shown during this mode.
- *
- * @param {HTMLElement} circle - The circle element to which the gliding mode behavior will be applied.
- */
 function applyGlidingMode(circle) {
-    sleigh.style.display = 'flex'; // Show sleigh in gliding mode
-    createGlidingBall(circle); // Create a gliding ball effect
-    circle.style.left = getLeftC(); // Set the left position with a gliding offset
-    circle.style.top = '130px'; // Set a fixed top position for gliding
+    sleigh.style.display = 'flex';
+    createGlidingBall(circle);
+    circle.style.left = getLeftC();
+    circle.style.top = '130px'; // Example top position for the circle
+
+
 }
 
-/**
- * Shrinks the circle by reducing its width, height, and font size.
- * The circle shrinks in size until it reaches a point where it is hidden and counted as missed.
- *
- * @param {HTMLElement} circle - The circle element that will be shrunk.
- */
+
 function shrinkCircle(circle) {
     let currentWidth = parseInt(circle.style.width);
     let currentHeight = parseInt(circle.style.height);
     let currentFontSize = parseInt(window.getComputedStyle(circle).fontSize);
 
-    // Decrease the width, height by 30 and font size by 5 each time
+    // Decrease the width, height by 30 and font size by 4 each time
     currentWidth -= 30;
     currentHeight -= 30;
     currentFontSize -= 5;
 
-    // Hide the circle if it shrinks to zero, and update the missed count
-    if ((currentWidth <= 0 || currentHeight <= 0 || currentFontSize <= 0) && circle.style.display !== "none") {
-        circle.style.display = 'none';  // Hide the circle
+    // Ensure the width and height do not go below zero
+    if (currentWidth <= 0 || currentHeight <= 0 || currentFontSize <= 0) {
+        circle.style.display = 'none';  // Hide the circle if it shrinks to 0
         missed += 1;  // Increment missed count
         updateScoreDisplay();  // Update score display
     } else {
@@ -527,28 +245,19 @@ function shrinkCircle(circle) {
     }
 }
 
-/**
- * Shrinks all the circles in the `circles` array.
- * This function iterates over each circle in the array and calls `shrinkCircle` to reduce its size.
- */
 function shrinkCircles() {
     circles.forEach(circle => {
         shrinkCircle(circle);
     });
 }
 
-/**
- * Starts the game by resetting the scores and creating new circles.
- * It initializes the points, missed, and hits counters, updates the accuracy, hit, and score elements,
- * and begins the process of creating circles for the game.
- */
+
 function startPlay() {
     console.log("start play!");
     points = 0;
     missed = 0;
     hits = 0;
 
-    // Update the accuracy, hit, and score elements on the page
     const accuracyElement = document.querySelector('.accuracy');
     const hitElement = document.querySelector('.hit');
     const scoreElement = document.querySelector('.score');
@@ -560,23 +269,14 @@ function startPlay() {
     makeCircles(); // Start making circles
 }
 
-
-/**
- * Event listener for the "play" button that starts the game when clicked.
- * This function listens for a click event on the `play` button and calls `startPlay` to initialize the game.
- */
 play.addEventListener("click", function() {
     startPlay();
 });
 
-/**
- * Handles the selection of the game mode by adding an event listener to each game mode option.
- * When an option is clicked:
- * - It unchecks all other options.
- * - Sets the clicked option as checked.
- * - Retrieves the value of the selected game mode.
- * - Logs a message and performs actions based on the selected game mode.
- */
+
+
+
+
 document.querySelectorAll('.game-mode-option').forEach(option => {
     option.addEventListener('click', () => {
         // Uncheck all other options except the one that was clicked
@@ -586,10 +286,9 @@ document.querySelectorAll('.game-mode-option').forEach(option => {
         // Set the clicked option to true
         option.checked = true;
 
-        // Get the selected game mode
         selectedMode = document.querySelector('.game-mode-option:checked').value;
 
-        // Perform actions based on the selected game mode
+        // Make decisions based on the selected mode
         if (selectedMode === 'classic') {
             console.log("Classic Mode selected - Regular speed, unlimited time");
             // Add code for Classic Mode here
@@ -606,63 +305,30 @@ document.querySelectorAll('.game-mode-option').forEach(option => {
     });
 });
 
-/**
- * Enables the shooting behavior for a circle by making it move randomly on the screen.
- * The circle continuously moves in a random direction with a fixed speed and hides when it moves off-screen.
- * It also increments the missed counter and updates the score when the circle is hidden.
- *
- * @param {HTMLElement} circle - The circle element to which the shooting behavior will be applied.
- *
- * @returns {void} This function does not return any value.
- */
 function enableShooting(circle) {
     let dx = (Math.random() + 0.2) * 3; // Random horizontal speed
     let dy = (Math.random() + 0.2) * 3; // Random vertical speed
 
-    // Moves the circle continuously across the screen
     function moveCircle() {
         const rect = fullplay.getBoundingClientRect();
         const circleRect = circle.getBoundingClientRect();
 
-        // Update position of the circle
+        // Update position
         circle.style.left = `${circle.offsetLeft + dx}px`;
         circle.style.top = `${circle.offsetTop + dy}px`;
 
-        // Continue moving the circle by calling moveCircle on the next frame
-        requestAnimationFrame(moveCircle);
-
-        // Hide the circle if it moves off-screen
-        if ((circleRect.top > screenHeight * 1.2 || // Below the screen
-            circleRect.left > screenWidth * 1.2 || // Right of the screen
-            circleRect.right < -screenWidth * 0.2 || // Left of the screen
-            circleRect.bottom < -screenHeight * 0.2) // Above the screen
-            && circle.style.display !== "none" // Make sure the circle is not already hidden
-        ) {
-            circle.style.display = "none"; // Hide the circle
-            missed++; // Increment the missed counter
-            console.log(missed); // Log the missed count
-            updateScoreDisplay(); // Update the score display
-        }
+          requestAnimationFrame(moveCircle);
     }
 
-    // Start the movement animation
     requestAnimationFrame(moveCircle);
 }
 
-/**
- * Enables the bouncing behavior for a circle on the screen.
- * The circle moves with random velocities, bouncing off the edges of the screen and other balls.
- * The speed of the circle increases with each bounce, and it will be removed if it exceeds a certain speed.
- * The circle is also removed after a random timeout if not already removed due to high speed.
- *
- * @param {HTMLElement} circle - The circle element that will exhibit the bouncing behavior.
- *
- * @returns {void} This function does not return any value.
- */
+let balls = [];  // To store all the balls on screen
+
 function enableBouncing(circle) {
     let dx, dy;
 
-    // Generate initial random speeds for the ball, avoiding values between -1 and 1
+    // Generate initial random speeds with a wider range and avoid values between -1 and 1
     do {
         dx = (Math.random() - 0.5) * 6; // Speed range [-3, 3]
     } while (Math.abs(dx) < 1); // Ensure dx is not between -1 and 1
@@ -690,7 +356,7 @@ function enableBouncing(circle) {
     // Detect collision between two balls
     function checkCollisions() {
         balls.forEach((otherBall) => {
-            if (circle === circle) return; // Got rid of bouncing functionality
+            if (otherBall === circle) return; // Skip self collision
 
             const otherRect = otherBall.circle.getBoundingClientRect();
             const circleRect = circle.getBoundingClientRect();
@@ -734,7 +400,6 @@ function enableBouncing(circle) {
         });
     }
 
-    // Function to move the circle
     function moveCircle() {
         const circleRect = circle.getBoundingClientRect(); // Get circle boundaries
 
@@ -799,8 +464,6 @@ function enableBouncing(circle) {
     setTimeout(() => {
         circle.remove(); // Remove ball after random time
         cancelAnimationFrame(moveCircle); // Stop the animation
-        missed++; // Increment missing counter
-        updateScoreDisplay();
     }, timeoutDuration);
 
     // Start the animation
@@ -869,109 +532,6 @@ christmasSwitch.addEventListener('change', () => {
 
 
 
-
-/**
- * Function to create the sleigh at a specific horizontal position.
- *
- * @param {number} initialLeft - The initial horizontal position (in pixels) of the sleigh.
- * @returns {void}
- */
-function createSleigh(initialLeft) {
-    sleigh.style.left = `${initialLeft}px`; // Initial horizontal position
-}
-
-/**
- * Function to create and glide a ball along with the sleigh.
- * The ball will move downward and the sleigh will follow it horizontally.
- * If the ball goes off-screen, it will be hidden and the missed counter will be incremented.
- *
- * @param {HTMLElement} circle - The HTML element representing the ball (circle) to be glided.
- * @returns {void}
- */
-function createGlidingBall(circle) {
-    let dy = 2 + (Math.random() * 3); // Set an initial downward speed
-
-    /**
-     * Function to move the circle and update the sleigh position.
-     * It continuously moves the ball downward and adjusts the sleigh's position
-     * horizontally to follow the ball. If the ball goes off-screen, it is hidden.
-     *
-     * @returns {void}
-     */
-    function moveCircle() {
-        const circleRect = circle.getBoundingClientRect(); // Get the circle's bounding rectangle
-
-        // Update the circle's position
-        circle.style.top = `${circle.offsetTop + dy}px`;
-
-        // Update the sleigh's position to follow the circle horizontally
-        sleigh.style.left = `${circle.offsetLeft}px`;
-
-        // If the game is not over, continue moving the circle and sleigh
-        if (!isOver) {
-            requestAnimationFrame(moveCircle);
-        }
-
-        // Check if the ball is out of bounds (off-screen) in any direction
-        if ((circleRect.top > screenHeight * 1.2 || // Below the screen
-            circleRect.left > screenWidth * 1.2 || // Right of the screen
-            circleRect.right < -screenWidth * 0.2 || // Left of the screen
-            circleRect.bottom < -screenHeight * 0.2) // Above the screen
-            && circle.style.display !== "none" // Make sure the circle is not already hidden
-        ) {
-            circle.style.display = "none"; // Hide the circle
-            missed++; // Increment the missed counter
-            console.log(missed); // Log the missed count
-            updateScoreDisplay(); // Update the score display
-        }
-    }
-
-    // Start the motion
-    requestAnimationFrame(moveCircle);
-
-    // Hide the sleigh if the game is over
-    if (isOver) {
-        sleigh.style.display = 'none';
-    }
-}
-
-
-/**
- * Toggles the Christmas theme when the switch is toggled.
- * When the switch is checked, it applies the 'christmas-theme' class to the <body> tag
- * and updates the song and artist data to Christmas-themed values. It also makes
- * certain elements (like the 'chio' and sleigh) visible.
- * When the switch is unchecked, it removes the 'christmas-theme' class and restores
- * the original values for song and artist data while hiding the 'chio' and sleigh elements.
- *
- * @param {Event} event - The change event triggered when the christmasSwitch is toggled.
- * @returns {void}
- */
-christmasSwitch.addEventListener('change', () => {
-    const chioElement = document.getElementById('chio'); // Get the element with id 'chio'
-
-    // Apply Christmas theme if the switch is checked
-    if (christmasSwitch.checked) {
-        root.classList.add('christmas-theme');
-        fake_artist_names = fake_christmas_artists;
-        fake_song_titles = fake_christmas_songs;
-        real_artist_names = real_christmas_artists;
-        real_song_titles = real_christmas_songs;
-        chioElement.style.display = "flex";
-        sleigh.style.display = 'flex';
-
-    } else {
-        root.classList.remove('christmas-theme');
-        chioElement.style.display = "none";   // Make it invisible
-        sleigh.style.display = 'none';
-
-        // Restore original values when switch is unchecked
-        fake_artist_names = original_fake_artist_names;
-        fake_song_titles = original_fake_song_titles;
-        real_artist_names = real_artist_names;
-        real_song_titles = real_song_titles;
-    }
-});
 
 fake_artist_names = [
     "EchoWave", "CrimsonFalls", "Starfire", "VelvetReign", "LunarVeil",

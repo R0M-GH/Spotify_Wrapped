@@ -439,10 +439,12 @@ def get_wrapped(request, dt):
 @csrf_exempt
 @login_required
 def llama_description(request, data):
-	msg = ("Based on the following list of top artists from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy "
-		   "description of the personality, behavior, and style of someone who listens to this kind of music. "
-		   "Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks. "
-		   "The response must be concise, self-contained, and exactly 50 tokens or fewer.")
+	msg = (
+		"Based on the following list of top artists, genres and tracks from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy "
+		"description of how someone who listens to this kind of music tends to act, think and dress."
+		"Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks. "
+		"ENSURE THAT THE RESPONSE IS CONCISE, SELF-CONTAINED AND LESS THAN 50 TOKENS. ENSURE THERE IS NO OTHER INFORMATION ASIDE FROM HOW THE USER ACTS, THINKS AND DRESSES"
+	)
 
 	client = OpenAI(
 		base_url="https://integrate.api.nvidia.com/v1",
@@ -454,7 +456,7 @@ def llama_description(request, data):
 		messages=[{"role": "user", "content": f'{msg}\n\n{data}'}],
 		temperature=0.01,
 		top_p=0.7,
-		max_tokens=200,
+		max_tokens=75,
 		stream=True
 	)
 	response = ""  # Collect all the content here

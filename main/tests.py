@@ -84,6 +84,65 @@ class UserModelTest(TestCase):
         with self.assertRaises(ValueError):
             User.objects.create_user(username="", password="password123")
 
+class AuthModelBackendTest(TestCase):
+    def setUp(self):
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create_user(
+            username='testuser',
+            password='securepassword'
+        )
+        self.backend = AuthModelBackend()
+
+    def test_authenticate_with_correct_credentials(self):
+        user = self.backend.authenticate(
+            request=None,
+            username='testuser',
+            password='securepassword'
+        )
+        self.assertIsNotNone(user)
+        self.assertEqual(user, self.user)
+
+    def test_authenticate_with_incorrect_username(self):
+        user = self.backend.authenticate(
+            request=None,
+            username='wronguser',
+            password='securepassword'
+        )
+        self.assertIsNone(user)
+
+    def test_authenticate_with_incorrect_password(self):
+        user = self.backend.authenticate(
+            request=None,
+            username='testuser',
+            password='wrongpassword'
+        )
+        self.assertIsNone(user)
+
+    def test_authenticate_with_nonexistent_user(self):
+        user = self.backend.authenticate(
+            request=None,
+            username='nonexistentuser',
+            password='securepassword'
+        )
+        self.assertIsNone(user)
+
+    def test_authenticate_with_no_username(self):
+        user = self.backend.authenticate(
+            request=None,
+            password='securepassword'
+        )
+        self.assertIsNone(user)
+
+    @patch('main.backends.AuthModelBackend.user_can_authenticate', return_value=False)  # Mock user_can_authenticate
+    def test_authenticate_with_unauthenticatable_user(self, mock_user_can_authenticate):
+        user = self.backend.authenticate(
+            request=None,
+            username='testuser',
+            password='securepassword'
+        )
+        self.assertIsNone(user)
+        mock_user_can_authenticate.assert_called_once_with(self.user)
+
 class LoginFormTest(TestCase):
 
     def test_valid_login_form(self):

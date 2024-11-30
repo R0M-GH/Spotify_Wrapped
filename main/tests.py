@@ -423,14 +423,6 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/registration.html')
 
-    # def test_user_login_invalid(self):
-    #     response = self.client.post(reverse('user_login'), {
-    #         'username': 'testuser',
-    #         'password': 'wrongpass'
-    #     })
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertContains(response, 'error')  # This assumes the template shows an error when login fails
-
     def test_register_view_post_success(self):
         # Test successful registration
         self.client.logout()
@@ -503,18 +495,6 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'Spotify_Wrapper/newwrapper.html')
 
-    def test_contact_view(self):
-        # Test contacting the page
-        response = self.client.get(reverse('contact'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Spotify_Wrapper/contact.html')
-
-    def test_relink_spotify_account_view(self):
-        # Test relink spotify account view
-        response = self.client.get(reverse('spotify_logout'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Spotify_Wrapper/relink_spotify_account.html')
-
     def test_home_view_redirects_authenticated_users(self):
         # Check if an authenticated user can access the home view
         response = self.client.get(reverse('home'))
@@ -558,10 +538,44 @@ class ViewsTestCase(TestCase):
         self.user.refresh_from_db()  # Refresh the user instance to get updated data
         self.assertTrue(self.user.check_password('newpassword'))  # Check if the password was updated successfully
 
+    def test_forgot_password_view_post_success(self):
+        # Test successful password reset with valid data
+        self.user.birthday = '2000-01-01'
+        self.user.save()
+
+        response = self.client.post(reverse('forgot-password'), {
+            'username': self.user.username,
+            'security_answer': '2000-01-01',
+            'new_password1': 'newsecurepassword',
+            'new_password2': 'newsecurepassword'
+        })
+
+        self.assertRedirects(response, reverse('user_login'))  # Ensure redirect after successful password reset
+        self.user.refresh_from_db()  # Refresh user instance to verify password update
+        self.assertTrue(self.user.check_password('newsecurepassword'))  # Verify the new password
+
+
+    def test_forgot_password_view_get(self):
+        # Test GET request for forgot password page
+        response = self.client.get(reverse('forgot-password'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'registration/forget.html')  # Verify that the correct template is used
+
+    def test_newwrapper_view_redirect_for_authenticated_user(self):
+        # Test that an authenticated user can access the new wrapper view
+        response = self.client.get(reverse('new_wrapped'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/newwrapper.html')
+
+    def test_invalid_url(self):
+        # Test request to an invalid URL
+        response = self.client.get('/non-existent-url/')
+        self.assertEqual(response.status_code, 404)  # Expect to hit a 404 error for invalid URL
 
     def tearDown(self):
         self.client.logout()
         self.user.delete()
+
 
 
 

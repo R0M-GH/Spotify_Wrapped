@@ -391,6 +391,88 @@ class LoginFormTest(TestCase):
         self.assertIn('password', form.errors)
 
 
+class ViewsTestCase(TestCase):
+    def setUp(self):
+        # Set up a client to make requests to the application
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='testpass', birthday='2000-01-01')
+        self.client.login(username='testuser', password='testpass')
+
+    def test_index_view(self):
+        response = self.client.get(reverse('index-page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mainTemplates/index.html')
+
+    def test_welcome_view(self):
+        response = self.client.get(reverse('welcome'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/welcome.html')
+
+    # def test_accountpage_view(self):
+    #     Wraps.objects.create(username=self.user.username, creation_date='2024-11-30')
+    #     response = self.client.get(reverse('account-page'))
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')
+    #     self.assertContains(response, self.user.username)
+
+    def test_contact_view(self):
+        response = self.client.get(reverse('contact'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/contact.html')
+
+    def test_library_view(self):
+        response = self.client.get(reverse('library'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/library.html')
+
+    def test_register_view_get(self):
+        response = self.client.get(reverse('registration'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'registration/registration.html')
+
+    # def test_register_view_post_existing_user(self):
+    #     self.client.logout()
+    #     response = self.client.post(reverse('registration'), {
+    #         'username': 'testuser',
+    #         'password1': 'testpass',
+    #         'password2': 'testpass',
+    #         'birthday': '2000-01-01'
+    #     })
+    #     self.assertFormError(response, 'form', 'username', 'An account with this username already exists.')
+
+    # def test_user_login_success(self):
+    #     response = self.client.post(reverse('user_login'), {
+    #         'username': 'testuser',
+    #         'password': 'testpass'
+    #     })
+    #     self.assertRedirects(response, reverse('library'))
+
+    def test_user_login_invalid(self):
+        response = self.client.post(reverse('user_login'), {
+            'username': 'testuser',
+            'password': 'wrongpass'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'error')  # This assumes the template shows an error when login fails
+
+    def test_forgot_password_view_post_invalid(self):
+        response = self.client.post(reverse('forgot-password'), {
+            'username': 'nonexistentuser',
+            'security_answer': '2000-01-01',
+            'new_password1': 'newpass',
+            'new_password2': 'newpass'
+        })
+        self.assertContains(response, 'error')
+
+    # def test_delete_account_view(self):
+    #     response = self.client.get(reverse('delete_account'))
+    #     self.assertRedirects(response, reverse('user_login'))
+    #     self.assertFalse(User.objects.filter(username='testuser').exists())
+
+    def tearDown(self):
+        self.client.logout()
+        self.user.delete()  # Clean up the test user
+
 
 
 

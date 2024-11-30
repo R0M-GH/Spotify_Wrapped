@@ -12,11 +12,11 @@ from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from openai import OpenAI
 
 from Spotify_Wrapped import settings
 from .forms import LoginForm, RegistrationForm, ForgetForm
 from .models import User, Wraps
-from openai import OpenAI
 
 
 def index(request):
@@ -454,7 +454,7 @@ def llama_description(request, data):
 		messages=[{"role": "user", "content": f'{msg}\n\n{data}'}],
 		temperature=0.1,
 		top_p=0.5,
-		max_tokens=75,
+		max_tokens=1000,
 		stream=True
 	)
 	response = ""  # Collect all the content here
@@ -464,6 +464,7 @@ def llama_description(request, data):
 			response += delta_content
 
 	return response
+
 
 def get_game_info(request):
 	user = User.objects.get(username=request.session.get('username'))

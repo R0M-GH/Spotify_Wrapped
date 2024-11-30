@@ -521,9 +521,66 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'mainTemplates/index.html')
 
+    def test_login_redirect_for_authenticated_user(self):
+        # Test that an authenticated user is redirected if they try to access the login page
+        response = self.client.get(reverse('user_login'))
+
+        # Since we expect the user to be redirected to the library
+        self.assertRedirects(response, reverse('library'))
+
+    def test_api_make_wrapped_view_unauthenticated(self):
+        # Test that an unauthorized user cannot access the make_wrapped API
+        self.client.logout()
+        response = self.client.get(reverse('make-wrapped', args=['medium_term', 5]))
+
+        # Check that the response is a redirect (302)
+        self.assertEqual(response.status_code, 302)  # Expecting a redirect to the login page
+
+        # Ensure it redirects to the login page with the correct 'next' parameter
+        expected_redirect = f"{reverse('user_login')}?next=/api/make-wrapped/medium_term/5/"
+        self.assertRedirects(response, expected_redirect)  # Check for the correct redirect URL
+
+    def test_forgot_password_with_matching_birthday(self):
+        # Test successful password reset with a matching birthday
+        self.user.birthday = '2000-01-01'  # Set the birthday for matching
+        self.user.save()
+
+        response = self.client.post(reverse('forgot-password'), {
+            'username': self.user.username,  # Use the stored username
+            'security_answer': '2000-01-01',  # Matching answer
+            'new_password1': 'newpassword',
+            'new_password2': 'newpassword'
+        })
+
+        self.assertRedirects(response, reverse('user_login'))  # Ensure redirect to login after password reset
+
+        # Reload the user from the database to ensure we have the latest data
+        self.user.refresh_from_db()  # Refresh the user instance to get updated data
+        self.assertTrue(self.user.check_password('newpassword'))  # Check if the password was updated successfully
+
+    def test_forgot_password_with_non_matching_birthday(self):
+        # Test password reset where the birthday does not match
+        self.user.birthday = '2000-01-01'
+        self.user.save()
+
+        response = self.client.post(reverse('forgot-password'), {
+            'username': self.user.username,  # Use the stored username
+            'security_answer': '2000-01-02',  # Incorrect answer
+            'new_password1': 'newpassword',
+            'new_password2': 'newpassword'
+        })
+
+        # Check the status code for rendering the form again
+        self.assertEqual(response.status_code, 200)  # Should still render the form
+        self.assertContains(response, 'Birthday does not match')  # Ensure error message is displayed
+
+        # Optional step: Refresh the user to check that the password wasn't changed
+        self.user.refresh_from_db()  # Refresh the user instance from the database
+        self.assertFalse(self.user.check_password('newpassword'))  # Ensure the password is unchanged
+
     def tearDown(self):
         self.client.logout()
-        self.user.delete()  # Clean up the test user
+        self.user.delete()
 
 
 

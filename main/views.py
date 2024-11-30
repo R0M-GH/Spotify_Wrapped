@@ -439,12 +439,12 @@ def get_wrapped(request, dt):
 @csrf_exempt
 @login_required
 def llama_description(request, data):
+	msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
 	client = OpenAI(
 		base_url="https://integrate.api.nvidia.com/v1",
 		api_key="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"
 	)
 
-	msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
 	completion = client.chat.completions.create(
 		model="meta/llama-3.1-405b-instruct",
 		messages=[{"role": "user", "content": f'{msg}\n\n{data}'}],

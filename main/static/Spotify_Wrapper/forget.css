@@ -24,7 +24,7 @@ header {
     display: flex;
     justify-content: center; /* Horizontally center the text */
     text-align: center; /* Ensure text is centered within the div */
-    margin-bottom: 20px;
+    margin-bottom: 2vh;
 }
 
 .forgot {
@@ -32,34 +32,34 @@ header {
     color: #faf6e7;
     font-family: 'ChakraPetch-Regular', sans-serif;
     font-size: 5vw; /* Adjust font size */
-    margin-top: 2%;
+    margin-top: 8vh;
 }
 
 .form-user,
 .form-security,
 .form-pass1,
 .form-pass2 {
-    width: 30%; /* Adjust width for responsiveness */
-    margin-bottom: 20px;
+    width: 30vw; /* Adjust width for responsiveness */
+    margin-bottom: 2vh;
     position: absolute;
-    left: 50%; /* Center horizontally */
+    left: 50vw; /* Center horizontally */
     transform: translateX(-50%); /* Center it correctly */
 }
 
 .form-user {
-    top: 20%; /* Use percentage for vertical spacing */
+    top: 23.5vh; /* Use percentage for vertical spacing */
 }
 
 .form-security {
-    top: 52%; /* Use percentage for vertical spacing */
+    top: 52vh; /* Use percentage for vertical spacing */
 }
 
 .form-pass1 {
-    top: 30%; /* Use percentage for vertical spacing */
+    top: 32vh; /* Use percentage for vertical spacing */
 }
 
 .form-pass2 {
-    top: 40%; /* Use percentage for vertical spacing */
+    top: 40vh; /* Use percentage for vertical spacing */
 }
 
 .form-user input,
@@ -67,12 +67,12 @@ header {
 .form-pass1 input,
 .form-pass2 input {
     font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 30px; /* Keep fixed height */
-    width: 100%; /* Full width of the container */
-    padding: 10px;
-    font-size: 2rem; /* Responsive font size */
+    height: 3vh; /* Keep fixed height */
+    width: 30vw; /* Full width of the container */
+    padding: 1vh;
+    font-size: 2vw; /* Responsive font size */
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: .5vw;
 }
 
 .create{
@@ -80,15 +80,15 @@ header {
   background-color: #334AA8;
   position: fixed;
   border: none;
-  left: 51%;
-  bottom: 15%;
+  left: 51vw;
+  bottom: 15vh;
   color: white;
-  padding: 10px 20px;
+  padding: 1vh 2vh;
   text-align: center;
   text-decoration: none;
   font-size: 3vw;
-  margin: 4px 2px;
-  border-radius: 5px;
+  margin: .5vh .5vh;
+  border-radius: .5vh;
   z-index: 9999;
 }
 .create:hover {
@@ -99,15 +99,15 @@ header {
     background-color: #334AA8;
     position: absolute;                       /* Absolute positioning */
     border: none;
-    left: 50%;                                /* Center horizontally */
-    bottom: 2.5%;                              /* Position above the bottom */
+    left: 50vw;                                /* Center horizontally */
+    bottom: 2.5vh;                              /* Position above the bottom */
     transform: translateX(-50%);             /* Center it perfectly */
     color: white;
-    padding: 1.5vh 3vw;                       /* Responsive padding based on viewport height and width */
+    padding: .5vh .5vw;                       /* Responsive padding based on viewport height and width */
     text-align: center;
-    font-size: 2.5vw;                         /* Responsive font size */
-    margin: 4px 2px;                          /* Margin for spacing */
-    border-radius: 5px;
+    font-size: 2vw;                         /* Responsive font size */
+    margin: .5vh .5vh;                          /* Margin for spacing */
+    border-radius: .5vh;
 }
 
 .btn-success:hover {
@@ -120,8 +120,10 @@ header {
 }
 
 .one {
+    position: absolute;
     height: 100%;
     width: 100%;
+    top:0vh;
     z-index: -1;
 }
 
@@ -129,29 +131,27 @@ header {
      color: #faf6e7;
     position: absolute;
     font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 2.5vw;
+    font-size: 2vw;
     text-align: center;
-    top: 46%;
-    width: 100%;
+    top: 46vh;
+    width: 100vw;
 }
 
 .password-requirements {
     list-style: none;
-    padding: 15px;
+    padding: 1.5vh;
     margin: 0;
     background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: .5vh;
     text-align: left;
     color: black;
-    font-size: 0.9em;                             /* Base font size */
-    width: 90%;                                   /* Set width as a percentage of the viewport */
-    max-width: 500px;                             /* Set a max-width for larger screens */
+    font-size: 0.9vw;                             /* Base font size */
+    width: 29vw;                                   /* Set width as a percentage of the viewport */
     margin-left: auto;
     margin-right: auto;
     position: fixed;                              /* Position fixed to keep it at the bottom of the screen */
-    bottom: 13%;                                  /* Adjust the distance from the bottom of the screen */
-    left: 50%;                                   /* Center the box horizontally */
+    bottom: 13vh;                                  /* Adjust the distance from the bottom of the screen */
+    left: 50.5vw;                                   /* Center the box horizontally */
     transform: translateX(-50%);                  /* Center it correctly */
     z-index: 1000;                               /* Ensure it's above other content */
 }
@@ -183,17 +183,16 @@ header {
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-    top: 2.5%;
-  font-size: 200%;
+  font-size: 2vw;
   text-decoration: none;
-  left: 70px;
+  left: 4vw;
   z-index: 9999;
-}
 
+}
 .CosmicTunes:hover {
     color: #fff; /* Change the text color for contrast */
     background-color: #4313ca; /* Add a background color */
-    padding: 3px 5px; /* Add some padding for better appearance */
+    padding: .5vw .5vw; /* Add some padding for better appearance */
     border-radius: 25px; /* Optional: round the edges */
     transition: background-color 0.3s ease, color 0.3s ease;
 }

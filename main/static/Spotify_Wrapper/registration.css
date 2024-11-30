@@ -21,60 +21,60 @@ header {
     font-family: 'ChakraPetch-Regular', sans-serif;
     font-size: 8vw;
     text-align: center;
-    width: 100%;
+    width: 100vw;
 }
 .birthday {
     color: #faf6e7;
     position: relative;
     font-family: 'ChakraPetch-Regular', sans-serif;
-    font-size: 2.5vw;
+    font-size: 2vw;
     text-align: center;
-    width: 100%;
-    bottom: 40%;
+    width: 100vw;
+    bottom: 1.5vh;
 }
 .u {
-    width: 31%;
-    margin-bottom: 20px;
+    width: 31vw;
+    margin-bottom: 2vh;
     position: relative;
-    left:50%;
+    left:50vw;
     transform: translateX(-50%);
-    top: 20%;
+    top: 0vh;
 }
 
 .u input {
     font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 50px;
-    width: 103%;
-    padding: 10px;
-    font-size: 2rem;
+    height: 5vh;
+    width: 31vw;
+    padding: 1vh;
+    font-size: 2vh;
     border: 1px solid #ccc;
-    border-radius: 7px;
-    margin-left: -2.5%;
+    border-radius: .5vh;
+    margin-left: -.5vw;
 }
 .p1 {
-    width: 31%;
-    margin-bottom: 20px;
+    width: 31vw;
+    margin-bottom: 2vh;
     position: relative;
-    left:50%;
+    left:50vw;
     transform: translateX(-50%);
-    top: 30%;
+    top: 0vh;
 }
 .u2 {
-    width: 32%;                          /* Set width */
+    width: 31vw;                          /* Set width */
     position: relative;                  /* Use relative positioning */
-    left: 50.5%;                           /* Center horizontally */
+    left: 50vw;                           /* Center horizontally */
     margin-top: 0%;                             /* Decrease this value to move it higher */
     transform: translateX(-50%);        /* Center it correctly */
 }
 .u2 input {
     font-family: 'ChakraPetch-Regular', sans-serif; /* Match font style */
-    height: 50px;                       /* Fixed height */
-    width: 100%;                        /* Changed width to 103% to match .p1 input */
-    padding: 10px;                      /* Padding for input */
-    font-size: 2rem;                    /* Adjusted font size to match .p1 input */
+    height: 5vh;                       /* Fixed height */
+    width: 31vw;                        /* Changed width to 103% to match .p1 input */
+    padding: 1vh;                      /* Padding for input */
+    font-size: 2vw;                    /* Adjusted font size to match .p1 input */
     border: 1px solid #ccc;             /* Border for input */
-    border-radius: 7px;                 /* Rounded corners */
-    margin-left: -2.5%;                 /* Apply margin-left to match .p1 input */
+    border-radius: .5vh;                 /* Rounded corners */
+    margin-left: -.5vw;                 /* Apply margin-left to match .p1 input */
 }
 
 /* Change border color on focus */
@@ -92,59 +92,57 @@ header {
 
 .p1 input {
     font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 50px;
-    width: 103%;
-    padding: 10px;
-    font-size: 2rem;
+    height: 5vh;
+    width: 31vw;
+    padding: 1vh;
+    font-size: 2vw;
     border: 1px solid #ccc;
-    border-radius: 7px;
-    margin-left: -2.5%;
+    border-radius: .5vh;
+    margin-left: -.5vw;
 }
 .p2 {
-    width: 31%;
-    margin-bottom: 20px;
+    width: 31vw;
+    margin-bottom: 2vh;
     position: relative;
-    left:50%;
+    left:50vw;
     transform: translateX(-50%);
-    top: 40%;
+    top: 0vh;
 }
 
 .p2 input {
     font-family: 'ChakraPetch-Regular', sans-serif;
-    height: 50px;
-    width: 103%;
-    padding: 10px;
-    font-size: 2rem;
+    height: 5vh;
+    width: 31vw;
+    padding: 1vh;
+    font-size: 2vw;
     border: 1px solid #ccc;
-    border-radius: 7px;
-    margin-left: -2.5%;
+    border-radius: .5vh;
+    margin-left: -.5vw;
 }
 .one {
     position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0%;
+    height: 100vh;
+    width: 100vw;
+    top: 0vh;
     z-index: -1;
 }
 /* Style for password requirements list */
 /* Style for password requirements list */
 .password-requirements {
     list-style: none;
-    padding: 15px;
+    padding: 1.5vh;
     margin: 0;
     background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: .5vh;
     text-align: left;
     color: black;
-    font-size: 0.9em;                             /* Base font size */
-    width: 90%;                                   /* Set width as a percentage of the viewport */
-    max-width: 500px;                             /* Set a max-width for larger screens */
+    font-size: .9vw;                             /* Base font size */
+    width: 29vw;
     margin-left: auto;
     margin-right: auto;
     position: fixed;                              /* Position fixed to keep it at the bottom of the screen */
-    bottom: 15%;                                  /* Adjust the distance from the bottom of the screen */
-    left: 50%;                                   /* Center the box horizontally */
+    bottom: 17vh;                                  /* Adjust the distance from the bottom of the screen */
+    left: 49.5vw;                                   /* Center the box horizontally */
     transform: translateX(-50%);                  /* Center it correctly */
     z-index: 1000;                               /* Ensure it's above other content */
 }
@@ -176,16 +174,16 @@ header {
     font-family: 'ChakraPetch-Regular', sans-serif; /* Match the font */
     background-color: #334AA8;                        /* Background color */
     position: absolute;                                /* Absolute positioning */
-    left: 50%;                                         /* Center horizontally */
-    bottom: 5%;                                       /* Distance from the bottom */
+    left: 50vw;                                         /* Center horizontally */
+    bottom: 5vh;                                       /* Distance from the bottom */
     transform: translateX(-50%);                      /* Center the button */
     border: none;                                     /* No border */
     color: white;                                     /* Text color */
-    padding: 10px 20px;                               /* Adjusted padding */
+    padding: 1vh 2vh;                               /* Adjusted padding */
     text-align: center;                               /* Center text */
-    font-size: 32px;                                  /* Font size */
-    margin: 4px 2px;                                  /* Margin for spacing */
-    border-radius: 5px;                               /* Rounded corners */
+    font-size: 3vh;                                  /* Font size */
+    margin: .5vh .5vh;                                  /* Margin for spacing */
+    border-radius: .5vh;                               /* Rounded corners */
     cursor: pointer;                                  /* Pointer cursor on hover */
     transition: background-color 0.3s;               /* Transition for background color */
 }

@@ -6,9 +6,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/ConstellationArtists2.css' %}">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/GenreNebulas.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
 
+        .info {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2rem;
+            line-height: 1.8;
+            background-color: #121212;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #00ff00;
+            max-width: 700px;
+            margin: 50px auto;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -30,24 +56,55 @@
         <li><a href="/login">Logout</a></li>
     </ul>
 </nav>
-</div>
-<a class="Genre-Breakdown3" href="/ConstellationArtists/"> Return to plant view</a>
-<div class="Cosmic-Song-Count" style="user-select: none;"> Constellation of Artists</div>
-<a class="mainplanet" href="/ConstellationArtists/">
-    <img src="{% static "Spotify_Wrapper/image/CA-BluePlanet2.png" %}">
-</a>
-<a href="/summary2">
+<div class="Cosmic-Song-Count" style="user-select: none;"> AstroAI</div>
+<div class="container" id='container'></div>
+<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
+<a href="/summary/{{ dt }}">
     <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
 </a>
-<a href="/StellarHits2/">
+<a href="/GenreNebulas/{{ dt }}">
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
-</ul>
-</nav>
-<div class="Cosmic-Song-Count" style="user-select: none;">NebulaAI</div>
-<div class="Cosmic-Song-Count" id="artist-list"></div>
-<a class="mainplanet" href="/summary">
-    <img src="{% static "Spotify_Wrapper/image/../../static/Spotify_Wrapper/planets/CA-BluePlanet.png" %}">
-</a>
+<script>
+	async function getWrapped() {
+		try {
+			const response = await fetch(`/api/get-wrapped/{{ dt }}`);
+			if (!response.ok) {
+				console.error('Error fetching wrapped: ', response.status);
+			}
+			const data = await response.json();
+			console.log(data.data);
+
+			const container = document.getElementById('container');
+			if (data.data.llama_description) {
+				typeWriter(container, data.data.llama_description);
+			} else {
+				container.innerHTML = '<p>No description found.</p>';
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	function typeWriter(container, text) {
+		const div = document.createElement('div');
+		div.classList.add('info');
+		container.appendChild(div);
+
+		let i = 0;
+
+		function type() {
+			if (i < text.length) {
+				div.innerHTML += text.charAt(i);
+				i++;
+				setTimeout(type, 90);
+			}
+		}
+
+		type();
+	}
+
+	getWrapped();
+</script>
 </body>
 </html>

@@ -6,9 +6,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/summary2.css' %}">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/summary.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+    <style>
+        body {
+            overflow-y: auto;
+            min-height: 100vh;
+        }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .summary-section {
+            margin: 20px 0;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            text-align: center;
+            color: #fff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+        }
+
+        .track-image, .artist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+
+    </style>
 </head>
 <body>
 <header>
@@ -30,17 +93,103 @@
         <li><a href="/login">Logout</a></li>
     </ul>
 </nav>
+
+<div class="Cosmic-Song-Count" style="user-select: none;"> Your Listening Universe</div>
+
+<div class="container">
+    <div class="summary-section">
+        <h2>Top 5 Stellar Hits</h2>
+        <div id="stellar-hits" class="grid-container"></div>
+    </div>
+
+    <div class="summary-section">
+        <h2>Top 5 Galactic Artists</h2>
+        <div id="galactic-artists" class="grid-container"></div>
+    </div>
+
+    <div class="summary-section">
+        <h2>Top 5 Genre Clusters</h2>
+        <div id="genre-clusters" class="grid-container"></div>
+    </div>
+
+    <div class="summary-section">
+        <h2>AI Feedback</h2>
+        <div id="ai-feedback" class="info"></div>
+    </div>
 </div>
-<a class="Genre-Breakdown3" href="/GenreNebulas/"> Return to planet view</a>
-<div class="Cosmic-Song-Count" style="user-select: none;"> Summary</div>
-<a class="mainplanet444" href="/summary/">
-    <img src="{% static "Spotify_Wrapper/image/MARS2.png" %}">
-</a>
-<a href="/wrapper">
+
+<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
+<a href="/library/">
     <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
 </a>
-<a href="/ConstellationArtists2/">
+<a href="/AstroAI/{{ dt }}">
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
+
+<script>
+	async function getWrapped() {
+		try {
+			const response = await fetch(`/api/get-wrapped/{{ dt }}`);
+			if (!response.ok) {
+				console.error('Error fetching data: ', response.status);
+				return;
+			}
+			const data = await response.json();
+			const summaryData = data.data;
+
+			const stellarHitsContainer = document.getElementById('stellar-hits');
+			if (summaryData.top_tracks && summaryData.top_tracks.length > 0) {
+				summaryData.top_tracks.slice(0, 5).forEach(track => {
+					const div = document.createElement('div');
+					div.classList.add('info');
+					div.innerHTML = `
+                        <img src="${track.cover_image}" alt="${track.track_name}" class="track-image" />
+                        <p><strong>${track.track_name}</strong><br>${track.artist_name}</p>`;
+					stellarHitsContainer.appendChild(div);
+				});
+			} else {
+				stellarHitsContainer.innerHTML = '<p>No Stellar Hits found.</p>';
+			}
+
+			const artistsContainer = document.getElementById('galactic-artists');
+			if (summaryData.top_artists && summaryData.top_artists.length > 0) {
+				summaryData.top_artists.slice(0, 5).forEach(artist => {
+					const div = document.createElement('div');
+					div.classList.add('info');
+					div.innerHTML = `
+                        <img src="${artist.artist_image}" alt="${artist.artist_name}" class="artist-image" />
+                        <p><strong>${artist.artist_name}</strong></p>`;
+					artistsContainer.appendChild(div);
+				});
+			} else {
+				artistsContainer.innerHTML = '<p>No Galactic Artists found.</p>';
+			}
+
+			const genresContainer = document.getElementById('genre-clusters');
+			if (summaryData.top_genres && summaryData.top_genres.length > 0) {
+				summaryData.top_genres.slice(0, 5).forEach(genre => {
+					const div = document.createElement('div');
+					div.classList.add('info');
+					div.innerHTML = `<p><strong>${genre}</strong></p>`;
+					genresContainer.appendChild(div);
+				});
+			} else {
+				genresContainer.innerHTML = '<p>No Genre Clusters found.</p>';
+			}
+
+			const aiFeedbackContainer = document.getElementById('ai-feedback');
+			if (summaryData.llama_description) {
+				aiFeedbackContainer.innerHTML = `<p>${summaryData.llama_description}</p>`;
+			} else {
+				aiFeedbackContainer.innerHTML = '<p>No feedback available.</p>';
+			}
+		} catch (error) {
+			console.error('Error fetching summary data:', error);
+		}
+	}
+
+	getWrapped();
+	alert("Take a screenshot :)");
+</script>
 </body>
 </html>

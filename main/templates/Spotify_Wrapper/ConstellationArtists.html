@@ -6,9 +6,59 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/ConstellationArtists2.css' %}">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/ConstellationArtists.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
 
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .artist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .info:hover .artist-image {
+            transform: scale(1.1);
+        }
+
+        .info h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin: 0;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -30,24 +80,44 @@
         <li><a href="/login">Logout</a></li>
     </ul>
 </nav>
-</div>
-<a class="Genre-Breakdown3" href="/ConstellationArtists/"> Return to plant view</a>
-<div class="Cosmic-Song-Count" style="user-select: none;"> Constellation of Artists</div>
-<a class="mainplanet" href="/ConstellationArtists/">
-    <img src="{% static "Spotify_Wrapper/image/CA-BluePlanet2.png" %}">
-</a>
-<a href="/summary2">
+<div class="Cosmic-Song-Count" style="user-select: none;"> Artist Constellation</div>
+<div class="container" id='container'></div>
+<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
+<a href="/GenreNebulas/{{ dt }}">
     <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
 </a>
-<a href="/StellarHits2/">
+<a href="/StellarHits/{{ dt }}">
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
-</ul>
-</nav>
-<div class="Cosmic-Song-Count" style="user-select: none;">NebulaAI</div>
-<div class="Cosmic-Song-Count" id="artist-list"></div>
-<a class="mainplanet" href="/summary">
-    <img src="{% static "Spotify_Wrapper/image/../../static/Spotify_Wrapper/planets/CA-BluePlanet.png" %}">
-</a>
+<script>
+	async function getWrapped() {
+		try {
+			const response = await fetch(`/api/get-wrapped/{{ dt }}`);
+			if (!response.ok) {
+				console.error('Error fetching wrapped: ', response.status);
+			}
+			const data = await response.json();
+			console.log(data.data)
+
+			const container = document.getElementById('container');
+			if (data.data.top_artists && data.data.top_artists.length > 0) {
+				data.data.top_artists.forEach(artist => {
+					const div = document.createElement('info');
+					div.classList.add('info');
+					div.innerHTML = `
+                        <img src="${artist.artist_image}" alt="${artist.artist_name}" class="artist-image" />
+                        <h3>${artist.artist_name}</h3>`;
+					container.appendChild(div);
+				});
+			} else {
+				container.innerHTML = '<p>No artists found.</p>';
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	getWrapped();
+</script>
 </body>
 </html>

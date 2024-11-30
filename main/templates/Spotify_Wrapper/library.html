@@ -9,9 +9,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'Spotify_Wrapper/library.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+    <style>
+        /* Container for wraps with grid layout */
+        .wraps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            margin-top: 50px;
+        }
 
+        .wrap-card {
+            background: #0b0f29;
+            border-radius: 15px;
+            padding: 10px;
+            border: 2px solid #00b0ff;
+            box-shadow: 0 0 15px rgba(0, 176, 255, 0.5);
+            color: #e0f7fa;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 150px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .wrap-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 176, 255, 0.7);
+        }
+
+        .wrap-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #00b0ff;
+            text-align: center;
+        }
+
+        .wrap-card p {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            text-align: center;
+            color: #e0f7fa;
+        }
+
+        .wrap-card {
+            font-size: 0.9rem;
+            margin-top: auto;
+            text-align: center;
+            color: #b0e0e6;
+        }
+    </style>
 </head>
 <body>
+
 <header>
     <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
     <div class="hamburger-menu">
@@ -22,6 +74,7 @@
         </div>
     </div>
 </header>
+
 <nav class="menu" id="menu">
     <ul>
         <li><a href="/library">Library</a></li>
@@ -31,13 +84,27 @@
         <li><a href="/login">Logout</a></li>
     </ul>
 </nav>
+
 <div class="YourLibrary"> Your Library</div>
+
+<!-- Link to create a new wrap and other game links -->
 <a href="/newwrapper" class="newWrapper"> Create a New Wrapped </a>
 <a href="/game" class="game"> Space Destroyers </a>
-<script>
-	function getWraps() {
 
-	}
-</script>
+<!-- Displaying wraps in a grid -->
+<div class="wraps-container">
+    {% if wraps %}
+        {% for wrap in wraps %}
+            <a href="/wrapper/{{ wrap.creation_date.isoformat }}/" class="wrap-card">
+                <h3>{{ wrap.creation_date }}</h3>
+                <p>User: {{ wrap.spotify_display_name }}</p>
+                <p>Term: {{ wrap.term }}</p>
+            </a>
+        {% endfor %}
+    {% else %}
+        <p>You haven't created any wraps yet.</p>
+    {% endif %}
+</div>
+
 </body>
 </html>

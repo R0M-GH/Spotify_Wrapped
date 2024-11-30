@@ -6,42 +6,118 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/StellarHits2.css' %}">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/StellarHits.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
 
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .track-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .info:hover .track-image {
+            transform: scale(1.1);
+        }
+
+        .info h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin: 0;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
-        <div class="hamburger-menu">
-    <div class="hamburger" id="hamburger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-    </div>
+<header>
+    <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
+    <div class="hamburger-menu">
+        <div class="hamburger" id="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
         </div>
-    </header>
-    <nav class="menu" id="menu">
-      <ul>
+    </div>
+</header>
+<nav class="menu" id="menu">
+    <ul>
         <li><a href="/library">Library</a></li>
         <li><a href="/game">Game</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/accountpage">Account</a></li>
         <li><a href="/login">Logout</a></li>
-      </ul>
-    </nav>
-  </div>
-  <script src="script.js"></script>
-    <div class="Cosmic-Song-Count" style="user-select: none;"> Constellation of Artists </div>
-    <a class="Genre-Breakdown3" href="/StellarHits/"> Return to planet view</a>
-    <a class="mainplanet" href="/StellarHits/">
-        <img src="{% static "Spotify_Wrapper/image/SH-GreenPlanet2.png" %}" alt="Centered Image">
-    </a>
-    <a href="/ConstellationArtists2">
-        <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
-    </a>
-    <a href="/wrapper2/">
-        <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
-    </a>
+    </ul>
+</nav>
+<div class="Cosmic-Song-Count" style="user-select: none;"> Stellar Hits</div>
+<div class="container" id='container'></div>
+<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
+<a href="/ConstellationArtists/{{ dt }}">
+    <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
+</a>
+<a href="/summary/{{ dt }}">
+    <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
+</a>
+<script>
+	async function getWrapped() {
+		try {
+			const response = await fetch(`/api/get-wrapped/{{ dt }}`);
+			if (!response.ok) {
+				console.error('Error fetching wrapped: ', response.status);
+			}
+			const data = await response.json();
+			console.log(data.data)
+
+			const container = document.getElementById('container');
+			if (data.data.top_tracks && data.data.top_tracks.length > 0) {
+				data.data.top_tracks.forEach(track => {
+					const div = document.createElement('info');
+					div.classList.add('info');
+					div.innerHTML = `
+                        <img src="${track.cover_image}" alt="${track.track_name}" class="track-image" />
+                        <h3>${track.track_name} - ${track.artist_name}</h3>`;
+					container.appendChild(div);
+				});
+			} else {
+				container.innerHTML = '<p>No artists found.</p>';
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	getWrapped();
+</script>
 </body>
 </html>

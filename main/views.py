@@ -12,7 +12,6 @@ from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-from openai import OpenAI
 
 from Spotify_Wrapped import settings
 from .forms import LoginForm, RegistrationForm, ForgetForm
@@ -25,16 +24,6 @@ def index(request):
 
 def welcome(request):
 	return render(request, 'Spotify_Wrapper/welcome.html')
-
-
-@login_required
-def summary(request):
-	return render(request, 'Spotify_Wrapper/summary.html')
-
-
-@login_required
-def summary2(request):
-	return render(request, 'Spotify_Wrapper/summary.html')
 
 
 @login_required
@@ -103,6 +92,11 @@ def AstroAI(request, dt):
 
 
 @login_required
+def summary(request, dt):
+	return render(request, 'Spotify_Wrapper/summary.html', {'dt': dt})
+
+
+@login_required
 def newwrapper(request):
 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
@@ -112,30 +106,26 @@ def wrapperStart(request):
 	return render(request, 'Spotify_Wrapper/wrapperStart.html')
 
 
-# @login_required
-# def account(request):
-# 	username = request.session.get('username')
-# 	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
-# 	wrap_count = wrap_set.count()
-# 	most_recent_wrap = wrap_set.first()
-# 	most_recent_wrap_date = most_recent_wrap.creation_date
-# 	context = {
-# 		"username": username,
-# 		"wrap_count": wrap_count,
-# 		"most_recent_wrap_date": most_recent_wrap_date,
-# 	}
-# 	return render(request, 'Spotify_Wrapper/accountpage.html', context)
+@login_required
+def account(request):
+	username = request.session.get('username')
+	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
+	wrap_count = wrap_set.count()
+	most_recent_wrap = wrap_set.first()
+	most_recent_wrap_date = most_recent_wrap.creation_date
+	context = {
+		"username": username,
+		"wrap_count": wrap_count,
+		"most_recent_wrap_date": most_recent_wrap_date,
+	}
+	return render(request, 'Spotify_Wrapper/accountpage.html', context)
+
 
 @login_required
 def library(request):
-	username = request.session.get('username')
-	wrap_set = Wraps.objects.filter(username=username)
-	context = {
-		"wrap_set": wrap_set,
-	}
-
-	# add library display logic here
-	return render(request, 'Spotify_Wrapper/library.html', context)
+	wraps = Wraps.objects.filter(username=request.session.get('username')).order_by('-creation_date')
+	w = []
+	return render(request, 'Spotify_Wrapper/library.html', {'wraps': wraps})
 
 
 @login_required
@@ -412,14 +402,9 @@ def make_wrapped(request, time_range='medium_term', limit=5):
 		for genre in artist['genres']:
 			top_genres[genre] = top_genres.get(genre, 0) + 1
 
-	data = {
-		'time_range': time_range,
-		'limit': limit,
-		'top_tracks': top_track_data,
-		'top_artists': top_artist_data,
-		'top_genres': sorted(top_genres, key=top_genres.get),
-	}
-	# data['llama_description'] = llama_description(data)
+	data = {'time_range': time_range, 'limit': limit, 'top_tracks': top_track_data, 'top_artists': top_artist_data,
+	        'top_genres': sorted(top_genres, key=top_genres.get)}
+	data['llama_description'] = llama_description(request, data)
 
 	wrap = Wraps.objects.create(username=user.username, term=time_range, spotify_display_name=display_name,
 	                            wrap_json=json.dumps(data))
@@ -468,12 +453,11 @@ def get_game_tracks(request):
 
 @csrf_exempt
 @login_required
-def llama_description(data):
-	msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
-	client = OpenAI(base_url="https://integrate.api.nvidia.com/v1", api_key=settings.SPOTIFY_REDIRECT_URI)
-	completion = client.chat.completions.create(model="meta/llama-3.1-405b-instruct",
-	                                            messages=[{"role": "user", "content": f"{msg}\n\n{data}"}],
-	                                            temperature=0.2, top_p=0.7, max_tokens=1024, stream=True)
-	info = ''
-	info += (chunk.choices[0].delta.content for chunk in completion if chunk.choices[0].delta.content)
-	return JsonResponse({'info': info})
+def llama_description(request, data):
+	# msg = "Based on the following list of top tracks, artists, and genres from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy description of the personality, behavior, and style of someone who listens to this kind of music. Be playful and witty, but avoid being mean or overly critical. Tie the music preferences to relatable behaviors and quirks."
+	# client = OpenAI(base_url="https://integrate.api.nvidia.com/v1",
+	#                 api_key='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')
+	# response = client.chat.completions.create(model="gpt-4o",
+	#                                           messages=[{'role': 'user', 'content': f'{msg}\n\n{data}'}])
+	# return response.choices[0].message
+	return 'ai stuff 1 2 3 4 5 wow this ai is really cool definitely not hardcoded huh... and your music taste is aight i guess'

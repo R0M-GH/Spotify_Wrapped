@@ -6,14 +6,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/wrapper2.css' %}">
+    <link rel="stylesheet" href="{% static 'Spotify_Wrapper/GenreNebulas.css' %}">
     <script src="{% static 'Spotify_Wrapper/hamburger.js' %}"></script>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
 
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .info h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin: 0;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
 <header>
     <a class="CosmicTunes" href="/library"> Cosmic Tunes </a>
-
     <div class="hamburger-menu">
         <div class="hamburger" id="hamburger">
             <div class="line"></div>
@@ -21,7 +57,6 @@
             <div class="line"></div>
         </div>
     </div>
-
 </header>
 <nav class="menu" id="menu">
     <ul>
@@ -32,46 +67,42 @@
         <li><a href="/login">Logout</a></li>
     </ul>
 </nav>
-<div class="Cosmic-Song-Count" style="user-select: none;"> Genre Nebula's</div>
-<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}/"> Return to planet view</a>
-<a class="mainplanet" href="/wrapper/{{ dt }}/">
-    <img src="{% static "Spotify_Wrapper/image/CSC-PurplePlanet2.png" %}" alt="Centered Image">
-</a>
-<a href="/GenreNebulas/{{ dt }}/">
+<div class="Cosmic-Song-Count" style="user-select: none;"> Genre Nebula</div>
+<div class="container" id='container'></div>
+<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
+<a href="/AstroAI/{{ dt }}">
     <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
 </a>
-<a href="/summary2/{{ dt }}/">
+<a href="/ConstellationArtists/{{ dt }}">
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
 <script>
-	async function displayInfo() {
+	async function getWrapped() {
 		try {
-			const response = await fetch(`/api/get-wrapped/2024-11-29 18:09:13.640911+00:00`);
+			const response = await fetch(`/api/get-wrapped/{{ dt }}`);
 			if (!response.ok) {
 				console.error('Error fetching wrapped: ', response.status);
 			}
 			const data = await response.json();
-			console.log(data);
+			console.log(data.data)
 
-			const artistListContainer = document.getElementById('artist-list');
-			if (data.top_artists && data.top_artists.length > 0) {
-				data.top_artists.forEach(artist => {
-					const artistDiv = document.createElement('div');
-					artistDiv.classList.add('artist-item');
-					artistDiv.innerHTML = `
-                        <img src="${artist.artist_image}" alt="${artist.artist_name}" class="artist-image" />
-                        <h3>${artist.artist_name}</h3>`;
-					artistListContainer.appendChild(artistDiv);
+			const container = document.getElementById('container');
+			if (data.data.top_genres && data.data.top_genres.length > 0) {
+				data.data.top_genres.forEach(genre => {
+					const div = document.createElement('info');
+					div.classList.add('info');
+					div.innerHTML = `<h3>${genre}</h3>`;
+					container.appendChild(div);
 				});
 			} else {
-				artistListContainer.innerHTML = '<p>No artists found.</p>';
+				container.innerHTML = '<p>No artists found.</p>';
 			}
 		} catch (e) {
 			console.error(e);
 		}
 	}
 
-	displayInfo();
+	getWrapped();
 </script>
 </body>
 </html>

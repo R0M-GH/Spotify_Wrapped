@@ -664,6 +664,54 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
         self.assertContains(response, 'Space Destroyers')  # Change this based on actual expected content
 
+    def test_user_logout(self):
+        response = self.client.logout()  # Log out the user
+        self.assertIsNone(self.client.session.get('_auth_user_id'))  # Should be logged out
+        response = self.client.get(reverse('home'))  # Attempt to reach the home page
+        self.assertRedirects(response, '/login/?next=/home/')  # Should redirect to login
+
+    def test_api_make_wrapped_with_invalid_session(self):
+        # Create and log in a dummy user
+        self.user = User.objects.create_user(
+            username='apihandler',
+            password='securepass',
+            birthday='1991-01-01',
+            current_display_name='API Handler'
+        )
+        self.client.login(username='apihandler', password='securepass')
+
+        # Manually set the username in the session, then invalidate it
+        session = self.client.session
+        session['username'] = self.user.username
+        session.save()
+
+        # Invalidate the session
+        session.flush()
+
+        # Attempt to access the API without valid session
+        response = self.client.get(reverse('make-wrapped', args=['medium_term', 5]))
+
+        self.assertEqual(response.status_code, 302)  # Expecting a redirect to the login page
+
+    def test_user_profile_page_access(self):
+        self.user = User.objects.create_user(
+            username='profileuser',
+            password='profilepass',
+            birthday='1988-01-01',
+            current_display_name='Profile User'
+        )
+
+        self.client.login(username='profileuser', password='profilepass')
+
+        # Manually set the username in the session
+        session = self.client.session
+        session['username'] = self.user.username
+        session.save()
+
+        response = self.client.get(reverse('account-page'))  # Assuming this is the user profile page
+        self.assertEqual(response.status_code, 200)  # Should allow access
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')  # Adjust template name as necessary
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - Vihaan
+      - Rohan
 
   pull_request:
     branches:

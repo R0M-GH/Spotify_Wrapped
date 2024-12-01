@@ -33,9 +33,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 	is_superuser = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)
 
-	date_joined = models.DateTimeField(default=datetime.now(tz=None))
+	date_joined = models.DateTimeField(default=datetime.now)
 
-	birthday = models.DateField(default=datetime.now(tz=None))
+	birthday = models.DateField(default=datetime.now)
 
 	spotify_access_token = models.CharField(max_length=255, blank=True, null=True, default=None)
 	spotify_refresh_token = models.CharField(max_length=255, blank=True, null=True, default=None)

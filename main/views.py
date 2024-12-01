@@ -768,3 +768,26 @@ def delete_wrapped(request, dt):
 		return 200
 	except Wraps.DoesNotExist:
 		return 404
+
+
+@login_required
+def playback(request):
+	# Fetch the user's Spotify access token
+	username = request.session.get('username')
+	user = User.objects.get(username=username)
+	access_token = user.spotify_access_token
+
+	# Fetch user's top tracks from Spotify API
+	headers = {"Authorization": f"Bearer {access_token}"}
+	response = requests.get(
+		"https://api.spotify.com/v1/me/top/tracks?limit=10",
+		headers=headers,
+	)
+
+	if response.status_code == 200:
+		top_tracks = response.json()['items']  # Extract top tracks
+	else:
+		top_tracks = []  # Handle error or no tracks found
+
+	# Pass track information (URIs, names, etc.) to the template
+	return render(request, 'mainTemplates/playback.html', {'access_token': access_token ,'top_tracks': top_tracks})

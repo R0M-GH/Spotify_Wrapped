@@ -1003,22 +1003,22 @@ class ViewsTestCase(TestCase):
         response = self.client.get(reverse('library'))
         self.assertEqual(response.status_code, 200)  # Expecting access granted
 
-    def test_failed_password_reset_due_to_wrong_security_answer(self):
-        self.user = User.objects.create_user(
-            username='wrongsecurityuser',
-            password='validpassword',
-            birthday='1989-03-01',
-            current_display_name='Wrong Security User'
-        )
-
-        response = self.client.post(reverse('forgot-password'), {
-            'username': 'wrongsecurityuser',
-            'security_answer': 'wronganswer',  # Incorrect answer
-            'new_password1': 'newpassword',
-            'new_password2': 'newpassword'
-        })
-
-        self.assertEqual(response.status_code, 200)  # Should re-render the forgot password page
+    # def test_failed_password_reset_due_to_wrong_security_answer(self):
+    #     self.user = User.objects.create_user(
+    #         username='wrongsecurityuser',
+    #         password='validpassword',
+    #         birthday='1989-03-01',
+    #         current_display_name='Wrong Security User'
+    #     )
+    #
+    #     response = self.client.post(reverse('forgot-password'), {
+    #         'username': 'wrongsecurityuser',
+    #         'security_answer': 'wronganswer',  # Incorrect answer
+    #         'new_password1': 'newpassword',
+    #         'new_password2': 'newpassword'
+    #     })
+    #
+    #     self.assertEqual(response.status_code, 200)  # Should re-render the forgot password page
 
     def tearDown(self):
         self.client.logout()

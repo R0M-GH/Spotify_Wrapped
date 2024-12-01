@@ -761,3 +761,12 @@ def get_game_info(request):
 	}
 
 	return data
+
+
+def delete_wrapped(request, dt):
+	try:
+		wrap = Wraps.objects.get(username=request.session.get('username'), creation_date=datetime.fromisoformat(dt))
+		wrap.delete()
+		return 200
+	except Wraps.DoesNotExist:
+		return 404

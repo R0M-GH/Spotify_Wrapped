@@ -31,6 +31,9 @@ header {
     }
     z-index: 5000;
 }
+.sp {
+    pointer-events: none;
+}
 
 .mainplanet:hover {
     transform: scale(1.2);

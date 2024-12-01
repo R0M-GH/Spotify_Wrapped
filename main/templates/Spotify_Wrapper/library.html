@@ -93,6 +93,13 @@
     {% if wraps %}
         {% for wrap in wraps %}
             <a href="/wrapperStart/{{ wrap.creation_date.isoformat }}/" class="wrap-card">
+                {% if wrap.term == 'short_term' %}
+                    <img src="{% static 'Spotify_Wrapper/planets/GN-YellowPlanet.png' %}" alt="Term 1 Image" class="wrap-image">
+                {% elif wrap.term == 'medium_term' %}
+                    <img src="{% static 'Spotify_Wrapper/planets/CSC-PurplePlanet.png' %}" alt="Term 2 Image" class="wrap-image">
+                {% elif wrap.term == 'long_term' %}
+                    <img src="{% static 'Spotify_Wrapper/planets/CA-BluePlanet.png' %}" alt="Term 3 Image" class="wrap-image">
+                {% endif %}
                 <h3>{{ wrap.creation_date }}</h3>
                 <p>User: {{ wrap.spotify_display_name }}</p>
                 <p>Term: {{ wrap.term }}</p>

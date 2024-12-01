@@ -403,6 +403,20 @@ class ViewsTestCase(TestCase):
         )
         self.client.login(username='testuser', password='testpass')
 
+    def test_library_redirect_unauthenticated(self):
+        # Log out the user (if already logged in)
+        self.client.logout()
+
+        # Test that unauthenticated users are redirected to the login page
+        response = self.client.get(reverse('library'))
+        self.assertRedirects(response, '/login/?next=/library/')  # Adjust URL if needed
+
+    def test_summary_view_logged_in(self):
+        # Test that the summary view can be accessed when logged in with valid data
+        response = self.client.get(reverse('summary', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Check standard functionality
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/summary.html')  # Check if the correct template is used
+
     def test_accountpage_redirect_unauthenticated(self):
         # Log out the user (if already logged in)
         self.client.logout()

@@ -762,6 +762,36 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)  # Should allow access
         self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')  # Adjust template name as necessary
 
+    def test_access_summary_view_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='summaryuser',
+            password='summarypass',
+            birthday='1994-01-01',
+            current_display_name='Summary User'
+        )
+
+        self.client.login(username='summaryuser', password='summarypass')
+
+        response = self.client.get(reverse('summary', args=['2024-11-30']))
+
+        self.assertEqual(response.status_code, 200)  # Expecting access granted
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/summary.html')  # Check for the correct template
+
+    def test_view_home_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='homeuser',
+            password='homepass',
+            birthday='1993-12-01',
+            current_display_name='Home User'
+        )
+
+        self.client.login(username='homeuser', password='homepass')
+
+        response = self.client.get(reverse('index-page'))
+
+        self.assertEqual(response.status_code, 200)  # Should allow access
+        self.assertTemplateUsed(response, 'mainTemplates/index.html')  # Adjust according to your template
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()

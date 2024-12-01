@@ -7,7 +7,7 @@ let hits = 0;
 let totalCircles = 0;
 const size = 150;      // Initial size of each circle in pixels
 const duration = 20000; // Duration in milliseconds (15 seconds)
-const frequency = 333; // Frequency of circle appearance (every 1 second)
+const frequency = 666; // Frequency of circle appearance (every 1 second)
 const play = document.getElementById('t-play'); // Start button element
 const replay = document.getElementById('r-play'); // Replay button element
 const fullplay = document.getElementById('play'); // Replay button element
@@ -29,6 +29,9 @@ leftC = 50;
 let circles = []; // Array to store references to circles
 const shrinkAmount = 15; // Define how much each circle shrinks per interval
 const shrinkIntervalDuration = 100; // Time between shrink intervals in milliseconds
+let real_artist_names; // Array of top 50 artist names
+let real_song_titles; // Array of top 50 track names
+console.log("hi");
 
 function getRandomPercentage() {
 	return 10 + (Math.random() * 80) + '%';
@@ -93,16 +96,15 @@ function getRandomItem() {
 	let arr;
 	let fake = true;
 
+	console.log(realFake);
 	if (realFake < 0.25) {
 		arr = fake_artist_names;
 	} else if (realFake < 0.5) {
 		arr = fake_song_titles;
 	} else if (realFake < 0.75) {
-		console.log(getData());
 		arr = real_artist_names;
 		fake = false;
 	} else {
-		console.log(getData());
 		arr = real_song_titles;
 		fake = false;
 	}
@@ -255,6 +257,7 @@ function shrinkCircles() {
 
 
 function startPlay() {
+	getData();
 	console.log("start play!");
 	points = 0;
 	missed = 0;
@@ -522,14 +525,9 @@ christmasSwitch.addEventListener('change', () => {
 
 		fake_artist_names = fake_artist_names;
 		fake_song_titles = fake_song_titles;
-		real_artist_names = data.artists;
-		real_song_titles = data.tracks;
+		getData();
 	}
 });
-
-data = getData();
-real_artist_names = data.artists;
-real_song_titles = data.tracks;
 
 fake_artist_names = [
 	"EchoWave", "CrimsonFalls", "Starfire", "VelvetReign", "LunarVeil",
@@ -654,9 +652,10 @@ real_christmas_artists = [
 ];
 
 
-async function getData() {
-	const response = await fetch(`/api/get-game-info/`);
-	const data = response.json();
-	console.log(data);
-	return data;
+function getData() {
+	fetch(`/api/get-game-info/`).then(response => response.json()).then(data => {
+		console.log(data);
+		real_artist_names = data.artists;
+		real_song_titles = data.tracks;
+	});
 }

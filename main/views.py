@@ -45,7 +45,10 @@ def welcome(request):
 	Returns:
 		HttpResponse: Rendered HTML of the welcome page.
 	"""
-	return render(request, 'Spotify_Wrapper/welcome.html')
+	if request.user.is_authenticated:
+		return redirect("library")
+	else:
+		return render(request, 'Spotify_Wrapper/welcome.html')
 
 
 @login_required
@@ -742,7 +745,7 @@ def get_game_info(request):
 		return JsonResponse({'error': 'User is not authenticated with Spotify.'}, status=401)
 
 	headers = {'Authorization': f'Bearer {user.spotify_access_token}'}
-	response = requests.get(endpoint, headers={'Authorization': f'Bearer {user.spotify_access_token}'})
+	response = requests.get(endpoint, headers=headers)
 
 	if response.status_code == 401:
 		access_token = refresh_spotify_token(user)
@@ -753,12 +756,15 @@ def get_game_info(request):
 
 	top_artists = requests.get(f'{endpoint}/top/artists?limit=50&time_range=long_term', headers=headers)
 	top_tracks = requests.get(f'{endpoint}/top/tracks?limit=50&time_range=long_term', headers=headers)
-	data = {
-		'artists': [artist for artist in top_artists.json()['items']['name']],
-		'tracks': [track for track in top_tracks.json()['items']['name']]
-	}
-
-	return data
+	artists = []
+	tracks = []
+	for artist in top_artists.json()['items']:
+		artists.append(artist['name'])
+	for track in top_tracks.json()['items']:
+		tracks.append(track['name'])
+	
+	data = {'artists': artists, 'tracks': tracks}
+	return JsonResponse(data)
 
 
 def delete_wrapped(request, dt):
@@ -778,7 +784,6 @@ def delete_wrapped(request, dt):
 		return 200
 	except Wraps.DoesNotExist:
 		return 404
-
 
 # @login_required
 # def playback(request):

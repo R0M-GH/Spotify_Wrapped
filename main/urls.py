@@ -14,7 +14,7 @@ urlpatterns = [
 	path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
 	path('spotify_logout/', views.relink_spotify_account, name='spotify_logout'),
 
-	path('home/', views.home, name='home'),
+	# path('home/', views.home, name='home'),
 
 	path('index/', views.index, name='index-page'),
 	path('contact/', views.contact, name='contact'),
@@ -34,7 +34,6 @@ urlpatterns = [
 	# path('playback/', views.playback, name='playback-page'),
 	path('api/make-wrapped/<str:time_range>/<int:limit>/', views.make_wrapped, name='make-wrapped'),
 	path('api/get-wrapped/<str:dt>/', views.get_wrapped, name='get-wrapped'),
-	# path('api/delete-wrapped/<str:dt>/', views.delete_wrapped, name='delete-wrapped'),
-	path('delete-wrapped/<str:dt>/', views.delete_wrapped, name='delete-wrapped'),
+	path('api/delete-wrapped/<str:dt>/', views.delete_wrapped, name='delete-wrapped'),
 	path('api/get-game-info/', views.get_game_info, name='game-info'),
 ]

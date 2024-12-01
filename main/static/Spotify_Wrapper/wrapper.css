@@ -20,7 +20,7 @@ header {
     flex-direction: column;
     background-color: transparent;
     align-items: center;
-    top: 20%;
+    top: 20vh;
     position: relative;
     transition: transform 0.5s ease;
     height: calc(100vh - 60px);

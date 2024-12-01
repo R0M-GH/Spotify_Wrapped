@@ -13,7 +13,7 @@
             display: flex;
             overflow: hidden;
             position: relative;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             justify-content: center;
             align-items: center;
@@ -21,8 +21,8 @@
 
         .slide {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             top: 0;
             left: 0;
             display: flex;
@@ -39,8 +39,8 @@
         }
 
         .slide img {
-            width: 500px;
-            height: 500px;
+            width: 50vw;
+            height: 50vh;
             object-fit: contain;
             transition: transform 0.05s ease-in-out;
             cursor: pointer;
@@ -108,36 +108,35 @@
     <div class="slide" id="slide-1">
         <div class="Cosmic-Song-Count">Stellar Hits</div>
         <a class="mainplanet" href="/StellarHits/{{ dt }}/">
-            <img src="{% static 'Spotify_Wrapper/planets/CSC-PurplePlanet.png' %}">
+            <img src="{% static 'Spotify_Wrapper/image/CSC-PurplePlanet2.png' %}">
         </a>
-        <img class="glx" src="{% static 'Spotify_Wrapper/image/Space2.png' %}">
     </div>
 
     <div class="slide" id="slide-2">
         <div class="Cosmic-Song-Count">Artist Constellation</div>
         <a class="mainplanet" href="/ConstellationArtists/{{ dt }}/">
-            <img src="{% static 'Spotify_Wrapper/planets/neptune.png' %}">
+            <img src="{% static 'Spotify_Wrapper/image/GN-YellowPlanet2.png' %}">
         </a>
     </div>
 
     <div class="slide" id="slide-3">
         <div class="Cosmic-Song-Count">Genre Nebula</div>
         <a class="mainplanet" href="/GenreNebulas/{{ dt }}/">
-            <img src="{% static 'Spotify_Wrapper/planets/jupiter.png' %}">
+            <img style="height: 30vw; rotate:180deg;" src="{% static 'Spotify_Wrapper/planets/SH-GreenPlanet.png' %}">
         </a>
     </div>
 
     <div class="slide" id="slide-4">
         <div class="Cosmic-Song-Count">AstroAI</div>
         <a class="mainplanet" href="/AstroAI/{{ dt }}/">
-            <img src="{% static 'Spotify_Wrapper/planets/ceres.png' %}">
+            <img src="{% static 'Spotify_Wrapper/image/CA-BluePlanet2.png' %}">
         </a>
     </div>
 
     <div class="slide" id="slide-5">
         <div class="Cosmic-Song-Count">Summary</div>
         <a class="mainplanet" href="/summary/{{ dt }}/">
-            <img src="{% static 'Spotify_Wrapper/planets/moon.png' %}">
+            <img src="{% static 'Spotify_Wrapper/image/MARS.png' %}">
         </a>
     </div>
 </div>

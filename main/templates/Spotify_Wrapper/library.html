@@ -19,6 +19,7 @@
         }
 
         .wrap-card {
+            position: relative;
             background: #0b0f29;
             border-radius: 15px;
             padding: 10px;
@@ -31,10 +32,10 @@
             justify-content: space-between;
             height: 150px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1;
         }
 
         .wrap-card:hover {
-            transform: translateY(-5px);
             box-shadow: 0 0 20px rgba(0, 176, 255, 0.7);
         }
 
@@ -91,7 +92,7 @@
 <div class="wraps-container">
     {% if wraps %}
         {% for wrap in wraps %}
-            <a href="/wrapperStart/{{ wrap.creation_date.isoformat }}/" class="wrap-card">
+            <a class="wrap-card" href="/wrapperStart/{{ wrap.creation_date.isoformat }}/">
                 <h3>{{ wrap.creation_date }}</h3>
                 <p>User: {{ wrap.spotify_display_name }}</p>
                 <p>Term: {{ wrap.term }}</p>
@@ -101,6 +102,5 @@
         <p class="nowraps">You haven't created any wraps yet.</p>
     {% endif %}
 </div>
-
 </body>
 </html>

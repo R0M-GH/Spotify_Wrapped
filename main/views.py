@@ -7,7 +7,7 @@ import urllib.parse
 from datetime import datetime
 
 import requests
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
@@ -357,7 +357,7 @@ def user_login(request):
 	Returns:
 		HttpResponse: Rendered HTML of the login page or redirects to Spotify login on success.
 	"""
-	request.session.flush()
+	logout(request)
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')
@@ -762,11 +762,9 @@ def get_game_info(request):
 
 
 def delete_wrapped(request, dt):
-	if request.method == 'DELETE':
-		try:
-			wrap = Wraps.objects.get(user=request.session.get('username'), creation_date=datetime.fromisoformat(dt))
-			wrap.delete()
-			return 200
-		except Wraps.DoesNotExist:
-			return 404
-	return 400
+	try:
+		wrap = Wraps.objects.get(username=request.session.get('username'), creation_date=datetime.fromisoformat(dt))
+		wrap.delete()
+		return 200
+	except Wraps.DoesNotExist:
+		return 404

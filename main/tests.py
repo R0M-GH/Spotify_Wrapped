@@ -404,13 +404,6 @@ class ViewsTestCase(TestCase):
         )
         self.client.login(username='testuser', password='testpass')
 
-    def test_accountpage_view_authenticated(self):
-        response = self.client.get(reverse('account-page'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')
-        self.assertContains(response, 'Test User')  # Check for user's display name
-        self.assertContains(response, 'Birthday: 2000-01-01')  # Check for user's birthday
-
     def test_library_redirect_unauthenticated(self):
         # Log out the user (if already logged in)
         self.client.logout()

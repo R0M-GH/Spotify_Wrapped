@@ -91,6 +91,17 @@
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
 <script>
+    /**
+     * Fetches wrapped data from the server, specifically top tracks, and displays them
+     * in the specified container. Each track's cover image, track name, and artist name
+     * are displayed in a new `div` element.
+     *
+     * @async
+     * @function getWrapped
+     * @throws {Error} Logs any error that occurs during the fetch or data processing.
+     *
+     * @returns {Promise<void>} Resolves when the data is successfully fetched and displayed.
+     */
 	async function getWrapped() {
 		try {
 			const response = await fetch(`/api/get-wrapped/{{ dt }}`);

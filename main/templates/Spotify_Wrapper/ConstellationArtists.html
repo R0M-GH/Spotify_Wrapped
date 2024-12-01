@@ -91,6 +91,16 @@
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
 <script>
+    /**
+     * Fetches data from the `/api/get-wrapped/{{ dt }}` endpoint and processes the response.
+     * Displays a list of top artists, including their images and names, inside a specified container.
+     * If no artists are found, displays a fallback message.
+     *
+     * @async
+     * @function getWrapped
+     * @returns {Promise<void>} Resolves when the data is fetched and processed.
+     * @throws {Error} Logs any error that occurs during the fetch operation.
+     */
 	async function getWrapped() {
 		try {
 			const response = await fetch(`/api/get-wrapped/{{ dt }}`);

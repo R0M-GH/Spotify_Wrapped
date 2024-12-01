@@ -72,6 +72,17 @@
 </div>
 <img class="start" src="{% static "Spotify_Wrapper/image/wrapperStart.png" %}" alt="Centered Image">
 <script>
+    /**
+     * Asks the user for confirmation and deletes a "wrapped" by making an HTTP DELETE request to the server.
+     * If the request is successful, the user is redirected to the library page.
+     *
+     * @param {string} dt - The identifier for the wrapped to be deleted.
+     * @returns {void}
+     *
+     * @example
+     * // Call this function when a user wants to delete a specific wrapped
+     * deleteWrapped('12345');
+     */
 	async function deleteWrapped(dt) {
 		if (confirm('Are you sure you want to delete this wrapped?')) {
 			try {

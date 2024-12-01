@@ -81,9 +81,10 @@
 				{#const response = await fetch(`/delete-wrapped/${dt}/`, {method: 'DELETE'});#}
                 const response = await fetch(`/delete-wrapped/${dt}/`);
 				if (!response.ok) {
-                    console.error('Error fetching wrapped: ', response.status);
-                }
-                window.location.replace('/library/');
+
+					console.error('Error fetching wrapped: ', response.status);
+				}
+				window.location.replace('/library/');
 
 			} catch (e) {
 				console.error(e);

@@ -4,7 +4,6 @@ import random
 import string
 import urllib.parse
 from datetime import datetime
-
 import requests
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -13,7 +12,6 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from openai import OpenAI
-
 from Spotify_Wrapped import settings
 from .forms import LoginForm, RegistrationForm, ForgetForm
 from .models import User, Wraps

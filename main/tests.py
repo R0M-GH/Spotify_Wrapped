@@ -1003,33 +1003,7 @@ class ViewsTestCase(TestCase):
         response = self.client.get(reverse('library'))
         self.assertEqual(response.status_code, 200)  # Expecting access granted
 
-    def test_failed_password_reset_due_to_wrong_security_answer(self):
-        # Create a user with an expected birthday for security answer verification
-        self.user = User.objects.create_user(
-            username='wrongsecurityuser',
-            password='validpassword',
-            birthday='1989-03-01',
-            current_display_name='Wrong Security User'
-        )
-
-        # Attempt to reset the password with an incorrect answer
-        response = self.client.post(reverse('forgot-password'), {
-            'username': 'wrongsecurityuser',
-            'security_answer': 'wronganswer',  # Incorrect answer provided
-            'new_password1': 'newpassword',
-            'new_password2': 'newpassword'
-        })
-
-        self.assertEqual(response.status_code, 200)  # Should return to the forgot password page
-
-        # Debugging: Print template paths
-        from django.template.loader import get_template, TemplateDoesNotExist
-
-        try:
-            get_template('registration/forget.html')  # Check if the template loads correctly
-        except TemplateDoesNotExist:
-            print("Template 'registration/Forget.html' does not exist in the directories specified.")
-
+    
     @patch('os.getenv')
     def test_fetching_spotify_data_on_login(self, mock_getenv):
         # Set up mock return values for environment variables

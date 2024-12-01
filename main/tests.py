@@ -905,6 +905,24 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)  # Expecting access granted
         self.assertTemplateUsed(response, 'Spotify_Wrapper/contact.html')  # Check for the correct template
 
+    def test_registration_with_mismatched_passwords(self):
+        self.client.logout()
+        response = self.client.post(reverse('registration'), {
+            'username': 'mismatchuser',
+            'password1': 'password1',
+            'password2': 'password2',  # Different from password1
+            'birthday': '1995-06-15',
+            'current_display_name': 'Mismatch User'
+        })
+
+        self.assertEqual(response.status_code, 200)  # Should re-render registration page
+        self.assertContains(response, 'Passwords do not match.')  # Check for the appropriate error message
+
+    def test_access_account_page_as_unauthenticated_user(self):
+        self.client.logout()  # Ensure no one is logged in
+        response = self.client.get(reverse('account-page'))
+        self.assertRedirects(response, '/login/?next=/accountpage/')  # Ensure unlogged-in users are redirected
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()

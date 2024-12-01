@@ -15,7 +15,7 @@ header {
 }
 .Cosmic-Song-Count {
 color: #faf6e7;
-left: 30vw;
+left: 40vw;
 font-family: 'ChakraPetch-Regular', sans-serif;
 font-size: 4vw;
 position: relative;
@@ -51,7 +51,7 @@ margin-top: 10vh;
   position: absolute;
     height: calc(100vh - 60px);
   img {
-    width: 40vw; /
+    width: 40vw;
     height: auto;
   }
 }
@@ -194,6 +194,13 @@ margin-top: 10vh;
   text-decoration: none;
   z-index: 5000;
     text-align: center;
+}
+.bg {
+    height: 100vh;
+    width: 100vw;
+    top: 0vh;
+    z-index: -1;
+    position: absolute;
 }
 @keyframes blinkColor {
     0% {

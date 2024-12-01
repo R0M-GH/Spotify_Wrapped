@@ -68,7 +68,17 @@ header {
     right: 32vw;
 }
 .glx{
-    
+    user-select: none;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  align-items: center;
+  bottom:0vh;
+  position: absolute;
+  right: 10vw;
+  pointer-events: none;
+  z-index: 1;
+  height: 500vw;
 }
 .one {
   position: absolute;

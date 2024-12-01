@@ -1008,11 +1008,11 @@ class ViewsTestCase(TestCase):
         self.user = User.objects.create_user(
             username='wrongsecurityuser',
             password='validpassword',
-            birthday='1989-03-01',  # This will be the security answer
+            birthday='1989-03-01',
             current_display_name='Wrong Security User'
         )
 
-        # Attempt to reset the password with an incorrect security answer
+        # Attempt to reset the password with an incorrect answer
         response = self.client.post(reverse('forgot-password'), {
             'username': 'wrongsecurityuser',
             'security_answer': 'wronganswer',  # Incorrect answer provided
@@ -1021,10 +1021,23 @@ class ViewsTestCase(TestCase):
         })
 
         self.assertEqual(response.status_code, 200)  # Should return to the forgot password page
-        #self.assertContains(response, 'Birthday does not match')  # Adjust to match your actual error handling message
 
-    @patch('main.views.requests.get')  # Mock the requests.get method for the test
-    def test_fetching_spotify_data_on_login(self, mock_get):
+        # Debugging: Print template paths
+        from django.template.loader import get_template, TemplateDoesNotExist
+
+        try:
+            get_template('registration/forget.html')  # Check if the template loads correctly
+        except TemplateDoesNotExist:
+            print("Template 'registration/Forget.html' does not exist in the directories specified.")
+
+    @patch('os.getenv')
+    def test_fetching_spotify_data_on_login(self, mock_getenv):
+        # Set up mock return values for environment variables
+        mock_getenv.side_effect = lambda var: {
+            'SPOTIFY_CLIENT_ID': 'mock_client_id',
+            'SPOTIFY_CLIENT_SECRET': 'mock_client_secret',
+        }.get(var)
+
         # Create a dummy user
         self.user = User.objects.create_user(
             username='spotifydatauser',
@@ -1039,27 +1052,18 @@ class ViewsTestCase(TestCase):
             'password': 'datapass'
         })
 
-        # Simulate the Spotify login process by calling the login URL
-        response = self.client.get(reverse('spotify_login'))  # Adjust this if needed in your views
+        # Simulate the Spotify login process
+        response = self.client.get(reverse('spotify_login'))  # Adjust your URL name as needed
 
-        # Check that it responds with a redirect
-        self.assertEqual(response.status_code, 302)  # Expect a redirect (to Spotify auth)
+        self.assertEqual(response.status_code, 302)  # Expect a redirect after login authorization
 
-        # Mock the response from the Spotify API
-        mock_get.return_value.status_code = 200
-        mock_get.return_value.json.return_value = {'display_name': 'Test User'}  # Mock the JSON response
-
-        # Simulate the Spotify callback process
+        # Simulate a callback from the Spotify API
         callback_response = self.client.get(reverse('spotify_callback'),
                                             {'code': 'testcode', 'state': 'teststate'})
 
-        # Check that the proper access and refresh tokens are set
-        self.user.refresh_from_db()  # Refresh to get the updated user instance
+        # Check if tokens are populated correctly in the user DB
+        self.user.refresh_from_db()  # Refresh to get the latest user state
 
-        # self.assertIsNotNone(self.user.spotify_access_token)  # Ensure access token is now stored
-        # self.assertIsNotNone(self.user.spotify_refresh_token)  # Ensure refresh token is stored
-
-        # Optionally verify the content of the tokens here, if they are accessible
         self.assertNotEqual(self.user.spotify_access_token, '')  # Should not be empty
         self.assertNotEqual(self.user.spotify_refresh_token, '')  # Should not be empty
 

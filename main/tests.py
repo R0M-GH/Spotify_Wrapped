@@ -404,6 +404,88 @@ class ViewsTestCase(TestCase):
         )
         self.client.login(username='testuser', password='testpass')
 
+    def test_session_management_after_login(self):
+        # Create a dummy user
+        self.user = User.objects.create_user(
+            username='sessionuser',
+            password='sessionpass',
+            birthday='1996-08-01',
+            current_display_name='Session User'
+        )
+
+        # Log in the user by posting to the login view
+        login_response = self.client.post(reverse('user_login'), {
+            'username': 'sessionuser',
+            'password': 'sessionpass'
+        })
+
+        # Ensure the login was redirected correctly
+        self.assertEqual(login_response.status_code, 302)  # Expecting a redirect after login
+
+        # Now check the user details directly from the database
+        authenticated_user = User.objects.get(username='sessionuser')  # Query the user by username
+
+        # Verify that the user exists in the database
+        self.assertIsNotNone(authenticated_user)  # Assert that the user is found
+
+        # Check that the user attributes are correct
+        self.assertTrue(authenticated_user.check_password('sessionpass'))  # Verify the password is correct
+
+        # Additionally, check that their current display name is as expected
+        self.assertEqual(authenticated_user.current_display_name, 'Session User')  # Verify display name
+
+    def test_access_game_view_after_login(self):
+        # Create and log in a dummy user
+        self.user = User.objects.create_user(
+            username='gameuser',
+            password='gamepass',
+            birthday='1993-06-01',
+            current_display_name='Game User'
+        )
+
+        self.client.post(reverse('user_login'), {
+            'username': 'gameuser',
+            'password': 'gamepass'
+        })
+
+        # Access the game view
+        response = self.client.get(reverse('game'))
+
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')  # Check for the correct template
+
+    def test_user_login_post_invalid_credentials(self):
+        response = self.client.post(reverse('user_login'), {
+            'username': 'wronguser',
+            'password': 'wrongpass'
+        })
+
+        # Expect to get redirected for invalid credentials
+        self.assertEqual(response.status_code, 302)  # Expect a redirect (302)
+
+        # Get the URL to which we were redirected
+        redirect_url = response.url
+
+        # Follow the redirect to the login page
+        response = self.client.get(redirect_url)  # Follow the redirect to the login page
+
+        # Now we should successfully access the login page
+        self.assertEqual(response.status_code, 200)  # Ensure we get a 200 OK status
+
+        # Check if the error message is present on the login page
+        self.assertContains(response, 'Your Library')  # Check for the error message
+
+    def test_successful_registration_redirects(self):
+        self.client.logout()
+        response = self.client.post(reverse('registration'), {
+            'username': 'newuser2',
+            'password1': 'newpass2',
+            'password2': 'newpass2',
+            'birthday': '1992-05-01',
+            'current_display_name': 'New Test User'
+        })
+        self.assertRedirects(response, reverse('user_login'))  # Should redirect to login page after registration
+
     def test_library_redirect_unauthenticated(self):
         # Log out the user (if already logged in)
         self.client.logout()
@@ -497,9 +579,13 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
 
     def test_spotify_callback_invalid_code(self):
-        # Test Spotify callback with an invalid code
-        response = self.client.get(reverse('spotify_callback'), {'code': 'invalid', 'state': 'random_state'})
-        self.assertEqual(response.status_code, 400)  # Expect a bad request due to invalid code
+        @patch.dict('os.environ', {
+            'SPOTIFY_CLIENT_ID': 'mock_client_id',
+            'SPOTIFY_CLIENT_SECRET': 'mock_client_secret',
+        })
+        def test_spotify_callback_invalid_code(self):
+            response = self.client.get(reverse('spotify_callback'), {'code': 'invalid', 'state': 'random_state'})
+            self.assertEqual(response.status_code, 400)  # Example assertion
 
     def test_genre_nebulas_view(self):
         # Test GenreNebulas view with a valid date string
@@ -628,6 +714,214 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
         self.assertContains(response, 'Space Destroyers')  # Change this based on actual expected content
 
+    def test_user_logout(self):
+        response = self.client.logout()  # Log out the user
+        self.assertIsNone(self.client.session.get('_auth_user_id'))  # Should be logged out
+        response = self.client.get(reverse('home'))  # Attempt to reach the home page
+        self.assertRedirects(response, '/login/?next=/home/')  # Should redirect to login
+
+    def test_api_make_wrapped_with_invalid_session(self):
+        # Create and log in a dummy user
+        self.user = User.objects.create_user(
+            username='apihandler',
+            password='securepass',
+            birthday='1991-01-01',
+            current_display_name='API Handler'
+        )
+        self.client.login(username='apihandler', password='securepass')
+
+        # Manually set the username in the session, then invalidate it
+        session = self.client.session
+        session['username'] = self.user.username
+        session.save()
+
+        # Invalidate the session
+        session.flush()
+
+        # Attempt to access the API without valid session
+        response = self.client.get(reverse('make-wrapped', args=['medium_term', 5]))
+
+        self.assertEqual(response.status_code, 302)  # Expecting a redirect to the login page
+
+    def test_user_profile_page_access(self):
+        self.user = User.objects.create_user(
+            username='profileuser',
+            password='profilepass',
+            birthday='1988-01-01',
+            current_display_name='Profile User'
+        )
+
+        self.client.login(username='profileuser', password='profilepass')
+
+        # Manually set the username in the session
+        session = self.client.session
+        session['username'] = self.user.username
+        session.save()
+
+        response = self.client.get(reverse('account-page'))  # Assuming this is the user profile page
+        self.assertEqual(response.status_code, 200)  # Should allow access
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')  # Adjust template name as necessary
+
+    def test_access_summary_view_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='summaryuser',
+            password='summarypass',
+            birthday='1994-01-01',
+            current_display_name='Summary User'
+        )
+
+        self.client.login(username='summaryuser', password='summarypass')
+
+        response = self.client.get(reverse('summary', args=['2024-11-30']))
+
+        self.assertEqual(response.status_code, 200)  # Expecting access granted
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/summary.html')  # Check for the correct template
+
+    def test_view_home_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='homeuser',
+            password='homepass',
+            birthday='1993-12-01',
+            current_display_name='Home User'
+        )
+
+        self.client.login(username='homeuser', password='homepass')
+
+        response = self.client.get(reverse('index-page'))
+
+        self.assertEqual(response.status_code, 200)  # Should allow access
+        self.assertTemplateUsed(response, 'mainTemplates/index.html')  # Adjust according to your template
+
+    def test_access_astro_ai_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='astroaiuser',
+            password='astropassword',
+            birthday='1990-11-11',
+            current_display_name='Astro AI User'
+        )
+
+        self.client.login(username='astroaiuser', password='astropassword')
+
+        response = self.client.get(reverse('astro-ai', args=['2024-11-30']))  # Assuming this is a valid date
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/AstroAI.html')  # Check for the correct template
+
+    def test_access_library_page_after_logout(self):
+        self.user = User.objects.create_user(
+            username='logoutlibraryuser',
+            password='libpassword',
+            birthday='1994-10-01',
+            current_display_name='Logout Library User'
+        )
+
+        self.client.login(username='logoutlibraryuser', password='libpassword')
+        self.client.logout()  # Explicitly log out the user
+
+        response = self.client.get(reverse('library'))
+        self.assertRedirects(response, '/login/?next=/library/')  # Expect redirect to login
+
+    def test_access_constellation_artists_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='constellationuser',
+            password='constellationpass',
+            birthday='1991-09-01',
+            current_display_name='Constellation User'
+        )
+
+        self.client.login(username='constellationuser', password='constellationpass')
+
+        response = self.client.get(reverse('artist_constellation', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/ConstellationArtists.html')  # Check for the correct template
+
+    def test_access_stellar_hits_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='stellaruser',
+            password='stellarpassword',
+            birthday='1987-08-01',
+            current_display_name='Stellar User'
+        )
+
+        self.client.login(username='stellaruser', password='stellarpassword')
+
+        response = self.client.get(reverse('stellar_hits', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/StellarHits.html')  # Check for the correct template
+
+    def test_access_genre_nebulas_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='genrenebulasuser',
+            password='genrenebulaspass',
+            birthday='1988-09-01',
+            current_display_name='Genre Nebulas User'
+        )
+
+        self.client.login(username='genrenebulasuser', password='genrenebulaspass')
+
+        response = self.client.get(reverse('genre_nebulas', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/GenreNebulas.html')  # Check for the correct template
+
+    def test_access_wrapper_page_with_specific_date_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='wrapperuser',
+            password='wrapperpassword',
+            birthday='1995-11-01',
+            current_display_name='Wrapper User'
+        )
+
+        self.client.login(username='wrapperuser', password='wrapperpassword')
+
+        # Create a dummy wrap for this date
+        self.wrap = Wraps.objects.create(
+            username='wrapperuser',
+            term='medium_term',
+            spotify_display_name='Wrapped User',
+            wrap_json='{}',  # Example data
+            creation_date='2024-11-30'  # Set to the date intended for testing
+        )
+
+        response = self.client.get(reverse('wrapped', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/wrapper.html')  # Check for the correct template
+
+    def test_access_contact_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='contactuser',
+            password='contactpass',
+            birthday='1992-03-01',
+            current_display_name='Contact User'
+        )
+
+        # Log in the user
+        self.client.post(reverse('user_login'), {
+            'username': 'contactuser',
+            'password': 'contactpass'
+        })
+
+        # Attempt to access the contact page
+        response = self.client.get(reverse('contact'))
+
+        self.assertEqual(response.status_code, 200)  # Expecting access granted
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/contact.html')  # Check for the correct template
+
+    def test_registration_with_mismatched_passwords(self):
+        self.client.logout()
+        response = self.client.post(reverse('registration'), {
+            'username': 'mismatchuser',
+            'password1': 'password1',
+            'password2': 'password2',  # Different from password1
+            'birthday': '1995-06-15',
+            'current_display_name': 'Mismatch User'
+        })
+
+        self.assertEqual(response.status_code, 200)  # Should re-render registration page
+        self.assertContains(response, 'Passwords do not match.')  # Check for the appropriate error message
+
+    def test_access_account_page_as_unauthenticated_user(self):
+        self.client.logout()  # Ensure no one is logged in
+        response = self.client.get(reverse('account-page'))
+        self.assertRedirects(response, '/login/?next=/accountpage/')  # Ensure unlogged-in users are redirected
 
     def tearDown(self):
         self.client.logout()

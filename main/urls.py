@@ -34,5 +34,7 @@ urlpatterns = [
 
 	path('api/make-wrapped/<str:time_range>/<int:limit>/', views.make_wrapped, name='make-wrapped'),
 	path('api/get-wrapped/<str:dt>/', views.get_wrapped, name='get-wrapped'),
+	# path('api/delete-wrapped/<str:dt>/', views.delete_wrapped, name='delete-wrapped'),
+	path('delete-wrapped/<str:dt>/', views.delete_wrapped, name='delete-wrapped'),
 	path('api/get-game-info/', views.get_game_info, name='game-info'),
 ]

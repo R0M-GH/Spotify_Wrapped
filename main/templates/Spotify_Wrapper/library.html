@@ -101,6 +101,8 @@
                 {% elif wrap.term == 'long_term' %}
                     <img style="width: 14vw" src="{% static 'Spotify_Wrapper/planets/CA-BluePlanet.png' %}" alt="Term 3 Image" class="wrap-image">
                 {% endif %}
+            <a class="wrap-card" href="/wrapperStart/{{ wrap.creation_date.isoformat }}/">
+
                 <h3>{{ wrap.creation_date }}</h3>
 {#                <p>User: {{ wrap.spotify_display_name }}</p>#}
 

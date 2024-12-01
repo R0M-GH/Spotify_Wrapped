@@ -764,6 +764,32 @@ def get_game_info(request):
 
 
 def delete_wrapped(request, dt):
+	"""
+	Deletes a wrapped entry for a specific user based on the provided datetime.
+
+	This function retrieves a `Wraps` object corresponding to the currently
+	authenticated user (based on the session username) and the given `dt`
+	(date-time) string. If the object exists, it is deleted. If not, a 404
+	error is returned.
+
+	Args:
+		request (HttpRequest): The HTTP request object containing the session
+			data for the authenticated user.
+		dt (str): The date-time string representing the creation date of the
+			wrapped to delete. It is expected to be in ISO format (e.g., "YYYY-MM-DDTHH:MM:SS").
+
+	Returns:
+		int: HTTP status code indicating the result of the operation:
+			- 200 if the wrap is successfully deleted,
+			- 404 if the wrap does not exist.
+
+	Raises:
+		Wraps.DoesNotExist: If no matching wrap is found for the user and datetime.
+
+	Example:
+		delete_wrapped(request, '2024-11-25T12:34:56')
+	"""
+
 	try:
 		wrap = Wraps.objects.get(username=request.session.get('username'), creation_date=datetime.fromisoformat(dt))
 		wrap.delete()

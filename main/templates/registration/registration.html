@@ -212,6 +212,22 @@
     <img class="one" src="{% static "Spotify_Wrapper/image/login.png" %}">
 
     <script>
+        /**
+         * Validates the password and confirm password fields against specific criteria
+         * to ensure password strength and consistency. Updates the visual indicators
+         * for each requirement and enables or disables the register button based on
+         * the overall validity of the passwords.
+         *
+         * Password validation criteria:
+         * - Must be at least 8 characters long.
+         * - Must contain at least one uppercase letter.
+         * - Must include at least one numeric digit.
+         * - Must have at least one special character.
+         * - Must not be entirely numeric.
+         * - Must match the confirm password field.
+         *
+         * @function validatePassword
+         */
         // Function for password validation
         function validatePassword() {
             const password = document.getElementById('id_password1').value;

@@ -48,6 +48,16 @@
 <div class="lt">Long Term Wrap (~1 Year)</div>
 
 <script>
+    /**
+     * Sends a POST request to the `/api/make-wrapped/${term}/5/` endpoint to create a new wrapped data.
+     * Upon successful creation, redirects the user to the `/wrapperStart/${data.dt}` page.
+     *
+     * @async
+     * @function makeWrapped
+     * @param {string} term - The term to be used in the API request URL to create the wrapped data.
+     * @returns {Promise<void>} Resolves when the request is completed and the page redirection occurs.
+     * @throws {Error} Logs any error that occurs during the fetch operation or redirection process.
+     */
 	async function makeWrapped(term) {
 		try {
 			const response = await fetch(`/api/make-wrapped/${term}/5/`, {method: 'POST'});

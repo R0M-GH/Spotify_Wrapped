@@ -30,14 +30,25 @@ let circles = []; // Array to store references to circles
 const shrinkAmount = 15; // Define how much each circle shrinks per interval
 const shrinkIntervalDuration = 100; // Time between shrink intervals in milliseconds
 
+/**
+ * Returns a random percentage string for positioning circles.
+ * @returns {string} A random percentage string between 10% and 90%.
+ */
 function getRandomPercentage() {
 	return 10 + (Math.random() * 80) + '%';
 }
 
+/**
+ * Returns a random top position for a circle in percentage.
+ * @returns {string} A random percentage string for top position.
+ */
 function getRandomTop() {
 	return 10 + (Math.random() * 20) + '%';
 }
 
+/**
+ * Updates the high score if the current points exceed it.
+ */
 function updateHighScore() {
 	if (points > highScore) {
 		highScore = points;
@@ -45,6 +56,11 @@ function updateHighScore() {
 	}
 }
 
+/**
+ * Returns a random position based on the given axis (top or left).
+ * @param {string} axis - The axis to calculate position for ('top' or 'left').
+ * @returns {string} A random pixel position for the specified axis.
+ */
 function getRandomPosition(axis) {
 	if (axis === 'top') {
 		return Math.floor(Math.random() * window.innerHeight) + 'px'; // Vertical position based on viewport height
@@ -53,6 +69,10 @@ function getRandomPosition(axis) {
 	}
 }
 
+/**
+ * Retrieves the left coordinate for the circle positions.
+ * @returns {string} The left position in 'px' format.
+ */
 function getLeftC() {
 	leftC += 20 + (Math.random() * 200); // Increment by a random value between 0 and 49
 	if (leftC + 80 > window.innerWidth) { // If the circle goes out of bounds
@@ -61,6 +81,9 @@ function getLeftC() {
 	return leftC + 'px'; // Return the position in 'px' format
 }
 
+/**
+ * Updates the score display showing accuracy, hits, and points.
+ */
 function updateScoreDisplay() {
 	const accuracyElement = document.querySelector('.accuracy');
 	const hitElement = document.querySelector('.hit');
@@ -73,7 +96,10 @@ function updateScoreDisplay() {
 	updateHighScore();
 }
 
-
+/**
+ * Handles the actions performed when a circle is clicked.
+ * @param {boolean} isReal - Indicates if the clicked circle was real or not.
+ */
 function killButtons(isReal) {
 	if (isReal) {
 		points += 2;
@@ -87,7 +113,10 @@ function killButtons(isReal) {
 	updateScoreDisplay(); // Update the score display
 }
 
-
+/**
+ * Retrieves a random item (artist or song) from the respective lists.
+ * @returns {Object} An object containing the name of the item and a boolean indicating if it's fake.
+ */
 function getRandomItem() {
 	const realFake = Math.random();
 	let arr;
@@ -112,6 +141,9 @@ function getRandomItem() {
 	};
 }
 
+/**
+ * Initiates the process of creating circles for the game.
+ */
 function getRandomPosition(axis) {
 	if (axis === 'top') {
 		return Math.floor(Math.random() * window.innerHeight) + 'px'; // Vertical position based on viewport height
@@ -120,6 +152,9 @@ function getRandomPosition(axis) {
 	}
 }
 
+/**
+ * Initiates the process of creating circles for the game.
+ */
 function makeCircles() {
 	// Reset game variables and UI elements
 	points = 0;        // Tracks successful clicks
@@ -191,6 +226,10 @@ function makeCircles() {
 	}, frequency);
 }
 
+/**
+ * Applies the behavior for classic mode to a circle.
+ * @param {HTMLElement} circle - The circle element to apply the classic mode.
+ */
 function applyClassicMode(circle) {
 	sleigh.style.display = 'none';
 	shrinkCircles();
@@ -198,6 +237,10 @@ function applyClassicMode(circle) {
 	circle.style.left = getRandomPosition('left');
 }
 
+/**
+ * Applies the behavior for bouncing mode to a circle.
+ * @param {HTMLElement} circle - The circle element to apply the bouncing mode.
+ */
 function applyBouncingMode(circle) {
 	sleigh.style.display = 'none';
 	enableBouncing(circle);
@@ -205,6 +248,10 @@ function applyBouncingMode(circle) {
 	circle.style.left = getRandomPosition('left');
 }
 
+/**
+ * Applies the behavior for shooting mode to a circle.
+ * @param {HTMLElement} circle - The circle element to apply the shooting mode.
+ */
 function applyShootingMode(circle) {
 	sleigh.style.display = 'none';
 	circle.style.top = getRandomTop();
@@ -212,16 +259,21 @@ function applyShootingMode(circle) {
 	enableShooting(circle);
 }
 
+/**
+ * Applies the behavior for gliding mode to a circle.
+ * @param {HTMLElement} circle - The circle element to apply the gliding mode.
+ */
 function applyGlidingMode(circle) {
 	sleigh.style.display = 'flex';
 	createGlidingBall(circle);
 	circle.style.left = getLeftC();
 	circle.style.top = '130px'; // Example top position for the circle
-
-
 }
 
-
+/**
+ * Shrinks the size of a circle on each successful click.
+ * @param {HTMLElement} circle - The circle element to shrink.
+ */
 function shrinkCircle(circle) {
 	let currentWidth = parseInt(circle.style.width);
 	let currentHeight = parseInt(circle.style.height);
@@ -244,14 +296,18 @@ function shrinkCircle(circle) {
 		circle.style.fontSize = currentFontSize + 'px';
 	}
 }
-
+/**
+ * Shrinks all circles in the circles array.
+ */
 function shrinkCircles() {
 	circles.forEach(circle => {
 		shrinkCircle(circle);
 	});
 }
 
-
+/**
+ * Starts the game and prepares the UI for play.
+ */
 function startPlay() {
 	console.log("start play!");
 	points = 0;
@@ -273,7 +329,9 @@ play.addEventListener("click", function () {
 	startPlay();
 });
 
-
+/**
+ * Sets the selected game mode based on user interaction.
+ */
 document.querySelectorAll('.game-mode-option').forEach(option => {
 	option.addEventListener('click', () => {
 		// Uncheck all other options except the one that was clicked
@@ -302,6 +360,10 @@ document.querySelectorAll('.game-mode-option').forEach(option => {
 	});
 });
 
+/**
+ * Enables shooting behavior for a circle.
+ * @param {HTMLElement} circle - The circle element to enable shooting for.
+ */
 function enableShooting(circle) {
 	let dx = (Math.random() + 0.2) * 3; // Random horizontal speed
 	let dy = (Math.random() + 0.2) * 3; // Random vertical speed
@@ -322,6 +384,10 @@ function enableShooting(circle) {
 
 let balls = [];  // To store all the balls on screen
 
+/**
+ * Enables bouncing behavior for a circle.
+ * @param {HTMLElement} circle - The circle element to enable bouncing for.
+ */
 function enableBouncing(circle) {
 	let dx, dy;
 
@@ -397,6 +463,9 @@ function enableBouncing(circle) {
 		});
 	}
 
+	/**
+	 * Moves the circle and checks for collisions.
+	 */
 	function moveCircle() {
 		const circleRect = circle.getBoundingClientRect(); // Get circle boundaries
 
@@ -438,6 +507,9 @@ function enableBouncing(circle) {
 		}
 	}
 
+	/**
+	 * Function to increase speed after bouncing.
+	 */
 	// Function to increase speed after bouncing
 	function increaseSpeed() {
 		dx *= speedIncreaseFactor;
@@ -467,11 +539,19 @@ function enableBouncing(circle) {
 	requestAnimationFrame(moveCircle);
 }
 
+/**
+ * Creates the sleigh at a specific horizontal position.
+ * @param {number} initialLeft - The initial horizontal position of the sleigh.
+ */
 // Function to create the sleigh at a specific horizontal position
 function createSleigh(initialLeft) {
 	sleigh.style.left = `${initialLeft}px`; // Initial horizontal position
 }
 
+/**
+ * Creates and glides a ball along with the sleigh.
+ * @param {HTMLElement} circle - The circle element to glide.
+ */
 // Function to create and glide a ball along with the sleigh
 function createGlidingBall(circle) {
 	let dy = 2 + (Math.random() * 3); // Set an initial downward speed
@@ -501,6 +581,9 @@ function createGlidingBall(circle) {
 
 const root = document.body; // Apply class to the <body> tag
 // Toggle the class when the switch is toggled
+/**
+ * Toggles the Christmas theme and updates the fake artist/song lists.
+ */
 christmasSwitch.addEventListener('change', () => {
 	const chioElement = document.getElementById('chio'); // Get the element with id 'chio'
 

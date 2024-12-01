@@ -18,12 +18,24 @@
     </ul>
 
 <script>
+    /**
+     * Spotify Web Playback SDK Initialization and Track Playback Script
+     *
+     * This script initializes the Spotify Web Playback SDK, sets up a player, and enables playback
+     * of a default track. It listens to player events and handles errors during initialization,
+     * authentication, and playback.
+     */
     // Spotify Web Playback SDK Initialization
     let player;
     let deviceId;
     const token = '{{ access_token }}'; // Pass user's access token dynamically
     const defaultTrackUri = '{{ top_tracks.0.uri }}'; // Choose the first track as the default to play
 
+    /**
+     * Spotify Web Playback SDK ready callback.
+     *
+     * Initializes the Spotify player, connects it, retrieves the device ID, and auto-plays a default track.
+     */
     window.onSpotifyWebPlaybackSDKReady = () => {
         player = new Spotify.Player({
             name: 'Web Playback SDK Player',
@@ -34,6 +46,13 @@
         // Connect the player
         player.connect();
 
+        /**
+         * Event listener for when the player is ready.
+         *
+         * @event ready
+         * @param {Object} event - Event data
+         * @param {string} event.device_id - The ID of the Spotify device.
+         */
         // Get the device ID
         player.addListener('ready', ({ device_id }) => {
             console.log('Ready with Device ID', device_id);
@@ -43,11 +62,24 @@
             autoPlayTrack(defaultTrackUri);
         });
 
+        /**
+         * Event listener for player state changes.
+         *
+         * @event player_state_changed
+         * @param {Object} state - The current state of the Spotify player.
+         */
         // Log player state
         player.addListener('player_state_changed', state => {
             console.log('Player State:', state);
         });
 
+        /**
+         * Event listener for player initialization errors.
+         *
+         * @event initialization_error
+         * @param {Object} error - Error object
+         * @param {string} error.message - Error message.
+         */
         // Handle player errors
         player.addListener('initialization_error', ({ message }) => console.error(message));
         player.addListener('authentication_error', ({ message }) => console.error(message));
@@ -55,6 +87,12 @@
         player.addListener('playback_error', ({ message }) => console.error(message));
     };
 
+    /**
+     * Automatically plays a track using the Spotify Web API.
+     *
+     * @function autoPlayTrack
+     * @param {string} trackUri - The URI of the track to play.
+     */
     // Function to auto-play a track
     function autoPlayTrack(trackUri) {
         player.activateElement().then(() => { // Activate playback

@@ -73,6 +73,20 @@
     </ul>
     <img class="one" src="{% static "Spotify_Wrapper/image/login2.png" %}">
     <script>
+        /**
+         * Validates the password input fields against various security requirements
+         * and enables or disables the submit button based on validity.
+         *
+         * Requirements:
+         * - Password must be at least 8 characters long.
+         * - Password must contain at least one uppercase letter.
+         * - Password must contain at least one number.
+         * - Password must contain at least one special character.
+         * - Password must not be entirely numeric.
+         * - Passwords in both fields must match.
+         *
+         * @function validatePassword
+         */
         // Function for password validation
         function validatePassword() {
             const password = document.getElementById('id_new_password1').value;
@@ -147,6 +161,16 @@
         document.getElementById('id_new_password1').addEventListener('input', validatePassword);
         document.getElementById('id_new_password2').addEventListener('input', validatePassword);
         // Validate username field
+        /**
+         * Validates the username input field against a predefined condition.
+         *
+         * Displays an error message if the username is invalid.
+         *
+         * Note: Replace the simulated validation with an actual server-side check if possible.
+         *
+         * @function validateForm
+         * @returns {boolean} - `true` if the username is valid, otherwise `false`.
+         */
         function validateForm() {
             const username = document.getElementById('id_username').value;
             const usernameError = document.getElementById('username-error');

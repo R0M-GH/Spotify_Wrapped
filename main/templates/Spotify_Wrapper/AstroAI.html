@@ -96,6 +96,16 @@
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
 <script>
+    /**
+     * Fetches data from the `/api/get-wrapped/{{ dt }}` endpoint and processes the response.
+     * If the response contains a `llama_description`, it uses the `typeWriter` function
+     * to display the description in a typewriter animation. Otherwise, displays a fallback message.
+     *
+     * @async
+     * @function getWrapped
+     * @returns {Promise<void>} Resolves when the data is fetched and processed.
+     * @throws {Error} Logs any error that occurs during the fetch operation.
+     */
 	async function getWrapped() {
 		try {
 			const response = await fetch(`/api/get-wrapped/{{ dt }}`);
@@ -116,6 +126,13 @@
 		}
 	}
 
+    /**
+     * Displays text in a typewriter animation effect inside a specified container.
+     *
+     * @function typeWriter
+     * @param {HTMLElement} container - The HTML element where the typewriter effect will be displayed.
+     * @param {string} text - The text to be displayed with the typewriter animation.
+     */
 	function typeWriter(container, text) {
 		const div = document.createElement('div');
 		div.classList.add('info');

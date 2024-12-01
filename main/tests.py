@@ -393,10 +393,23 @@ class LoginFormTest(TestCase):
 
 class ViewsTestCase(TestCase):
     def setUp(self):
-        # Set up a client to make requests to the application
+        # Set up a client and create a test user with required fields
         self.client = Client()
-        self.user = User.objects.create_user(username='testuser', password='testpass', birthday='2000-01-01')
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass',
+            birthday='2000-01-01',
+            current_display_name='Test User'
+        )
         self.client.login(username='testuser', password='testpass')
+
+    def test_accountpage_view_user_not_found(self):
+        # Test account page when the user does not exist
+        self.client.logout()
+        new_client = Client()  # Create a new client
+        new_client.login(username='nonexistentuser', password='fakepass')
+        response = new_client.get(reverse('account-page'))
+        self.assertEqual(response.status_code, 302)  # Should redirect to login page
 
     def test_index_view(self):
         response = self.client.get(reverse('index-page'))
@@ -553,7 +566,6 @@ class ViewsTestCase(TestCase):
         self.assertRedirects(response, reverse('user_login'))  # Ensure redirect after successful password reset
         self.user.refresh_from_db()  # Refresh user instance to verify password update
         self.assertTrue(self.user.check_password('newsecurepassword'))  # Verify the new password
-
 
     def test_forgot_password_view_get(self):
         # Test GET request for forgot password page

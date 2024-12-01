@@ -762,6 +762,16 @@ def get_game_info(request):
 
 
 def delete_wrapped(request, dt):
+	"""
+	Permanently deletes the logged-in user's wrapped with the creation datetime id currently being viewed.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		dt (DateTime): The creation datetime of the current wrapped being viewed.
+
+	Returns:
+		Integer: Status code specifying the success of the wrap deletion.
+	"""
 	try:
 		wrap = Wraps.objects.get(username=request.session.get('username'), creation_date=datetime.fromisoformat(dt))
 		wrap.delete()

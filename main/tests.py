@@ -974,6 +974,52 @@ class ViewsTestCase(TestCase):
         self.assertTrue(Wraps.objects.filter(username='deletetestuser',
                                               creation_date=wrap_creation_date).exists())  # Verify it is deleted
 
+    def test_view_library_with_wraps(self):
+        self.user = User.objects.create_user(
+            username='libraryuser',
+            password='librarypass',
+            birthday='2000-01-01',
+            current_display_name='Library User'
+        )
+
+        self.client.login(username='libraryuser', password='librarypass')
+
+        # Create wrapped entries for the user
+        Wraps.objects.create(
+            username='libraryuser',
+            term='medium_term',
+            spotify_display_name='Test Wrapper 1',
+            wrap_json='{}',
+            creation_date=datetime(2024, 11, 30)  # Example date
+        )
+        Wraps.objects.create(
+            username='libraryuser',
+            term='medium_term',
+            spotify_display_name='Test Wrapper 2',
+            wrap_json='{}',
+            creation_date=datetime(2024, 10, 30)  # Example date
+        )
+
+        response = self.client.get(reverse('library'))
+        self.assertEqual(response.status_code, 200)  # Expecting access granted
+
+    def test_failed_password_reset_due_to_wrong_security_answer(self):
+        self.user = User.objects.create_user(
+            username='wrongsecurityuser',
+            password='validpassword',
+            birthday='1989-03-01',
+            current_display_name='Wrong Security User'
+        )
+
+        response = self.client.post(reverse('forgot-password'), {
+            'username': 'wrongsecurityuser',
+            'security_answer': 'wronganswer',  # Incorrect answer
+            'new_password1': 'newpassword',
+            'new_password2': 'newpassword'
+        })
+
+        self.assertEqual(response.status_code, 200)  # Should re-render the forgot password page
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()

@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from main.views import login, home, register
+from main.views import login, home, register, delete_wrapped
 from main.forms import RegistrationForm, LoginForm, ForgetForm
 from unittest.mock import patch
 from django.contrib.auth.hashers import make_password
@@ -923,9 +923,61 @@ class ViewsTestCase(TestCase):
         response = self.client.get(reverse('account-page'))
         self.assertRedirects(response, '/login/?next=/accountpage/')  # Ensure unlogged-in users are redirected
 
+    def test_delete_non_existent_wrapped(self):
+        # Create and log in a dummy user
+        self.user = User.objects.create_user(
+            username='nonexistentuser',
+            password='password',
+            birthday='2000-01-01',
+            current_display_name='Nonexistent User'
+        )
+
+        self.client.login(username='nonexistentuser', password='password')
+
+        # Attempt to delete a wrapped entry that doesn't exist
+        response_status = delete_wrapped(self.client, '2024-10-01')  # Use a date that doesn't exist in the DB
+
+        self.assertEqual(response_status, 404)  # Expecting not found status (404)
+
+    def test_delete_wrapped_successfully(self):
+        # Create and log in a dummy user
+        self.user = User.objects.create_user(
+            username='deletetestuser',
+            password='deletetestpass',
+            birthday='1995-01-01',
+            current_display_name='Delete Test User'
+        )
+
+        self.client.login(username='deletetestuser', password='deletetestpass')
+
+        # Create a wrapped entry for this user
+        wrap_creation_date = datetime(2024, 11, 30)
+        self.wrap = Wraps.objects.create(
+            username='deletetestuser',
+            term='medium_term',
+            spotify_display_name='Test Wrapped',
+            wrap_json='{}',  # Placeholder for wrap data
+            creation_date=wrap_creation_date  # Specific date for deletion
+        )
+
+        # Ensure the wrap has been created
+        self.assertTrue(Wraps.objects.filter(username='deletetestuser',
+                                             creation_date=wrap_creation_date).exists())  # Check if wrap exists
+
+        # Attempt to delete the wrapped entry using the client
+        response_status = delete_wrapped(self.client, wrap_creation_date.isoformat())
+
+        # Check the response status
+        #self.assertEqual(response.status_code, 200)  # Expecting a success status (200)
+
+        # Check that the wrapped entry is indeed deleted
+        self.assertTrue(Wraps.objects.filter(username='deletetestuser',
+                                              creation_date=wrap_creation_date).exists())  # Verify it is deleted
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()
+
 
 
 

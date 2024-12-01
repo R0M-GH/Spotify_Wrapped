@@ -404,6 +404,38 @@ class ViewsTestCase(TestCase):
         )
         self.client.login(username='testuser', password='testpass')
 
+    def test_user_login_post_invalid_credentials(self):
+        response = self.client.post(reverse('user_login'), {
+            'username': 'wronguser',
+            'password': 'wrongpass'
+        })
+
+        # Expect to get redirected for invalid credentials
+        self.assertEqual(response.status_code, 302)  # Expect a redirect (302)
+
+        # Get the URL to which we were redirected
+        redirect_url = response.url
+
+        # Follow the redirect to the login page
+        response = self.client.get(redirect_url)  # Follow the redirect to the login page
+
+        # Now we should successfully access the login page
+        self.assertEqual(response.status_code, 200)  # Ensure we get a 200 OK status
+
+        # Check if the error message is present on the login page
+        self.assertContains(response, 'Your Library')  # Check for the error message
+
+    def test_successful_registration_redirects(self):
+        self.client.logout()
+        response = self.client.post(reverse('registration'), {
+            'username': 'newuser2',
+            'password1': 'newpass2',
+            'password2': 'newpass2',
+            'birthday': '1992-05-01',
+            'current_display_name': 'New Test User'
+        })
+        self.assertRedirects(response, reverse('user_login'))  # Should redirect to login page after registration
+
     def test_library_redirect_unauthenticated(self):
         # Log out the user (if already logged in)
         self.client.logout()

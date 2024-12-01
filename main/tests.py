@@ -628,7 +628,6 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
         self.assertContains(response, 'Space Destroyers')  # Change this based on actual expected content
 
-
     def tearDown(self):
         self.client.logout()
         self.user.delete()

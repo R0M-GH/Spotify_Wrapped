@@ -116,7 +116,8 @@ color: #faf6e7;
 text-align: center;
 font-family: 'ChakraPetch-Regular', sans-serif;
 font-size: 5vw;
-font-weight: 400;
+left: 35vw;
+height: 10vh;
 position: absolute;
 margin-bottom: -10vh;
 margin-top: 9vh;
@@ -154,71 +155,55 @@ margin-top: 9vh;
 .account-buttons button:hover {
     background-color: #1B285E;
 }
-
-.btn-danger {
-    background-color: #FF4C4C; /* Red for delete account */
-}
-
-.btn-warning {
-    background-color: #FFB84C; /* Yellow for logout */
-}
-
-.btn-info {
-    background-color: #4C90FF; /* Blue for relink */
-}
-
-/* Hover effects for each button */
-.btn-danger:hover {
-    background-color: #E60000;
-}
-
-.btn-warning:hover {
-    background-color: #FF9900;
-}
-
-.btn-info:hover {
-    background-color: #0066FF;
-}
-.account-info {
+.bg {
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
     position: absolute;
-    top: 40%;     /* Position it vertically centered */
-    left: 5%;     /* Adjust the left position to be responsive */
-    transform: translateY(-50%);  /* Center the text vertically */
-    color: white;  /* White text color */
-    font-family: 'Arial', sans-serif;
-    font-size: 3vw; /* Font size relative to viewport width */
-    line-height: 1.5;  /* Line height to space the text */
-    max-width: 80%;  /* Ensure the text doesn't stretch too far */
+    top: 0vh;
 }
-
-/* Style for individual lines of text */
+.user {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: white;
+    font-size: 2vw;
+    text-align: center;
+    position: absolute;
+    top: 20vh;
+    left:45vw;
+}
+.numwrap {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: white;
+    font-size: 2vw;
+    text-align: center;
+    position: absolute;
+    top: 30vh;
+    left:45vw;
+}
 .info-text {
-    margin-bottom: 2vh;  /* Spacing between lines relative to viewport height */
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    color: white;
+    font-size: 2vw;
+    text-align: center;
+    position: absolute;
+    top: 40vh;
+    left:45vw;
+}
+.Spotify {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+  background-color: #1DB954;
+  position: fixed;
+  border: none;
+  left: 43vw;
+  bottom: 1vh;
+  color: white;
+  width: 20vw;
+  padding: 1vh 2vh;
+  text-align: left;
+  text-decoration: none;
+  font-size: 1.8vw;
+  margin: .5vh .5vh;
+  border-radius: .5vh;
+  z-index: 9999;
 }
 
-/* Media Queries to adapt layout for different screen sizes */
-@media (max-width: 768px) {
-    /* For smaller screens like tablets and mobile phones */
-    .account-info {
-        font-size: 4.5vw;  /* Adjust font size for smaller screens */
-        left: 10%;         /* Adjust left margin for smaller screens */
-        max-width: 90%;    /* Increase width usage for smaller screens */
-    }
-
-    .info-text {
-        margin-bottom: 4vh;  /* Adjust margin for smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    /* For very small screens like mobile phones */
-    .account-info {
-        font-size: 6vw;  /* Make the font even larger for mobile */
-        left: 10%;       /* Ensure the text stays left-aligned */
-        max-width: 95%;  /* Maximize width usage on mobile */
-    }
-
-    .info-text {
-        margin-bottom: 6vh;  /* Increase spacing between text on mobile */
-    }
-}

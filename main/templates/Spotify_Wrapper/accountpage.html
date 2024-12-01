@@ -30,21 +30,19 @@
         <li><a href="/login">Logout</a></li>
     </ul>
 </nav>
-
+</header>
 <div class="Cosmic-Song-Count" style="user-select: none;"> Your Account</div>
-<!-- Add user information text here -->
-<div class="account-info">
-    <p class="info-text">Username: {{ username }}</p>
-    <p class="info-text">Current Spotify Account Connected: {{ display_name }}</p>
-    <p class="info-text">Number of Wraps created: {{ wrap_count }}</p>
+
+    <p class="user">Username: {{ username }}</p>
+    <p class="Spotify">{{ display_name }}</p>
+    <p class="numwrap">Number of Wraps created: {{ wrap_count }}</p>
     {% if most_recent_wrap_date %}
         <p class="info-text">Last Wrap Creation Date: {{ most_recent_wrap_date|date:"m-d-Y" }}</p>
     {% else %}
         <p class="info-text">Last Wrap Creation Date: No Wraps created :(</p>
     {% endif %}
-</div>
-</header>
-
+<img class="bg" src="{% static 'Spotify_Wrapper/image/background.png' %}">
+<img class="sp" src="{% static 'Spotify_Wrapper/image/Spotify.png' %}">
 <nav class="menu" id="menu">
     <ul>
         <li><a href="/library">Library</a></li>

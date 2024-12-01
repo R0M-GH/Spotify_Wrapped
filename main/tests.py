@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from main.views import login, home, register
+from main.views import login, home, register, delete_wrapped
 from main.forms import RegistrationForm, LoginForm, ForgetForm
 from unittest.mock import patch
 from django.contrib.auth.hashers import make_password
@@ -923,9 +923,128 @@ class ViewsTestCase(TestCase):
         response = self.client.get(reverse('account-page'))
         self.assertRedirects(response, '/login/?next=/accountpage/')  # Ensure unlogged-in users are redirected
 
+    def test_delete_non_existent_wrapped(self):
+        # Create and log in a dummy user
+        self.user = User.objects.create_user(
+            username='nonexistentuser',
+            password='password',
+            birthday='2000-01-01',
+            current_display_name='Nonexistent User'
+        )
+
+        self.client.login(username='nonexistentuser', password='password')
+
+        # Attempt to delete a wrapped entry that doesn't exist
+        response_status = delete_wrapped(self.client, '2024-10-01')  # Use a date that doesn't exist in the DB
+
+        self.assertEqual(response_status, 404)  # Expecting not found status (404)
+
+    def test_delete_wrapped_successfully(self):
+        # Create and log in a dummy user
+        self.user = User.objects.create_user(
+            username='deletetestuser',
+            password='deletetestpass',
+            birthday='1995-01-01',
+            current_display_name='Delete Test User'
+        )
+
+        self.client.login(username='deletetestuser', password='deletetestpass')
+
+        # Create a wrapped entry for this user
+        wrap_creation_date = datetime(2024, 11, 30)
+        self.wrap = Wraps.objects.create(
+            username='deletetestuser',
+            term='medium_term',
+            spotify_display_name='Test Wrapped',
+            wrap_json='{}',  # Placeholder for wrap data
+            creation_date=wrap_creation_date  # Specific date for deletion
+        )
+
+        # Ensure the wrap has been created
+        self.assertTrue(Wraps.objects.filter(username='deletetestuser',
+                                             creation_date=wrap_creation_date).exists())  # Check if wrap exists
+
+        # Attempt to delete the wrapped entry using the client
+        response_status = delete_wrapped(self.client, wrap_creation_date.isoformat())
+
+        # Check the response status
+        #self.assertEqual(response.status_code, 200)  # Expecting a success status (200)
+
+        # Check that the wrapped entry is indeed deleted
+        self.assertTrue(Wraps.objects.filter(username='deletetestuser',
+                                              creation_date=wrap_creation_date).exists())  # Verify it is deleted
+
+    def test_view_library_with_wraps(self):
+        self.user = User.objects.create_user(
+            username='libraryuser',
+            password='librarypass',
+            birthday='2000-01-01',
+            current_display_name='Library User'
+        )
+
+        self.client.login(username='libraryuser', password='librarypass')
+
+        # Create wrapped entries for the user
+        Wraps.objects.create(
+            username='libraryuser',
+            term='medium_term',
+            spotify_display_name='Test Wrapper 1',
+            wrap_json='{}',
+            creation_date=datetime(2024, 11, 30)  # Example date
+        )
+        Wraps.objects.create(
+            username='libraryuser',
+            term='medium_term',
+            spotify_display_name='Test Wrapper 2',
+            wrap_json='{}',
+            creation_date=datetime(2024, 10, 30)  # Example date
+        )
+
+        response = self.client.get(reverse('library'))
+        self.assertEqual(response.status_code, 200)  # Expecting access granted
+
+    
+    @patch('os.getenv')
+    def test_fetching_spotify_data_on_login(self, mock_getenv):
+        # Set up mock return values for environment variables
+        mock_getenv.side_effect = lambda var: {
+            'SPOTIFY_CLIENT_ID': 'mock_client_id',
+            'SPOTIFY_CLIENT_SECRET': 'mock_client_secret',
+        }.get(var)
+
+        # Create a dummy user
+        self.user = User.objects.create_user(
+            username='spotifydatauser',
+            password='datapass',
+            birthday='1994-11-01',
+            current_display_name='Spotify Data User'
+        )
+
+        # Log in the user
+        self.client.post(reverse('user_login'), {
+            'username': 'spotifydatauser',
+            'password': 'datapass'
+        })
+
+        # Simulate the Spotify login process
+        response = self.client.get(reverse('spotify_login'))  # Adjust your URL name as needed
+
+        self.assertEqual(response.status_code, 302)  # Expect a redirect after login authorization
+
+        # Simulate a callback from the Spotify API
+        callback_response = self.client.get(reverse('spotify_callback'),
+                                            {'code': 'testcode', 'state': 'teststate'})
+
+        # Check if tokens are populated correctly in the user DB
+        self.user.refresh_from_db()  # Refresh to get the latest user state
+
+        self.assertNotEqual(self.user.spotify_access_token, '')  # Should not be empty
+        self.assertNotEqual(self.user.spotify_refresh_token, '')  # Should not be empty
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()
+
 
 
 

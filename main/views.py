@@ -4,7 +4,6 @@ import random
 import string
 import urllib.parse
 from datetime import datetime
-
 import requests
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -13,22 +12,48 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from openai import OpenAI
-
 from Spotify_Wrapped import settings
 from .forms import LoginForm, RegistrationForm, ForgetForm
 from .models import User, Wraps
 
 
 def index(request):
+	"""
+	Renders the main index page.
+
+	Args:
+	    request (HttpRequest): The HTTP request object.
+
+	Returns:
+	    HttpResponse: Rendered HTML of the index page.
+	"""
 	return render(request, 'mainTemplates/index.html')
 
 
 def welcome(request):
+	"""
+	Renders the welcome page for the Spotify Wrapper.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the welcome page.
+	"""
 	return render(request, 'Spotify_Wrapper/welcome.html')
 
 
 @login_required
 def accountpage(request):
+	"""
+	Renders the account page with user-specific Spotify Wrapped data.
+
+	Args:
+	    request (HttpRequest): The HTTP request object.
+
+	Returns:
+	    HttpResponse: Rendered HTML of the account page with user data in context.
+	"""
 	username = request.session.get('username')
 	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
 	wrap_count = wrap_set.count()
@@ -49,66 +74,181 @@ def accountpage(request):
 
 @login_required
 def contact(request):
+	"""
+	Renders the contact page for users to get support.
+
+	Args:
+	    request (HttpRequest): The HTTP request object.
+
+	Returns:
+	    HttpResponse: Rendered HTML of the contact page.
+	"""
 	return render(request, 'Spotify_Wrapper/contact.html')
 
 
 @login_required
 def newwrapper(request):
+	"""
+	Renders the new wrapper creation page.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the new wrapper page.
+	"""
 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
 
 @login_required
 def home(request):
+	"""
+	Renders the home page.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the home page.
+	"""
 	return render(request, 'mainTemplates/index.html', {})
 
 
 @login_required
 def game(request):
+	"""
+	Renders the game page.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the game page.
+	"""
 	return render(request, 'Spotify_Wrapper/game.html')
 
 
 @login_required
 def wrapper(request, dt):
+	"""
+	Renders a specific Spotify Wrapper page.
+
+	Args:
+	    request (HttpRequest): The HTTP request object.
+	    dt (str): The date-time identifier for the wrapper.
+
+	Returns:
+        HttpResponse: Rendered HTML of the wrapper page with the given date-time.
+	"""
 	return render(request, 'Spotify_Wrapper/wrapper.html', {'dt': dt})
 
 
 @login_required
 def GenreNebulas(request, dt):
+	"""
+	Renders the Genre Nebulas page for the specified wrapper.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		dt (str): The date-time identifier for the wrapper.
+
+	Returns:
+		HttpResponse: Rendered HTML of the Genre Nebulas page.
+	"""
 	return render(request, 'Spotify_Wrapper/GenreNebulas.html', {'dt': dt})
 
 
 @login_required
 def StellarHits(request, dt):
+	"""
+	Renders the Stellar Hits page for the specified wrapper.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		dt (str): The date-time identifier for the wrapper.
+
+	Returns:
+		HttpResponse: Rendered HTML of the Stellar Hits page.
+	"""
 	return render(request, 'Spotify_Wrapper/StellarHits.html', {'dt': dt})
 
 
 @login_required()
 def ConstellationArtists(request, dt):
+	"""
+	Renders the Constellation Artists page for the specified wrapper.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		dt (str): The date-time identifier for the wrapper.
+
+	Returns:
+		HttpResponse: Rendered HTML of the Constellation Artists page.
+	"""
 	return render(request, 'Spotify_Wrapper/ConstellationArtists.html', {'dt': dt})
 
 
 @login_required()
 def AstroAI(request, dt):
+	"""
+	Renders the AstroAI page for the specified wrapper.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		dt (str): The date-time identifier for the wrapper.
+
+	Returns:
+		HttpResponse: Rendered HTML of the AstroAI page.
+	"""
 	return render(request, 'Spotify_Wrapper/AstroAI.html', {'dt': dt})
 
 
 @login_required
 def summary(request, dt):
+	"""
+	Renders the summary page for the specified Spotify Wrapper.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		dt (str): The date-time identifier for the wrapper.
+
+	Returns:
+		HttpResponse: Rendered HTML of the summary page.
+	"""
 	return render(request, 'Spotify_Wrapper/summary.html', {'dt': dt})
 
 
-@login_required
-def newwrapper(request):
-	return render(request, 'Spotify_Wrapper/newwrapper.html')
+# @login_required
+# def newwrapper(request):
+# 	return render(request, 'Spotify_Wrapper/newwrapper.html')
 
 
 @login_required
 def wrapperStart(request, dt):
+	"""
+	Renders the wrapper start page for the specified wrapper.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		dt (str): The date-time identifier for the wrapper.
+
+	Returns:
+		HttpResponse: Rendered HTML of the wrapper start page.
+	"""
 	return render(request, 'Spotify_Wrapper/wrapperStart.html', {'dt': dt})
 
 
 @login_required
 def account(request):
+	"""
+	Renders the account page with user-specific data.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the account page with user data in context.
+	"""
 	username = request.session.get('username')
 	wrap_set = Wraps.objects.filter(username=username).order_by('-creation_date')
 	wrap_count = wrap_set.count()
@@ -124,17 +264,44 @@ def account(request):
 
 @login_required
 def library(request):
+	"""
+	Renders the library page containing all the user's wrappers.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the library page with all wraps in context.
+	"""
 	wraps = Wraps.objects.filter(username=request.session.get('username')).order_by('-creation_date')
 	return render(request, 'Spotify_Wrapper/library.html', {'wraps': wraps})
 
 
 @login_required
 def wrapped_page(request):
+	"""
+	Renders the most recent wrapper page for the user.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the wrapper page.
+	"""
 	# Load users most recent wrapper info here
 	return render(request, 'Spotify_Wrapper/wrapper.html')
 
 
 def register(request):
+	"""
+	Handles user registration, validates form data, and creates a new user account.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the registration page with form data or redirects to login on success.
+	"""
 	if request.method == 'POST':
 		form = RegistrationForm(request.POST)
 
@@ -176,6 +343,15 @@ def register(request):
 
 
 def user_login(request):
+	"""
+	Handles user login by validating credentials and starting a session.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the login page or redirects to Spotify login on success.
+	"""
 	request.session.flush()
 	if request.method == 'POST':
 		username = request.POST.get('username')
@@ -194,6 +370,16 @@ def user_login(request):
 
 
 def forgot_password(request):
+	"""
+	Handles the forgot password functionality by resetting the user's password
+	if the security question is answered correctly.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the forgot password page or redirect to login page on success.
+	"""
 	if request.method == 'POST':
 		username = request.POST['username']
 		security_answer = request.POST['security_answer']
@@ -223,12 +409,30 @@ def forgot_password(request):
 
 
 def relink_spotify_account(request):
+	"""
+	Renders the relink Spotify account page.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Rendered HTML of the relink Spotify account page.
+	"""
 	return render(request, 'Spotify_Wrapper/relink_spotify_account.html', {
 		'redirect_url': "http://localhost:8000/spotify/login"  # URL to redirect to after logout
 	})
 
 
 def delete_account(request):
+	"""
+	Deletes the user's account along with all associated wrappers.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Redirect to the login page after account deletion.
+	"""
 	username = request.session.get('username')
 	user = User.objects.get(username=username)
 	user.delete_with_wraps()
@@ -236,10 +440,28 @@ def delete_account(request):
 
 
 def generate_random_state(length):
+	"""
+	Generates a random alphanumeric string of the specified length.
+
+	Args:
+		length (int): Length of the random string.
+
+	Returns:
+		str: Random alphanumeric string.
+	"""
 	return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 
 def spotify_login(request):
+	"""
+	Initiates the Spotify login process by redirecting to the Spotify authorization URL.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		HttpResponse: Redirect to Spotify authorization URL.
+	"""
 	state = generate_random_state(16)
 	scope = 'user-read-private user-read-email user-top-read streaming user-modify-playback-state'
 	auth_url = 'https://accounts.spotify.com/authorize?'
@@ -261,6 +483,15 @@ def spotify_login(request):
 
 
 def spotify_callback(request):
+	"""
+	Handles the callback from Spotify after user authentication.
+
+	Args:
+		request (HttpRequest): The HTTP request object containing Spotify's response.
+
+	Returns:
+		HttpResponse: Redirect to the library page or JSON error response.
+	"""
 	code = request.GET.get('code')
 	state = request.GET.get('state')
 	error = request.GET.get('error')
@@ -328,6 +559,15 @@ def spotify_callback(request):
 
 
 def refresh_spotify_token(user):
+	"""
+	Refreshes the Spotify access token for a user.
+
+	Args:
+		user (User): The user whose token needs to be refreshed.
+
+	Returns:
+		str or None: The refreshed access token or None if unsuccessful.
+	"""
 	refresh_token = user.spotify_refresh_token
 
 	response = requests.post('https://accounts.spotify.com/api/token', data={
@@ -350,6 +590,17 @@ def refresh_spotify_token(user):
 @csrf_exempt
 @login_required
 def make_wrapped(request, time_range='medium_term', limit=5):
+	"""
+	Generates a Spotify Wrapped summary for the user and saves it.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		time_range (str): The time range for Spotify data ('short_term', 'medium_term', 'long_term').
+		limit (int): The limit on the number of tracks and artists retrieved.
+
+	Returns:
+		JsonResponse or HttpResponse: JSON response with the wrapped data or redirect to the wrapped page.
+	"""
 	user = User.objects.get(username=request.session.get('username'))
 	endpoint = 'https://api.spotify.com/v1/me'
 
@@ -416,6 +667,16 @@ def make_wrapped(request, time_range='medium_term', limit=5):
 @csrf_exempt
 @login_required
 def get_wrapped(request, dt):
+	"""
+	Retrieves a specific Spotify Wrapped data entry for the logged-in user.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		dt (str): The date-time identifier for the wrapped entry.
+
+	Returns:
+		JsonResponse: JSON response containing the wrapped data or an error message if not found.
+	"""
 	try:
 		wrap = Wraps.objects.get(username=request.session.get('username'), creation_date=datetime.fromisoformat(dt))
 	except Wraps.DoesNotExist:
@@ -427,6 +688,16 @@ def get_wrapped(request, dt):
 @csrf_exempt
 @login_required
 def llama_description(request, data):
+	"""
+	Generates a witty description of a user's Spotify Wrapped data using AI.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+		data (dict): Data containing the user's Spotify Wrapped information.
+
+	Returns:
+		str: A concise and engaging description of the user's music preferences.
+	"""
 	msg = (
 		"Based on the following list of top artists, genres and tracks from a user's Spotify Wrapped, craft a fun, engaging, slightly sassy "
 		"description of how someone who listens to this kind of music tends to act, think and dress."
@@ -455,6 +726,15 @@ def llama_description(request, data):
 
 
 def get_game_info(request):
+	"""
+	Retrieves game-related Spotify data for the logged-in user, including top artists and tracks.
+
+	Args:
+		request (HttpRequest): The HTTP request object.
+
+	Returns:
+		JsonResponse: JSON response containing the user's top artists and tracks or an error message.
+	"""
 	user = User.objects.get(username=request.session.get('username'))
 	endpoint = 'https://api.spotify.com/v1/me'
 

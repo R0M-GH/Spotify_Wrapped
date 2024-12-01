@@ -75,13 +75,10 @@
 	async function deleteWrapped(dt) {
 		if (confirm('Are you sure you want to delete this wrapped?')) {
 			try {
-				{#const response = await fetch(`/delete-wrapped/${dt}/`, {method: 'DELETE'});#}
-                const response = await fetch(`/delete-wrapped/${dt}/`);
+				const response = await fetch(`/delete-wrapped/${dt}/`);
 				if (!response.ok) {
-                    console.error('Error fetching wrapped: ', response.status);
-                }
-                window.location.replace('/library/');
-
+					console.error('Error fetching wrapped: ', response.status);
+				}
 			} catch (e) {
 				console.error(e);
 			}

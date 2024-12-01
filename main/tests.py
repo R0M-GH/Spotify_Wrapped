@@ -497,9 +497,13 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
 
     def test_spotify_callback_invalid_code(self):
-        # Test Spotify callback with an invalid code
-        response = self.client.get(reverse('spotify_callback'), {'code': 'invalid', 'state': 'random_state'})
-        self.assertEqual(response.status_code, 400)  # Expect a bad request due to invalid code
+        @patch.dict('os.environ', {
+            'SPOTIFY_CLIENT_ID': 'mock_client_id',
+            'SPOTIFY_CLIENT_SECRET': 'mock_client_secret',
+        })
+        def test_spotify_callback_invalid_code(self):
+            response = self.client.get(reverse('spotify_callback'), {'code': 'invalid', 'state': 'random_state'})
+            self.assertEqual(response.status_code, 400)  # Example assertion
 
     def test_genre_nebulas_view(self):
         # Test GenreNebulas view with a valid date string

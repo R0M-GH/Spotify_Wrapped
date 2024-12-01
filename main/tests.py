@@ -403,6 +403,14 @@ class ViewsTestCase(TestCase):
         )
         self.client.login(username='testuser', password='testpass')
 
+    def test_accountpage_redirect_unauthenticated(self):
+        # Log out the user (if already logged in)
+        self.client.logout()
+
+        # Test that unauthenticated users are redirected to the login page
+        response = self.client.get(reverse('account-page'))
+        self.assertRedirects(response, '/login/?next=/accountpage/')  # Adjust the redirect URL if needed
+
     def test_accountpage_view_user_not_found(self):
         # Test account page when the user does not exist
         self.client.logout()

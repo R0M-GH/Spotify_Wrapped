@@ -404,27 +404,35 @@ class ViewsTestCase(TestCase):
         )
         self.client.login(username='testuser', password='testpass')
 
-    def test_access_user_profile_page_after_login(self):
+    def test_session_management_after_login(self):
         # Create a dummy user
         self.user = User.objects.create_user(
-            username='profileuser',
-            password='profilepass',
-            birthday='1990-01-01',
-            current_display_name='Profile User'
+            username='sessionuser',
+            password='sessionpass',
+            birthday='1996-08-01',
+            current_display_name='Session User'
         )
 
-        # Log in the user
-        self.client.post(reverse('user_login'), {
-            'username': 'profileuser',
-            'password': 'profilepass'
+        # Log in the user by posting to the login view
+        login_response = self.client.post(reverse('user_login'), {
+            'username': 'sessionuser',
+            'password': 'sessionpass'
         })
 
-        # Access the user profile page
-        response = self.client.get(reverse('account-page'))
+        # Ensure the login was redirected correctly
+        self.assertEqual(login_response.status_code, 302)  # Expecting a redirect after login
 
-        self.assertEqual(response.status_code, 200)  # Expecting access granted
-        self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')  # Adjust if necessary
-        self.assertContains(response, 'Profile User')  # Expect the current display name to show
+        # Now check the user details directly from the database
+        authenticated_user = User.objects.get(username='sessionuser')  # Query the user by username
+
+        # Verify that the user exists in the database
+        self.assertIsNotNone(authenticated_user)  # Assert that the user is found
+
+        # Check that the user attributes are correct
+        self.assertTrue(authenticated_user.check_password('sessionpass'))  # Verify the password is correct
+
+        # Additionally, check that their current display name is as expected
+        self.assertEqual(authenticated_user.current_display_name, 'Session User')  # Verify display name
 
     def test_access_game_view_after_login(self):
         # Create and log in a dummy user

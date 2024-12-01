@@ -7,7 +7,7 @@ import urllib.parse
 from datetime import datetime
 
 import requests
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
@@ -359,7 +359,7 @@ def user_login(request):
 	"""
 	if request.user.is_authenticated:
 		return redirect('library')
-	request.session.flush()
+	logout(request)
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')

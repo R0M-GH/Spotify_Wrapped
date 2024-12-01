@@ -1,9 +1,11 @@
 import base64
 import json
+import os
 import random
 import string
 import urllib.parse
 from datetime import datetime
+
 import requests
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -11,10 +13,13 @@ from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from dotenv import load_dotenv
 from openai import OpenAI
-from Spotify_Wrapped import settings
+
 from .forms import LoginForm, RegistrationForm, ForgetForm
 from .models import User, Wraps
+
+load_dotenv()
 
 
 def index(request):
@@ -470,13 +475,11 @@ def spotify_login(request):
 	query_params = {
 		'response_type': 'code',
 
-		# 'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
-		'client_id': settings.SPOTIFY_CLIENT_ID,
+		'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
 
 		'scope': scope,
 
-		# 'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
-		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+		'redirect_uri': 'http://localhost:8000/spotify/callback',
 		'state': state,
 	}
 
@@ -498,8 +501,8 @@ def spotify_callback(request):
 	state = request.GET.get('state')
 	error = request.GET.get('error')
 
-	# auth_string = os.getenv('SPOTIFY_CLIENT_ID') + ":" + os.getenv('SPOTIFY_CLIENT_SECRET')
-	auth_string = settings.SPOTIFY_CLIENT_ID + ":" + settings.SPOTIFY_CLIENT_SECRET
+	auth_string = os.getenv('SPOTIFY_CLIENT_ID') + ":" + os.getenv('SPOTIFY_CLIENT_SECRET')
+	# auth_string = settings.SPOTIFY_CLIENT_ID + ":" + settings.SPOTIFY_CLIENT_SECRET
 
 	auth_bytes = auth_string.encode("utf-8")
 	auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
@@ -515,14 +518,11 @@ def spotify_callback(request):
 		'grant_type': 'authorization_code',
 		'code': code,
 
-		# 'redirect_uri': os.getenv('SPOTIFY_REDIRECT_URI'),
-		'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+		'redirect_uri': 'http://localhost:8000/spotify/callback',
 
-		# 'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
-		'client_id': settings.SPOTIFY_CLIENT_ID,
+		'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
 
-		# 'client_secret': os.getenv('SPOTIFY_CLIENT_SECRET'),
-		'client_secret': settings.SPOTIFY_CLIENT_SECRET,
+		'client_secret': os.getenv('SPOTIFY_CLIENT_SECRET'),
 	}
 	header = {
 		'Authorization': 'Basic ' + auth_base64,
@@ -708,7 +708,7 @@ def llama_description(request, data):
 	)
 	client = OpenAI(
 		base_url="https://integrate.api.nvidia.com/v1",
-		api_key="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"
+		api_key=os.getenv('OPENAI_API_KEY')
 	)
 	completion = client.chat.completions.create(
 		model="meta/llama-3.1-405b-instruct",

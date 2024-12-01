@@ -79,6 +79,7 @@
 				if (!response.ok) {
 					console.error('Error fetching wrapped: ', response.status);
 				}
+				window.location.replace('/library/');
 			} catch (e) {
 				console.error(e);
 			}

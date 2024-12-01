@@ -357,8 +357,6 @@ def user_login(request):
 	Returns:
 		HttpResponse: Rendered HTML of the login page or redirects to Spotify login on success.
 	"""
-	if request.user.is_authenticated:
-		return redirect('library')
 	logout(request)
 	if request.method == 'POST':
 		username = request.POST.get('username')

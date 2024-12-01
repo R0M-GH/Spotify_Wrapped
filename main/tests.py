@@ -404,6 +404,48 @@ class ViewsTestCase(TestCase):
         )
         self.client.login(username='testuser', password='testpass')
 
+    def test_access_user_profile_page_after_login(self):
+        # Create a dummy user
+        self.user = User.objects.create_user(
+            username='profileuser',
+            password='profilepass',
+            birthday='1990-01-01',
+            current_display_name='Profile User'
+        )
+
+        # Log in the user
+        self.client.post(reverse('user_login'), {
+            'username': 'profileuser',
+            'password': 'profilepass'
+        })
+
+        # Access the user profile page
+        response = self.client.get(reverse('account-page'))
+
+        self.assertEqual(response.status_code, 200)  # Expecting access granted
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')  # Adjust if necessary
+        self.assertContains(response, 'Profile User')  # Expect the current display name to show
+
+    def test_access_game_view_after_login(self):
+        # Create and log in a dummy user
+        self.user = User.objects.create_user(
+            username='gameuser',
+            password='gamepass',
+            birthday='1993-06-01',
+            current_display_name='Game User'
+        )
+
+        self.client.post(reverse('user_login'), {
+            'username': 'gameuser',
+            'password': 'gamepass'
+        })
+
+        # Access the game view
+        response = self.client.get(reverse('game'))
+
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')  # Check for the correct template
+
     def test_user_login_post_invalid_credentials(self):
         response = self.client.post(reverse('user_login'), {
             'username': 'wronguser',

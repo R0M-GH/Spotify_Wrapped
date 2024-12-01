@@ -848,6 +848,63 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)  # Expecting access allowed
         self.assertTemplateUsed(response, 'Spotify_Wrapper/StellarHits.html')  # Check for the correct template
 
+    def test_access_genre_nebulas_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='genrenebulasuser',
+            password='genrenebulaspass',
+            birthday='1988-09-01',
+            current_display_name='Genre Nebulas User'
+        )
+
+        self.client.login(username='genrenebulasuser', password='genrenebulaspass')
+
+        response = self.client.get(reverse('genre_nebulas', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/GenreNebulas.html')  # Check for the correct template
+
+    def test_access_wrapper_page_with_specific_date_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='wrapperuser',
+            password='wrapperpassword',
+            birthday='1995-11-01',
+            current_display_name='Wrapper User'
+        )
+
+        self.client.login(username='wrapperuser', password='wrapperpassword')
+
+        # Create a dummy wrap for this date
+        self.wrap = Wraps.objects.create(
+            username='wrapperuser',
+            term='medium_term',
+            spotify_display_name='Wrapped User',
+            wrap_json='{}',  # Example data
+            creation_date='2024-11-30'  # Set to the date intended for testing
+        )
+
+        response = self.client.get(reverse('wrapped', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/wrapper.html')  # Check for the correct template
+
+    def test_access_contact_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='contactuser',
+            password='contactpass',
+            birthday='1992-03-01',
+            current_display_name='Contact User'
+        )
+
+        # Log in the user
+        self.client.post(reverse('user_login'), {
+            'username': 'contactuser',
+            'password': 'contactpass'
+        })
+
+        # Attempt to access the contact page
+        response = self.client.get(reverse('contact'))
+
+        self.assertEqual(response.status_code, 200)  # Expecting access granted
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/contact.html')  # Check for the correct template
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()

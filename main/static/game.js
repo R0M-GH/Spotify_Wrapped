@@ -98,9 +98,11 @@ function getRandomItem() {
 	} else if (realFake < 0.5) {
 		arr = fake_song_titles;
 	} else if (realFake < 0.75) {
+		console.log(getData());
 		arr = real_artist_names;
 		fake = false;
 	} else {
+		console.log(getData());
 		arr = real_song_titles;
 		fake = false;
 	}
@@ -518,13 +520,16 @@ christmasSwitch.addEventListener('change', () => {
 		chioElement.style.display = "none";   // Make it invisible
 		sleigh.style.display = 'none';
 
-		fake_artist_names = original_fake_artist_names;
-		fake_song_titles = original_fake_song_titles;
-		real_artist_names = getArtists();
-		real_song_titles = getTracks();
+		fake_artist_names = fake_artist_names;
+		fake_song_titles = fake_song_titles;
+		real_artist_names = data.artists;
+		real_song_titles = data.tracks;
 	}
 });
 
+data = getData();
+real_artist_names = data.artists;
+real_song_titles = data.tracks;
 
 fake_artist_names = [
 	"EchoWave", "CrimsonFalls", "Starfire", "VelvetReign", "LunarVeil",
@@ -634,8 +639,6 @@ real_christmas_songs = [
 	"Santa Baby", "O Christmas Tree", "I Saw Mommy Kissing Santa Claus", "Jingle Bells", "Go Tell It on the Mountain",
 	"Where Are You Christmas?", "Ave Maria", "What Child Is This?", "Peace on Earth/Little Drummer Boy"
 ]
-//real christmas songs
-
 
 real_christmas_artists = [
 	"Mariah Carey", "Michael Bublé", "Bing Crosby", "Nat King Cole", "Pentatonix",
@@ -651,26 +654,9 @@ real_christmas_artists = [
 ];
 
 
-function getArtists() {
-	try {
-		const response = fetch(`/api/get-game-info/`);
-		if (!response.ok) {
-			console.error('Error fetching wrapped: ', response.status);
-		}
-		return response.json().artists;
-	} catch (e) {
-		console.error(e);
-	}
-}
-
-function getTracks() {
-	try {
-		const response = fetch(`/api/get-game-info/`);
-		if (!response.ok) {
-			console.error('Error fetching wrapped: ', response.status);
-		}
-		return response.json().tracks;
-	} catch (e) {
-		console.error(e);
-	}
+async function getData() {
+	const response = await fetch(`/api/get-game-info/`);
+	const data = response.json();
+	console.log(data);
+	return data;
 }

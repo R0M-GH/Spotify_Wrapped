@@ -792,6 +792,62 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)  # Should allow access
         self.assertTemplateUsed(response, 'mainTemplates/index.html')  # Adjust according to your template
 
+    def test_access_astro_ai_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='astroaiuser',
+            password='astropassword',
+            birthday='1990-11-11',
+            current_display_name='Astro AI User'
+        )
+
+        self.client.login(username='astroaiuser', password='astropassword')
+
+        response = self.client.get(reverse('astro-ai', args=['2024-11-30']))  # Assuming this is a valid date
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/AstroAI.html')  # Check for the correct template
+
+    def test_access_library_page_after_logout(self):
+        self.user = User.objects.create_user(
+            username='logoutlibraryuser',
+            password='libpassword',
+            birthday='1994-10-01',
+            current_display_name='Logout Library User'
+        )
+
+        self.client.login(username='logoutlibraryuser', password='libpassword')
+        self.client.logout()  # Explicitly log out the user
+
+        response = self.client.get(reverse('library'))
+        self.assertRedirects(response, '/login/?next=/library/')  # Expect redirect to login
+
+    def test_access_constellation_artists_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='constellationuser',
+            password='constellationpass',
+            birthday='1991-09-01',
+            current_display_name='Constellation User'
+        )
+
+        self.client.login(username='constellationuser', password='constellationpass')
+
+        response = self.client.get(reverse('artist_constellation', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/ConstellationArtists.html')  # Check for the correct template
+
+    def test_access_stellar_hits_page_as_logged_in_user(self):
+        self.user = User.objects.create_user(
+            username='stellaruser',
+            password='stellarpassword',
+            birthday='1987-08-01',
+            current_display_name='Stellar User'
+        )
+
+        self.client.login(username='stellaruser', password='stellarpassword')
+
+        response = self.client.get(reverse('stellar_hits', args=['2024-11-30']))
+        self.assertEqual(response.status_code, 200)  # Expecting access allowed
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/StellarHits.html')  # Check for the correct template
+
     def tearDown(self):
         self.client.logout()
         self.user.delete()

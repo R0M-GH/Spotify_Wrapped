@@ -33,16 +33,15 @@
 </header>
 <div class="Cosmic-Song-Count" style="user-select: none;"> Your Account</div>
 
-    <p class="user">Username: {{ username }}</p>
+    <p class="user">Username<br> {{ username }}</p>
     <p class="Spotify">{{ display_name }}</p>
-    <p class="numwrap">Number of Wraps created: {{ wrap_count }}</p>
+    <p class="numwrap">Number of Wraps created<br> {{ wrap_count }} wraps</p>
     {% if most_recent_wrap_date %}
-        <p class="info-text">Last Wrap Creation Date: {{ most_recent_wrap_date|date:"m-d-Y" }}</p>
+        <p class="info-text">Last Wrap Creation Date<br> {{ most_recent_wrap_date|date:"m-d-Y" }}</p>
     {% else %}
-        <p class="info-text">Last Wrap Creation Date: No Wraps created :(</p>
+        <p class="info-text">Last Wrap Creation Date<br> No Wraps created :(</p>
     {% endif %}
 <img class="bg" src="{% static 'Spotify_Wrapper/image/background.png' %}">
-<img class="sp" src="{% static 'Spotify_Wrapper/image/Spotify.png' %}">
 <nav class="menu" id="menu">
     <ul>
         <li><a href="/library">Library</a></li>

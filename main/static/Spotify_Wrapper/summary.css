@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    overscroll-behavior: none;
 }
 header {
     background-color: transparent;
@@ -61,7 +62,7 @@ header {
 }
 .Cosmic-Song-Count {
 color: #faf6e7;
-left: 42vw;
+left: 28vw;
 font-family: 'ChakraPetch-Regular', sans-serif;
 font-size: 4vw;
 position: relative;
@@ -205,4 +206,26 @@ margin-top: 10vh;
     100% {
         color: #faf6e7; /* Return to the original color */
     }
+}
+/* Target the scrollbar for WebKit-based browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px;  /* Width of the scrollbar */
+  height: 12px; /* Height of the horizontal scrollbar */
+}
+
+/* Style the scrollbar track (background of the scrollbar) */
+::-webkit-scrollbar-track {
+  background-color: rgba(5, 10, 22, 1.00);
+}
+
+/* Style the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background-color: #334AA8;  /* Thumb color */
+  border-radius: 10px;      /* Rounded corners for the thumb */
+   /* Border to create a space around the thumb */
+}
+
+/* Style the thumb when hovered */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;  /* Darker color when hovered */
 }

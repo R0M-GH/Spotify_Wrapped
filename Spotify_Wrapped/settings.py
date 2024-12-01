@@ -129,12 +129,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'user_login'
 
-SPOTIFY_CLIENT_ID = 'eb780f484257481a9d11f600a85e85b8'
-SPOTIFY_CLIENT_SECRET = 'e3c19920ea334a4a82595138a34bd9b9'
-SPOTIFY_REDIRECT_URI = 'http://localhost:8000/spotify/callback'
-
-
-#APPEND_SLASH=False
-
 AUTH_USER_MODEL = 'main.User'
-

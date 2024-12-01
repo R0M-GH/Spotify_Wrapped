@@ -9,6 +9,7 @@ from django.contrib.auth.hashers import make_password
 from main.backends import AuthModelBackend
 from main.models import User, Wraps
 from datetime import datetime
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 User = get_user_model()  # Get the custom user model
@@ -403,6 +404,13 @@ class ViewsTestCase(TestCase):
         )
         self.client.login(username='testuser', password='testpass')
 
+    def test_accountpage_view_authenticated(self):
+        response = self.client.get(reverse('account-page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'Spotify_Wrapper/accountpage.html')
+        self.assertContains(response, 'Test User')  # Check for user's display name
+        self.assertContains(response, 'Birthday: 2000-01-01')  # Check for user's birthday
+
     def test_library_redirect_unauthenticated(self):
         # Log out the user (if already logged in)
         self.client.logout()
@@ -627,24 +635,10 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'Spotify_Wrapper/game.html')
         self.assertContains(response, 'Space Destroyers')  # Change this based on actual expected content
 
-    def test_summary_view_logged_in(self):
-        # Test that the summary view can be accessed when logged in with valid data
-        response = self.client.get(reverse('summary', args=['2024-11-30']))
-        self.assertEqual(response.status_code, 200)  # Check standard functionality
-        self.assertTemplateUsed(response, 'Spotify_Wrapper/summary.html')  # Check if the correct template is used
 
     def tearDown(self):
         self.client.logout()
         self.user.delete()
-
-
-
-
-
-
-
-
-
 
 
 

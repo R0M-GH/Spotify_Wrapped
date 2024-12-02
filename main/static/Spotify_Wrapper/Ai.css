@@ -206,6 +206,11 @@ margin-top: 10vh;
   z-index: 5000;
     text-align: center;
 }
+.Genre-Breakdown3:hover {
+  color: #7e29ff; /* Change to a brighter color on hover */
+  transform: scale(1.1); /* Slightly enlarge the text */
+  text-shadow: 0 0 10px #b964ef, 0 0 20px #450cca; /* Add a glowing effect */
+}
 
  @keyframes blinkColor {
     0% {

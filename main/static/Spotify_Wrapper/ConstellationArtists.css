@@ -208,6 +208,11 @@ margin-top: 10vh;
   z-index: 5000;
     text-align: center;
 }
+.Genre-Breakdown3:hover {
+  color: #ffcc00; /* Change to a brighter color on hover */
+  transform: scale(1.1); /* Slightly enlarge the text */
+  text-shadow: 0 0 10px #ffcc00, 0 0 20px #ff9900; /* Add a glowing effect */
+}
 .bg {
     width:100vw;
     height: 100vh;

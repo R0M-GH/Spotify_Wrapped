@@ -46,6 +46,7 @@
 <div class="st">Short Term Wrap (~4 Weeks)</div>
 <div class="ttt">Medium Term Wrap (~6 Months)</div>
 <div class="lt">Long Term Wrap (~1 Year)</div>
+<div id="loading" style="display: none;">Loading...</div>
 
 <script>
     /**
@@ -59,6 +60,8 @@
      * @throws {Error} Logs any error that occurs during the fetch operation or redirection process.
      */
 	async function makeWrapped(term) {
+        const loadingElement = document.getElementById('loading');
+	    loadingElement.style.display = 'block';
 		try {
 			const response = await fetch(`/api/make-wrapped/${term}/5/`, {method: 'POST'});
 			if (!response.ok) {
@@ -68,7 +71,9 @@
 			window.location.href = `/wrapperStart/${data.dt}`
 		} catch (e) {
 			console.error('Error creating wrapped: ', e);
-		}
+		} finally {
+            loadingElement.style.display = 'none';
+        }
 	}
 </script>
 </body>

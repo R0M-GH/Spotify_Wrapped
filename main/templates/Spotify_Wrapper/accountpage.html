@@ -64,7 +64,7 @@
 
         <form method="POST" action="/spotify_logout/">
             {% csrf_token %}
-            <button type="submit" class="btn btn-info" onclick="return confirm('This will open log you ou of the current spotify account in another tab. Depending on your browser you may have to exit out of the tab manually!')">Relink Spotify</button>
+            <button type="submit" class="btn btn-info" onclick="return confirm('This will open a new tab to log you out of the current spotify account in another tab. Depending on your browser you may have to exit out of the tab manually! Upon exiting log into another Spotify account that you want to link')">Relink Spotify</button>
 
         </form>
     </div>

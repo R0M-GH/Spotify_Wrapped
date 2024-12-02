@@ -97,7 +97,8 @@
 
 			const container = document.getElementById('container');
 			if (data.data.top_genres && data.data.top_genres.length > 0) {
-				data.data.top_genres.forEach(genre => {
+                const topGenres = data.data.top_genres.slice(0, 5);
+				topGenres.forEach(genre => {
 					const div = document.createElement('info');
 					div.classList.add('info');
 					div.innerHTML = `<h3>${genre}</h3>`;

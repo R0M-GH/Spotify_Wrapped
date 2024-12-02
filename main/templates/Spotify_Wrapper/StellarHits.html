@@ -13,10 +13,10 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 1200px;
+            gap: 20vh;
+            padding: 20vh;
+            margin: 20vh auto;
+            max-width: 100vw;
         }
 
         .info {
@@ -24,8 +24,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
             border-radius: 10px;
             padding: 15px;
             width: 200px;
@@ -52,12 +50,42 @@
         }
 
         .info h3 {
-            font-size: 1.2rem;
-            color: #333;
+            font-size: 1.2vh;
+            color: #faf6e7;
             margin: 0;
             text-align: center;
             font-weight: 600;
         }
+
+        #song-list {
+    position: absolute;
+    top: 20vh;
+    left: 28vw;
+    width: 50vw;
+    list-style-type: disc; /* This adds bullet points */
+    padding-left: 20vh; /* Adds space for the bullet points */
+}
+
+.song-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.track-image {
+    width: 9vh; /* Reduced size for bullet-point format */
+    height: 9vh;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1vw; /* Space between the image and text */
+}
+
+.song-item span {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 1.5vw;
+    color: #faf6e7;
+}
+
     </style>
 </head>
 <body>
@@ -82,43 +110,51 @@
     </ul>
 </nav>
 <div class="Cosmic-Song-Count" style="user-select: none;"> Stellar Hits</div>
+<ul id="song-list"></ul>
 <div class="container" id='container'></div>
-<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
+<a style="" class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
+<a href="/wrapper/{{ dt }}">
+    <img style="top: 85vh; left:28vw; " class="mainplanet" src="{% static "Spotify_Wrapper/planets/CSC-PurplePlanet.png" %}">
+</a>
 <a href="/ConstellationArtists/{{ dt }}">
     <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
 </a>
 <a href="/summary/{{ dt }}">
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
+    <img class="bg" src="{% static "Spotify_Wrapper/image/bg2.png" %}">
 <script>
 	async function getWrapped() {
-		try {
-			const response = await fetch(`/api/get-wrapped/{{ dt }}`);
-			if (!response.ok) {
-				console.error('Error fetching wrapped: ', response.status);
-			}
-			const data = await response.json();
-			console.log(data.data)
+    try {
+        const response = await fetch(`/api/get-wrapped/{{ dt }}`);
+        if (!response.ok) {
+            console.error('Error fetching wrapped: ', response.status);
+        }
+        const data = await response.json();
+        console.log(data.data)
 
-			const container = document.getElementById('container');
-			if (data.data.top_tracks && data.data.top_tracks.length > 0) {
-				data.data.top_tracks.forEach(track => {
-					const div = document.createElement('info');
-					div.classList.add('info');
-					div.innerHTML = `
-                        <img src="${track.cover_image}" alt="${track.track_name}" class="track-image" />
-                        <h3>${track.track_name} - ${track.artist_name}</h3>`;
-					container.appendChild(div);
-				});
-			} else {
-				container.innerHTML = '<p>No artists found.</p>';
-			}
-		} catch (e) {
-			console.error(e);
-		}
-	}
+        const songList = document.getElementById('song-list'); // Change to target the <ul> element
+        songList.innerHTML = ''; // Clear any existing list items
 
-	getWrapped();
+        if (data.data.top_tracks && data.data.top_tracks.length > 0) {
+            data.data.top_tracks.forEach(track => {
+                // Create a new list item <li> for each track
+                const li = document.createElement('li');
+                li.classList.add('song-item'); // Add a class to each list item for styling
+                li.innerHTML = `
+                    <img src="${track.cover_image}" alt="${track.track_name}" class="track-image" />
+                    <span>${track.track_name} - ${track.artist_name}</span>`; // Display track name and artist
+
+                songList.appendChild(li); // Add the new <li> to the <ul>
+            });
+        } else {
+            songList.innerHTML = '<p>No artists found.</p>';
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+getWrapped();
 </script>
 </body>
 </html>

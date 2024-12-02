@@ -13,7 +13,7 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%;
+            height: 100vh;
             overflow-y: auto;
         }
 
@@ -23,21 +23,21 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 2%; /* Use percentage for spacing */
-            padding: 2%; /* Adjust padding dynamically */
-            margin: 2% auto;
-            max-width: 100%; /* Set a responsive max-width */
+            gap: 2vh; /* Use percentage for spacing */
+            padding: 2vh; /* Adjust padding dynamically */
+            margin: 2vh auto;
+            max-width: 100vw; /* Set a responsive max-width */
         }
 
         /* Info box styling */
         .info {
             font-family: 'Roboto Mono', monospace;
-            font-size: calc(1.0rem + 1vw); /* Responsive font size */
+            font-size: 1.5vw;
             line-height: 1.2;
             background-color: #121212;
             color: #00ff00;
             padding: 2%; /* Use relative padding */
-            border-radius: 15px;
+            border-radius: 1vh;
             border: 2px solid #00ff00;
             max-width: 800px; /* Set a smaller base max-width */
             margin: 2% auto;
@@ -88,10 +88,10 @@
 </nav>
 <div class="Cosmic-Song-Count" style="user-select: none;"> AstroAI</div>
 <div class="container" id='container'></div>
-<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
 <a href="/summary/{{ dt }}">
     <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
 </a>
+    <a class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
 <a href="/GenreNebulas/{{ dt }}">
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
@@ -137,4 +137,6 @@
 	getWrapped();
 </script>
 </body>
+<footer>
+</footer>
 </html>

@@ -655,11 +655,9 @@ def make_wrapped(request, time_range='medium_term', limit=5):
 	for artist in genre_req.json()['items']:
 		for genre in artist['genres']:
 			top_genres[genre] = top_genres.get(genre, 0) + 1
-
 	data = {'time_range': time_range, 'limit': limit, 'top_tracks': top_track_data, 'top_artists': top_artist_data,
 	        'top_genres': sorted(top_genres, key=top_genres.get)}
 	data['llama_description'] = llama_description(request, data)
-
 	wrap = Wraps.objects.create(username=user.username, term=time_range, spotify_display_name=display_name,
 	                            wrap_json=json.dumps(data))
 	wrap.save()
@@ -762,7 +760,7 @@ def get_game_info(request):
 		artists.append(artist['name'])
 	for track in top_tracks.json()['items']:
 		tracks.append(track['name'])
-	
+
 	data = {'artists': artists, 'tracks': tracks}
 	return JsonResponse(data)
 

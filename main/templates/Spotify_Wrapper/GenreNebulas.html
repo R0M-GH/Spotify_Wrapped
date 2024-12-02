@@ -77,6 +77,15 @@
 </a>
 <img class="bg" src="{% static 'Spotify_Wrapper/image/background.png' %}">
 <script>
+    /**
+     * Fetches data from the `/api/get-wrapped/{{ dt }}` endpoint and processes the response.
+     * Displays a list of top genres inside a specified container. If no genres are found, displays a fallback message.
+     *
+     * @async
+     * @function getWrapped
+     * @returns {Promise<void>} Resolves when the data is fetched and processed.
+     * @throws {Error} Logs any error that occurs during the fetch operation.
+     */
 	async function getWrapped() {
 		try {
 			const response = await fetch(`/api/get-wrapped/{{ dt }}`);

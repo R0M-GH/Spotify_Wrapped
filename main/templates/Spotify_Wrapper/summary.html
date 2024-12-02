@@ -126,6 +126,18 @@
 </a>
 
 <script>
+    /**
+     * Fetches the wrapped summary data from the server and displays it in different sections of the page.
+     * The data includes top tracks, top artists, top genres, and AI feedback.
+     * If the data for any section is unavailable, an appropriate message is displayed.
+     *
+     * @returns {void}
+     * @throws {Error} If an error occurs during the fetch operation.
+     *
+     * @example
+     * // Call this function to retrieve and display the wrapped summary data
+     * getWrapped();
+     */
 	async function getWrapped() {
 		try {
 			const response = await fetch(`/api/get-wrapped/{{ dt }}`);

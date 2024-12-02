@@ -5,6 +5,14 @@
 </head>
 <body>
     <script>
+        /**
+         * Logs the user out of Spotify by opening the Spotify logout page in a new window,
+         * then redirects the user back to the specified redirect URL after a short delay.
+         * The logout window is attempted to be closed before the redirect occurs.
+         *
+         * @function
+         * @throws {Error} Logs any error if the logout window cannot be closed due to browser restrictions.
+         */
         const spotifyLogoutUrl = "https://www.spotify.com/logout/";
         const redirectUrl = "{{ redirect_url }}"; // Replace with your redirect URL
 

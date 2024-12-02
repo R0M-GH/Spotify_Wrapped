@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
      overscroll-behavior: none;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 header {
     background-color: transparent;
@@ -34,10 +34,12 @@ header {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 .welcom {
+height: 30vh;
 color: #faf6e7;
 text-align: center;
 font-family: 'ChakraPetch-Regular', sans-serif;
 font-size: 5vw;
+top: 25vh;
 position: relative;
 margin-bottom: -10vh;
 margin-top: 9vh;
@@ -46,7 +48,7 @@ margin-top: 9vh;
 .wt {
 width: 55vw;
 left: 22.5vw;
-top:15vh;
+top:40vh;
 color: #faf6e7;
 text-align: center;
 font-family: 'ChakraPetch-Regular', sans-serif;
@@ -96,7 +98,7 @@ height: 482px;
   position: absolute;
   border: none;
   right: 51vw;
-  top: 33vh;
+  top: 60vh;
   color: white;
   padding: 1vh 2vh;
   text-align: center;
@@ -118,7 +120,7 @@ height: 482px;
   position: absolute;
   border: none;
   right: 42vw;
-  top: 33vh;
+  top: 60vh;
   color: white;
   padding: 1vh 2vh;
   text-align: center;
@@ -323,4 +325,12 @@ margin-top: 9vh;
 }
 .menu li a:hover {
       color: white;
+}
+
+.bg {
+    height: 100vh;
+    width: 100vw;
+    top: 0vh;
+    z-index: -1;
+    position: absolute;
 }

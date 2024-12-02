@@ -110,7 +110,7 @@
 <img class="bg" src="{% static 'Spotify_Wrapper/image/background.png' %}">
 <div  class="Cosmic-Song-Count" style="left: 35vw; user-select: none;"> Artist Constellation</div>
 <ul id="artist-list"></ul>
-<div class="container" id='container'></div>
+<div class="container" id='container' style="align-content: center"></div>
 <a style="left: 42vw;" class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
 <a href="/GenreNebulas/{{ dt }}">
     <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
@@ -142,15 +142,17 @@
 			const data = await response.json();
 			console.log(data.data)
 
-			const container = document.getElementById('container');
+			const container = document.getElementById('artist-list');
+            container.innerHTML = '';
 			if (data.data.top_artists && data.data.top_artists.length > 0) {
 				data.data.top_artists.forEach(artist => {
-					const div = document.createElement('info');
-					div.classList.add('info');
-					div.innerHTML = `
+					const li = document.createElement('info');
+					li.classList.add('info');
+					li.innerHTML = `
                         <img src="${artist.artist_image}" alt="${artist.artist_name}" class="artist-image" />
-                        <h3>${artist.artist_name}</h3>`;
-					container.appendChild(div);
+                        <span>${artist.artist_name}</span>`;
+                        {#<h3>${artist.artist_name}</h3>`;#}
+					container.appendChild(li);
 				});
 			} else {
 				container.innerHTML = '<p>No artists found.</p>';

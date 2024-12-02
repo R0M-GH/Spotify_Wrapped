@@ -221,3 +221,58 @@ margin-top: 10vh;
     z-index: -1;
 }
 
+
+/* Ensure the artist-list is a flex container for centering */
+#artist-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    position: absolute;
+    top: 50%; /* Position in the vertical center */
+    left: 50%; /* Position in the horizontal center */
+    transform: translate(-50%, -50%); /* Offset by half the element's size to truly center */
+    width: 80vw; /* Optional: Adjust the width of the container */
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+    gap: 20px; /* Add spacing between items */
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 15px;
+    width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.1); /* Optional: Add a subtle background */
+}
+
+.info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.artist-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.info:hover .artist-image {
+    transform: scale(1.1);
+}
+
+.info span {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 1.2rem;
+    color: #faf6e7;
+    text-align: center;
+}

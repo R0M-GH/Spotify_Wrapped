@@ -62,7 +62,7 @@ header {
 }
 .Cosmic-Song-Count {
 color: #faf6e7;
-left: 37vw;
+left: 35vw;
 font-family: 'ChakraPetch-Regular', sans-serif;
 font-size: 4vw;
 position: relative;
@@ -199,8 +199,8 @@ margin-top: 10vh;
   color: #faf6e7;
   font-family: 'ChakraPetch-Regular', sans-serif;
   position: absolute;
-  left: 40vw;
-  top: 80vh;
+  left: 43vw;
+  top: 87vh;
   font-size: 2vw;
   animation: blinkColor 2s infinite;
   user-select: none;

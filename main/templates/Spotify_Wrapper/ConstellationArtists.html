@@ -24,8 +24,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
             border-radius: 10px;
             padding: 15px;
             width: 200px;
@@ -53,11 +51,40 @@
 
         .info h3 {
             font-size: 1.2rem;
-            color: #333;
+            color: #faf6e7;
             margin: 0;
             text-align: center;
             font-weight: 600;
         }
+        #song-list {
+    position: absolute;
+    top: 20vh;
+    left: 28vw;
+    width: 50vw;
+    list-style-type: disc; /* This adds bullet points */
+    padding-left: 20vh; /* Adds space for the bullet points */
+}
+
+.song-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.track-image {
+    width: 9vh; /* Reduced size for bullet-point format */
+    height: 9vh;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1vw; /* Space between the image and text */
+}
+
+.song-item span {
+    font-family: 'ChakraPetch-Regular', sans-serif;
+    font-size: 1.5vw;
+    color: #faf6e7;
+}
+
     </style>
 </head>
 <body>
@@ -81,15 +108,20 @@
     </ul>
 </nav>
 <img class="bg" src="{% static 'Spotify_Wrapper/image/background.png' %}">
-<div class="Cosmic-Song-Count" style="user-select: none;"> Artist Constellation</div>
+<div  class="Cosmic-Song-Count" style="left: 35vw; user-select: none;"> Artist Constellation</div>
+<ul id="artist-list"></ul>
 <div class="container" id='container'></div>
-<a class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
+<a style="left: 42vw;" class="Genre-Breakdown3" href="/wrapper/{{ dt }}"> Return to planet view</a>
 <a href="/GenreNebulas/{{ dt }}">
     <img class="two" src="{% static "Spotify_Wrapper/image/rightarrow.png" %}">
+</a>
+<a href="/GenreNebulas/{{ dt }}">
+    <img style="top: 80vh; left:17vw; " class="mainplanet" src="{% static "Spotify_Wrapper/planets/GN-YellowPlanet.png" %}">
 </a>
 <a href="/StellarHits/{{ dt }}">
     <img class="back" src="{% static "Spotify_Wrapper/image/leftarrow.png" %}">
 </a>
+<img class="bg" src="{% static "Spotify_Wrapper/image/bg3.png" %}">
 <script>
     /**
      * Fetches data from the `/api/get-wrapped/{{ dt }}` endpoint and processes the response.

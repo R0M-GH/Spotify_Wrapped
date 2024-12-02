@@ -86,33 +86,81 @@
      * @returns {Promise<void>} Resolves when the data is fetched and processed.
      * @throws {Error} Logs any error that occurs during the fetch operation.
      */
-	async function getWrapped() {
-		try {
-			const response = await fetch(`/api/get-wrapped/{{ dt }}`);
-			if (!response.ok) {
-				console.error('Error fetching wrapped: ', response.status);
-			}
-			const data = await response.json();
-			console.log(data.data)
+	{#async function getWrapped() {#}
+	{#	try {#}
+	{#		const response = await fetch(`/api/get-wrapped/{{ dt }}`);#}
+	{#		if (!response.ok) {#}
+	{#			console.error('Error fetching wrapped: ', response.status);#}
+	{#		}#}
+	{#		const data = await response.json();#}
+	{#		console.log(data.data)#}
+    {##}
+	{#		const container = document.getElementById('container');#}
+	{#		if (data.data.top_genres && data.data.top_genres.length > 0) {#}
+    {#            const topGenres = data.data.top_genres.slice(0, 5);#}
+	{#			topGenres.forEach(genre => {#}
+	{#				const div = document.createElement('info');#}
+	{#				div.classList.add('info');#}
+	{#				div.innerHTML = `<h3>${genre}</h3>`;#}
+	{#				container.appendChild(div);#}
+	{#			});#}
+	{#		} else {#}
+	{#			container.innerHTML = '<p>No artists found.</p>';#}
+	{#		}#}
+	{#	} catch (e) {#}
+	{#		console.error(e);#}
+	{#	}#}
+    {##}
+	{#getWrapped();#}
+    async function getWrapped() {
+        try {
+            const response = await fetch(`/api/get-wrapped/{{ dt }}`);
+            if (!response.ok) {
+                console.error('Error fetching wrapped: ', response.status);
+            }
+            const data = await response.json();
+            console.log(data.data)
 
-			const container = document.getElementById('container');
-			if (data.data.top_genres && data.data.top_genres.length > 0) {
+            const container = document.getElementById('container');
+            container.innerHTML = ''; // Clear the container before adding new items
+
+            if (data.data.top_genres && data.data.top_genres.length > 0) {
                 const topGenres = data.data.top_genres.slice(0, 5);
-				topGenres.forEach(genre => {
-					const div = document.createElement('info');
-					div.classList.add('info');
-					div.innerHTML = `<h3>${genre}</h3>`;
-					container.appendChild(div);
-				});
-			} else {
-				container.innerHTML = '<p>No artists found.</p>';
-			}
-		} catch (e) {
-			console.error(e);
-		}
-	}
 
-	getWrapped();
+                const ul = document.createElement('ul'); // Create a new unordered list
+
+                // Loop through the top genres and create list items
+                topGenres.forEach(genre => {
+                    const li = document.createElement('li'); // Create a list item for each genre
+                    li.innerHTML = `<h3>${genre}</h3>`; // Set the inner HTML to include the genre in an <h3>
+                    li.style.listStyleType = 'none'; // Remove default bullet points
+
+                    // Set the background image and styling for the bullet point
+                    li.style.backgroundImage = 'url("/static/Spotify_Wrapper/planets/Moon.png")'; // Set your custom bullet point image
+                    li.style.backgroundRepeat = 'no-repeat'; // Prevent repeating the image
+                    li.style.backgroundPosition = '0 50%'; // Position the image (adjust as needed)
+                    li.style.paddingLeft = '20px'; // Add space for the image
+                    li.style.backgroundSize = '10px 10px'; // Set the size of the bullet point image (adjust as needed)
+                    li.style.height = '30px'; // Optional: adjust the height of list items for better layout
+
+                    // Apply formatting for the text to ensure consistency
+                    li.style.color = 'white'; // Set the color (adjust as needed)
+                    li.style.fontFamily = 'The Font'; // Set the font family (adjust as needed)
+                    li.style.fontSize = '1.2em'; // Example font size (adjust as needed)
+
+                    ul.appendChild(li); // Append the list item to the unordered list
+                });
+
+                container.appendChild(ul); // Append the unordered list to the container
+            } else {
+                container.innerHTML = '<p>No artists found.</p>';
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    getWrapped();
 </script>
 </body>
 </html>

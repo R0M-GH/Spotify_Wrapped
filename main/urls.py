@@ -14,7 +14,7 @@ urlpatterns = [
 	path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
 	path('spotify_logout/', views.relink_spotify_account, name='spotify_logout'),
 
-	# path('home/', views.home, name='home'),
+	path('home/', views.home, name='home'),
 
 	path('index/', views.index, name='index-page'),
 	path('contact/', views.contact, name='contact'),
